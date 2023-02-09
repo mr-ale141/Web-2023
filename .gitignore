@@ -1,5 +1,11 @@
 $ cat .gitignore
-progit.pdf
 *.[oa]
 *~
 *.log
+*.exe
+*.com
+*.cfg
+*.dsk
+*.ini
+*.bak
+*.txt
