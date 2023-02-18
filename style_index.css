@@ -1,15 +1,37 @@
 header {
   background-image: url(image/mountains.png);
-  width: 1440px;
+  max-width: 1440px;
   height: 500px;
 }
 
+header * {
+  color: #fff;
+}
+
 header > div {
+  position: relative;
   max-width: 920px;
   height: 500px;
   margin: 0px auto;
 }
 
-header span {
-  
+header button, h1, p {
+  text-align: center;
+  vertical-align: middle;
+  background-color: #000;
 }
+
+header button {
+  background-color: chocolate;
+}
+
+header span {
+  position: absolute;
+  top: 25px;
+}
+
+header nav {
+  position: absolute;
+  top: 25px;
+  right: 0;
+  }
