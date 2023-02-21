@@ -3,14 +3,16 @@
   <head>
     <meta charset="UTF-8">
     <title>Blog</title>
-    <link rel="stylesheet" href="style_index.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap">
   </head>
   <body class="body">
     <header class="header">
-      <div class="header__body">
+      <img class="header__image" src="image/mountains.png" alt="mountains">
+      <div class="header__wrapper">
         <div class="menu">
           <span class="menu__title">Escape.</span>
-          <nav class="menu__navigation">
+          <nav class="menu__box">
             <a class="menu__link" href=" ">HOME</a>
             <a class="menu__link" href=" ">CATEGORIES</a>
             <a class="menu__link" href=" ">ABOUT</a>
@@ -23,121 +25,159 @@
       </div>
     </header>
     <main class="main">
-      <div class="main__body">
-        <nav class="main__menu">
-          <a class="main__link" href=" ">Nature</a>
-          <a class="main__link" href=" ">Photography</a>
-          <a class="main__link" href=" ">Relaxation</a>
-          <a class="main__link" href=" ">Vacation</a>
-          <a class="main__link" href=" ">Travel</a>
-          <a class="main__link" href=" ">Adventure</a>
-        </nav>
-        <section class="main__featured">
-          <h2 class="main__title">Featured Posts</h2>
-          <div>
-            <img src="image/northern_lights.jpg" alt="northern lights" />
-            <span>The Road Ahead</span>
-            <p>The road ahead might be paved - it might not be.</p>
-            <img src="image/icon_Mat_Vogels.png" alt="icon Mat Vogels" />
-            <span>Mat Vogels</span>
-            <span>September 25, 2015</span>
+      <nav class="navigation">
+        <div class="navigation__wrapper">
+          <a class="navigation__link" href=" ">Nature</a>
+          <a class="navigation__link" href=" ">Photography</a>
+          <a class="navigation__link" href=" ">Relaxation</a>
+          <a class="navigation__link" href=" ">Vacation</a>
+          <a class="navigation__link" href=" ">Travel</a>
+          <a class="navigation__link" href=" ">Adventure</a>
+        </div>
+      </nav>
+      <div class="main__wrapper">
+        <h2 class="main__title">Featured Posts</h2>
+        <section class="featured">
+          <div class="item1">
+            <img class="item1__image" src="image/northern_lights.jpg" alt="northern lights" />
+            <a href="the-road-ahead.html" class="item1__link"><h3 class="item1__title">The Road Ahead</h3></a>
+            <p class="item1__subtitle">The road ahead might be paved - it might not be.</p>
+            <div class="about item1__footer">
+              <div class="about__author">
+                <img class="about__icon" src="image/icon_Mat_Vogels.png" alt="icon Mat Vogels" />
+                <div class="about__name">Mat Vogels</div>
+              </div>
+              <div class="about__date">September 25, 2015</div>
+            </div>
           </div>
-          <div>
-            <img src="image/flying_lantern.jpg" alt="flying lantern" />
-            <span>ADVENTURE</span>
-            <span>From Top Down</span>
-            <p>Once a year, go someplace you've never been before.</p>
-            <img src="image/icon_William_Wong.png" alt="icon William Wong" />
-            <span>William Wong</span>
-            <span>September 25, 2015</span>
+          <div class="item1">
+            <img class="item1__image" src="image/flying_lantern.jpg" alt="flying lantern" />
+            <div class="item1__category">ADVENTURE</div>
+            <h3 class="item1__title">From Top Down</h3>
+            <p class="item1__subtitle">Once a year, go someplace you've never been before.</p>
+            <div class="about item1__footer">
+              <div class="about__author">
+                <img class="about__icon" src="image/icon_William_Wong.png" alt="icon William Wong" />
+                <span class="about__name">William Wong</span>
+              </div>
+              <span class="about__date">September 25, 2015</span>
+            </div>
           </div>
         </section>
-        <section class="main__recent">
-          <h2 class="main__title">Most Recent</h2>
-          <div>
-            <img src="image/balloons.jpg" alt="balloons" />
-            <div>
-              <span>Still Standing Tall</span>
-              <p>Life begins at the end of your comfort zone.</p>
+        <h2 class="main__title">Most Recent</h2>
+        <section class="recent">
+          <div class="item2">
+            <img class="item2__image" src="image/balloons.jpg" alt="balloons" />
+            <div class="item2__name">
+              <h3 class="item2__title">Still Standing Tall</h3>
+              <p class="item2__subtitle">Life begins at the end of your comfort zone.</p>
             </div>
-            <div>
-              <img src="image/icon_William_Wong.png" alt="icon William Wong" />
-              <span>William Wong</span>
-              <span>9/25/2015</span>
-            </div>
-          </div>
-          <div>
-            <img src="image/bridge.jpg" alt="bridge" />
-            <div>
-              <span>Sunny Side Up</span>
-              <p>No place is ever as bad as they tell you it's going to be.</p>
-            </div>
-            <div>
-              <img src="image/icon_Mat_Vogels.png" alt="icon Mat Vogels" />
-              <span>Mat Vogels</span>
-              <span>9/25/2015</span>
+            <div class="item2__footer">
+              <div class="about">
+                <div class="about__author">
+                  <img class="about__icon" src="image/icon_William_Wong.png" alt="icon William Wong" />
+                  <span class="about__name">William Wong</span>
+                </div>
+                <span class="about__date">9/25/2015</span>
+              </div>
             </div>
           </div>
-          <div>
-            <img src="image/fog.jpg" alt="fog" />
-            <div>
-              <span>Water Falls</span>
-              <p>We travel not to escape life, but for life not to escape us.</p>
+          <div class="item2">
+            <img class="item2__image" src="image/bridge.jpg" alt="bridge" />
+            <div class="item2__name">
+              <h3 class="item2__title">Sunny Side Up</h3>
+              <p class="item2__subtitle">No place is ever as bad as they tell you it's going to be.</p>
             </div>
-            <div>
-              <img src="image/icon_Mat_Vogels.png" alt="icon Mat Vogels" />
-              <span>Mat Vogels</span>
-              <span>9/25/2015</span>
-            </div>
-          </div>
-          <div>
-            <img src="image/water.jpg" alt="water" />
-            <div>
-              <span>Through the Mist</span>
-              <p>Travel makes you see what a tiny place you occupy in the world.</p>
-            </div>
-            <div>
-              <img src="image/icon_William_Wong.png" alt="icon William Wong" />
-              <span>William Wong</span>
-              <span>9/25/2015</span>
+            <div class="item2__footer">
+              <div class="about">
+                <div class="about__author">
+                  <img class="about__icon" src="image/icon_Mat_Vogels.png" alt="icon Mat Vogels" />
+                  <span class="about__name">Mat Vogels</span>
+                </div>
+                <span class="about__date">9/25/2015</span>
+              </div>
             </div>
           </div>
-          <div>
-            <img src="image/cable_car.jpg" alt="cable car" />
-            <div>
-              <span>Awaken Early</span>
-              <p>Not all those who wander are lost.</p>
+          <div class="item2">
+            <img class="item2__image" src="image/fog.jpg" alt="fog" />
+            <div class="item2__name">
+              <h3 class="item2__title">Water Falls</h3>
+              <p class="item2__subtitle">We travel not to escape life, but for life not to escape us.</p>
             </div>
-            <div>
-              <img src="image/icon_Mat_Vogels.png" alt="icon Mat Vogels" />
-              <span>Mat Vogels</span>
-              <span>9/25/2015</span>
+            <div class="item2__footer">
+              <div class="about">
+                <div class="about__author">
+                  <img class="about__icon" src="image/icon_Mat_Vogels.png" alt="icon Mat Vogels" />
+                  <span class="about__name">Mat Vogels</span>
+                </div>
+                <span class="about__date">9/25/2015</span>
+              </div>
             </div>
           </div>
-          <div>
-            <img src="image/waterfall.jpg" alt="waterfall" />
-            <div>
-              <span>Try it Always</span>
-              <p>The world is a book, and those who do not travel read only one page.</p>
+          <div class="item2">
+            <img class="item2__image" src="image/water.jpg" alt="water" />
+            <div class="item2__name">
+              <h3 class="item2__title">Through the Mist</h3>
+              <p class="item2__subtitle">Travel makes you see what a tiny place you occupy in the world.</p>
             </div>
-            <div>
-              <img src="image/icon_Mat_Vogels.png" alt="icon Mat Vogels" />
-              <span>Mat Vogels</span>
-              <span>9/25/2015</span>
+            <div class="item2__footer">
+              <div class="about">
+                <div class="about__author">
+                  <img class="about__icon" src="image/icon_William_Wong.png" alt="icon William Wong" />
+                  <span class="about__name">William Wong</span>
+                </div>
+                <span class="about__date">9/25/2015</span>
+              </div>
+            </div>
+          </div>
+          <div class="item2">
+            <img class="item2__image" src="image/cable_car.jpg" alt="cable car" />
+            <div class="item2__name">
+              <h3 class="item2__title">Awaken Early</h3>
+              <p class="item2__subtitle">Not all those who wander are lost.</p>
+            </div>
+            <div class="item2__footer">
+              <div class="about">
+                <div class="about__author">
+                  <img class="about__icon" src="image/icon_Mat_Vogels.png" alt="icon Mat Vogels" />
+                  <span class="about__name">Mat Vogels</span>
+                </div>
+                <span class="about__date">9/25/2015</span>
+              </div>
+            </div>
+          </div>
+          <div class="item2">
+            <img class="item2__image" src="image/waterfall.jpg" alt="waterfall" />
+            <div class="item2__name">
+              <h3 class="item2__title">Try it Always</h3>
+              <p class="item2__subtitle">The world is a book, and those who do not travel read only one page.</p>
+            </div>
+            <div class="item2__footer">
+              <div class="about">
+                <div class="about__author">
+                  <img class="about__icon" src="image/icon_Mat_Vogels.png" alt="icon Mat Vogels" />
+                  <span class="about__name">Mat Vogels</span>
+                </div>
+                <span class="about__date">9/25/2015</span>
+              </div>
             </div>
           </div>
         </section>
       </div>
     </main>
-    <footer>
-      <img src="image/image_footer.jpg" alt="image footer" />
-      <span>Escape.</span>
-      <nav>
-        <a href=" ">HOME</a>
-        <a href=" ">CATEGORIES</a>
-        <a href=" ">ABOUT</a>
-        <a href=" ">CONTACT</a>
-      </nav>
+    <footer class="footer">
+      <img class="footer__image" src="image/image_footer.jpg" alt="image footer" />
+      <div class="footer__wrapper">
+        <div class="menu">
+          <span class="menu__title">Escape.</span>
+          <nav class="menu__box">
+            <a class="menu__link" href=" ">HOME</a>
+            <a class="menu__link" href=" ">CATEGORIES</a>
+            <a class="menu__link" href=" ">ABOUT</a>
+            <a class="menu__link" href=" ">CONTACT</a>
+          </nav>
+        </div>
+      </div>
     </footer>
   </body>
 </html>

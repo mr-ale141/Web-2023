@@ -1,0 +1,286 @@
+.body {
+    width: 1440px;
+    height: auto;
+    margin: 0 auto;
+    z-index: -3;
+}
+
+.header {
+    width: 1440px;
+    height: 500px;
+    position: relative;
+    color: #fff;
+}
+
+.header__wrapper {
+    width: 940px;
+    height: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.header__image {
+    position: absolute;
+    width: 1440px;
+    height: 500px;
+    z-index: -1;
+}
+
+.menu {
+    display: flex;
+    justify-content: space-between;
+    height: 74px;
+    align-items: center;
+}
+
+.menu__title {
+    font-size: 26px;
+    font-family: 'Lora';
+    color: #fff;
+}
+
+.menu__box {
+    width: 400px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.menu__link {
+    font-size: 12px;
+    font-family: 'Oxygen';
+    color: #fff;
+    text-decoration: none;
+}
+
+.header__title {
+    font-size: 50px;
+    font-family: 'Lora';
+    margin: 10% 0 0;
+}
+
+.header__subtitle {
+    font-size: 17px;
+    font-family: 'Oxygen';
+    margin: 2% 0;
+}
+
+.header__button {
+    background-color: coral;
+    padding: 10px;
+    border: 0;
+    border-radius: 5px;
+    color: #fff;
+    margin: 0 0 auto;
+}
+
+.main {
+    background-color: #F7F7F7;
+    position: relative;
+    min-height: 1320px;
+    z-index: 0;
+}
+
+.main__wrapper {
+    width: 940px;
+    margin: 0 auto;
+}
+
+.navigation {
+    width: 1440px;
+    height: 65px;
+    background-color: #fff;
+}
+
+.navigation__wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 940px;
+    height: 65px;
+    margin: 0 auto;
+}
+
+.navigation__link {
+    font-size: 14px;
+    font-family: 'Lora';
+    color: #768088;
+    text-decoration: none;
+}
+
+.main__title {
+    font-family: 'Oxygen';
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-align: center;
+    padding: 20px 0 16px 0;
+    position: relative;
+    margin: 0;
+    margin: 60px 0 16px 0;
+}
+
+.main__title:after {
+    content: '';
+    position: absolute;
+    right: 40%;
+    width: 188px;
+    bottom: 0;
+    height: 1px;
+    background-color: black;
+}
+
+.featured {
+    width: 940px;
+    height: 280px;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.item1 {
+    width: 460px;
+    height: 280px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+
+}
+
+.item1__image {
+    position: absolute;
+    width: 460px;
+    height: 280px;
+    z-index: -1;
+}
+
+.item1__category {
+    background-color: coral;
+    font-family: 'Oxygen';
+    font-size: 12px;
+    width: 74px;
+    padding: 6px 9px;
+    margin: 0 0 120px 20px;
+
+}
+
+.item1__title {
+    font-family: 'Lora';
+    font-size: 27px;
+    margin: 0 0 6px 20px;
+}
+
+.item1__link {
+    text-decoration: none;
+    color: #fff;
+}
+
+.item1__subtitle {
+    font-family: 'Oxygen';
+    font-size: 14px;
+    margin: 0 0 12px 20px;
+}
+
+.about {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 35px;
+}
+
+.item1__footer {
+    margin: 0 0 15px 0;
+}
+
+.about__author {
+    margin: 0 0 0 20px;
+    display: flex;
+    align-items: center;
+}
+
+.about__icon {
+    height: 26px;
+}
+
+.about__name {
+    font-size: 11px;
+    width: 76px;
+    text-align: center;
+}
+
+.about__date {
+    font-size: 12px;
+    margin: 0 20px 0 0;
+}
+
+.recent {
+    width: 940px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:space-between;
+    position: relative;
+}
+
+.item2 {
+    width: 296px;
+    height: 291px;
+    margin: 0 0 25px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.item2__image {
+    width: 296px;
+    height: 150px;
+}
+
+.item2__name {
+    width: 296px;
+    height: 93px;
+    background-color: #fff;
+    border-bottom: 1px solid #EFEFEF;
+    display: flex;
+    flex-direction: column;
+}
+
+.item2__title {
+    font-family: 'Lora';
+    font-weight: 400;
+    font-size: 16px;
+    margin: 14px 0 6px 13px;
+}
+
+.item2__subtitle {
+    font-family: 'Oxygen';
+    font-size: 13px;
+    margin: 0 13px 6px 13px;
+}
+
+.item2__footer {
+    display: grid;
+    align-items: center;
+    width: 296px;
+    height: 48px;
+    background-color: #fff;
+}
+
+.footer {
+    position: relative;
+    width: 1440px;
+    height: 89px;
+}
+
+.footer__wrapper {
+    width: 940px;
+    height: 89px;
+    margin: 0 auto;
+    display: grid;
+    align-items: center;
+}
+
+.footer__image {
+    position: absolute;
+    width: 1440px;
+    height: 89px;
+    z-index: -1;
+}
