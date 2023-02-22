@@ -54,6 +54,7 @@
 
 .header__title {
     font-size: 50px;
+    font-weight: 400;
     font-family: 'Lora';
     margin: 10% 0 0;
 }
@@ -115,8 +116,7 @@
     text-align: center;
     padding: 20px 0 16px 0;
     position: relative;
-    margin: 0;
-    margin: 60px 0 16px 0;
+    margin: 50px 0 25px 0;
 }
 
 .main__title:after {
@@ -167,6 +167,7 @@
 .item1__title {
     font-family: 'Lora';
     font-size: 27px;
+    font-weight: 400;
     margin: 0 0 6px 20px;
 }
 
