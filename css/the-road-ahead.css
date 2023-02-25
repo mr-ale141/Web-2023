@@ -1,0 +1,53 @@
+.header {
+    color: #000;
+    text-align: center;
+}
+
+.logo {
+    font: 400 26px Lora;
+}
+
+.menu__link {
+    color: inherit;
+    text-decoration: none;
+    font: 400 12px Oxygen;
+}
+
+.article {
+    color: #000;
+}
+
+.title {
+    font: 400 50px Lora;
+    color: inherit;
+    text-align: center;
+}
+
+.subtitle {
+    font: 400 17px Oxygen;
+    color: inherit;
+    text-align: center;
+}
+
+.image {
+    width: 100%;
+}
+
+.text {}
+
+.paragraph {
+    font: 400 24px Oxygen;
+}
+
+.footer {
+    background: url(../image/image_footer.jpg) no-repeat;
+    background-size: 100%;
+}
+
+.logo-footer {
+    color: #fff;
+}
+
+.link-footer {
+    color: #fff;
+}
