@@ -1,0 +1,140 @@
+.header {
+    background: url(../image/mountains.png) no-repeat;
+    background-size: cover;
+    color: #fff;
+    text-align: center;
+}
+
+.header__menu {}
+
+.logo {
+    font: 400 26px Lora;
+    color: #fff;
+}
+
+.menu__link {
+    text-decoration: none;
+    font: 400 12px Oxygen;
+    color: #fff;
+}
+
+.header__title {
+    font: 400 50px Lora;
+}
+
+.header__subtitle {
+    font: 400 17px Oxygen;
+}
+
+.header__button {
+    color: #fff;
+    background-color: #DD783F;
+    border: 0;
+    border-radius: 3px;
+    padding: 0.5% 1.5%;
+    font: 400 13px Oxygen;
+}
+
+.menu-categories {}
+
+.menu-categories__link {
+    color: #768088;
+    text-decoration: none;
+    font: 400 14px Lora;
+}
+
+.main {
+    background-color: #F7F7F7;
+}
+
+.first-section {}
+
+.section-title {
+    color: #2E2E2E;
+    font: 400 20px Oxygen;
+    text-align: center;
+    width: 10%;
+    border-bottom: 1px solid #DEDEDE;
+    padding: 2% 0 1%;
+    letter-spacing: 2px;
+}
+
+.item1-left {
+    background: url(../image/big_northern_lights.jpg) no-repeat;
+}
+
+.item1-right {
+    background: url(../image/flying_lantern.jpg) no-repeat;
+}
+
+.item1 {
+    width: 460px;
+    height: 280px;
+    color: #fff;
+}
+
+.item1__title {
+    font: 400 27px Lora;
+}
+
+.item1__subtitle {
+    font: 400 14px Oxygen;
+}
+
+.item1__author {
+    font: 400 12px Oxygen;
+}
+
+.item1__author-icon {}
+
+.item1__author-name {}
+
+.item1__author-date {}
+
+.item1__categories {
+    font: 400 12px Oxygen;
+    padding: 8px;
+    background-color: #DD783F;
+    border-radius: 3px;
+}
+
+.second-section {}
+
+.item2 {
+    width: 296px;
+    height: 291px;
+    background-color: #fff;
+}
+
+.item2__image {
+    width: 296px;
+    height: 150px;
+}
+
+.item2__title {
+    font: 400 16px Lora;
+    color: #000;
+}
+
+.item2__subtitle {
+    font: 400 13px Oxygen;
+    color: #7A7A7A;
+}
+
+.item2__author {
+    color: #999;
+    font: 400 12px Oxygen;
+    border-top: 1px solid #EFEFEF;
+    border-color: #FCFCFC;
+}
+
+.item2__author-icon {}
+
+.item2__author-name {}
+
+.item2__author-date {}
+
+.footer {
+    background: url(../image/image_footer.jpg) no-repeat;
+    background-size: cover;
+}
