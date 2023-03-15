@@ -8,6 +8,7 @@
     background-size: cover;
     color: #fff;
     text-align: center;
+    height: 500px;
 }
 
 .menu {
@@ -18,7 +19,7 @@
     justify-content: center;
 }
 
-.logo {
+.menu__logo {
     font: 400 26px Lora;
     color: #fff;
     text-align: start;
@@ -39,7 +40,7 @@
 
 .header__subtitle {
     font: 400 17px Oxygen;
-    margin: 20px 0 30px 0;
+    margin: 20px 0 0 0;
 }
 
 .header__button {
@@ -47,12 +48,17 @@
     background-color: #DD783F;
     border: 0;
     border-radius: 3px;
-    padding: 0.5% 1.5%;
+    padding: 1% 2%;
     font: 400 13px Oxygen;
-    margin: 0 0 160px 0;
+    margin: 30px 0 0 0;
+}
+
+.main {
+    background-color: #F7F7F7;
 }
 
 .menu-categories {
+    background-color: #fff;
     height: 65px;
     display: flex;
     align-items: center;
@@ -66,23 +72,20 @@
     margin: 0 4%;
 }
 
-.main {
-    background-color: #F7F7F7;
-}
-
-.first-section {
+.section {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    margin: 5% 0;
 }
 
 .section-title {
     font: 400 20px Oxygen;
     text-align: center;
     letter-spacing: 2px;
-    margin: 2% 0 1%;
-    padding: 0 0 1% 0;
+    margin: 0 0 1%;
+    padding: 0 0 2% 0;
     color: #2E2E2E;
     position: relative;
     width: 100%;
@@ -91,22 +94,22 @@
 .section-title::after {
     content: '';
     height: 1px;
-    width: 10%;
-    background-color: #DEDEDE;
+    width: 16%;
+    left: 42%;
+    background-color: #c5c1c1;
     position: absolute;
-    left: 45%;
     top: 95%
 }
 
-.item1-left {
+.big-post-left {
     background: url(../image/big_northern_lights.jpg) no-repeat;
 }
 
-.item1-right {
+.big-post-right {
     background: url(../image/flying_lantern.jpg) no-repeat;
 }
 
-.item1 {
+.big-post {
     width: 460px;
     height: 280px;
     color: #fff;
@@ -118,17 +121,17 @@
 
 }
 
-.item1__title {
+.big-post__title {
     font: 400 27px Lora;
     margin: 0 0 6px 20px;
 }
 
-.item1__subtitle {
+.big-post__subtitle {
     font: 400 14px Oxygen;
     margin: 0 0 0 20px;
 }
 
-.item1__author {
+.big-post__author {
     font: 400 12px Oxygen;
     height: 35px;
     margin: 15px 0;
@@ -137,22 +140,22 @@
     align-items: center;
 }
 
-.item1__author-icon {
+.big-post__author-icon {
     height: 26px;
     width: 26px;
     margin-left: 20px;
 }
 
-.item1__author-name {
+.big-post__author-name {
     flex-grow: 1;
     margin-left: 10px;
 }
 
-.item1__author-date {
+.big-post__author-date {
     margin-right: 20px;
 }
 
-.item1__categories {
+.big-post__categories {
     font: 400 12px Oxygen;
     padding: 8px;
     background-color: #DD783F;
@@ -162,39 +165,34 @@
     left: 20px;
 }
 
-.second-section {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0 0 110px 0;
-}
-
-.item2 {
+.little-post {
     width: 296px;
+    height: 291px;
     background-color: #fff;
     margin: 12px;
+    display: flex;
+    flex-direction: column;
 }
 
-.item2__image {
+.little-post__image {
     width: 296px;
     height: 150px;
 }
 
-.item2__title {
+.little-post__title {
     font: 400 16px Lora;
     color: #000;
     margin: 14px 13px 6px 13px;
 }
 
-.item2__subtitle {
+.little-post__subtitle {
     font: 400 13px Oxygen;
-    height: 40px;
     color: #7A7A7A;
     margin: 0 13px 6px 13px;
+    flex-grow: 1;
 }
 
-.item2__author {
+.little-post__author {
     color: #999999;
     font: 400 12px Oxygen;
     border-top: 1px solid #EFEFEF;
@@ -205,18 +203,18 @@
     align-items: center;
 }
 
-.item2__author-icon {
+.little-post__author-icon {
     height: 26px;
     width: 26px;
     margin-left: 13px;
 }
 
-.item2__author-name {
+.little-post__author-name {
     flex-grow: 1;
     margin-left: 10px;
 }
 
-.item2__author-date {
+.little-post__author-date {
     margin-right: 13px;
 }
 
@@ -231,16 +229,16 @@
     text-align: center;
     letter-spacing: 2px;
     position: relative;
-    padding: 80px 0 20px 0;
+    padding: 6% 0 2% 0;
 }
 
 .footer__title::after {
     content: '';
     height: 1px;
-    width: 10%;
     background-color: #DEDEDE;
     position: absolute;
-    left: 45%;
+    width: 16%;
+    left: 42%;
     top: 100%
 }
 
