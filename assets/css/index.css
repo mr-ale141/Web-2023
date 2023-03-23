@@ -4,7 +4,7 @@
 }
 
 .header {
-    background: url(../img/mountains.png) no-repeat;
+    background: url(/assets/img/mountains.png) no-repeat;
     background-size: cover;
     color: #fff;
     text-align: center;
@@ -105,12 +105,12 @@
     top: 95%
 }
 
-.big-post-left {
-    background: url(../img/big_northern_lights.jpg) no-repeat;
+.big-post-first {
+    background: url(/assets/img/big_northern_lights.jpg) no-repeat;
 }
 
-.big-post-right {
-    background: url(../img/flying_lantern.jpg) no-repeat;
+.big-post-second {
+    background: url(/assets/img/flying_lantern.jpg) no-repeat;
 }
 
 .big-post {
@@ -169,6 +169,10 @@
     left: 20px;
 }
 
+.big-post__categories:empty {
+    padding: 0;
+}
+
 .little-post {
     width: 296px;
     height: 291px;
@@ -223,7 +227,7 @@
 }
 
 .footer {
-    background: url(../img/footer.png) no-repeat;
+    background: url(/assets/img/footer.png) no-repeat;
     background-size: cover;
 }
 
