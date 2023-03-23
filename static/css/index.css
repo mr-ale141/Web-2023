@@ -4,7 +4,7 @@
 }
 
 .header {
-    background: url(/assets/img/mountains.png) no-repeat;
+    background: url(/static/img/mountains.png) no-repeat;
     background-size: cover;
     color: #fff;
     text-align: center;
@@ -106,11 +106,11 @@
 }
 
 .big-post-first {
-    background: url(/assets/img/big_northern_lights.jpg) no-repeat;
+    background: url(/static/img/big_northern_lights.jpg) no-repeat;
 }
 
 .big-post-second {
-    background: url(/assets/img/flying_lantern.jpg) no-repeat;
+    background: url(/static/img/flying_lantern.jpg) no-repeat;
 }
 
 .big-post {
@@ -227,7 +227,7 @@
 }
 
 .footer {
-    background: url(/assets/img/footer.png) no-repeat;
+    background: url(/static/img/footer.png) no-repeat;
     background-size: cover;
 }
 
