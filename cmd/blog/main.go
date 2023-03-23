@@ -14,7 +14,7 @@ func main() {
 	mux.HandleFunc("/home", index)
 	mux.HandleFunc("/post", post)
 
-	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets"))))
+	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 
 	log.Println("Start Server " + port)
 	err := http.ListenAndServe(port, mux)
