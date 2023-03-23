@@ -1,16 +1,24 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 )
 
-func main() {
-	const port = ":3000"
+const (
+	port = ":3000"
+)
 
+func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/home", index)
+	mux.HandleFunc("/post", post)
 
-	fmt.Println("Start Server!")
-	http.ListenAndServe(port, mux)
+	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets"))))
+
+	log.Println("Start Server " + port)
+	err := http.ListenAndServe(port, mux)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
