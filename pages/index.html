@@ -40,8 +40,8 @@
             <h3 class="big-post__title">{{ .Title }}</h3>
             <p class="big-post__subtitle">{{ .Subtitle }}</p>
             <div class="big-post__author">
-              <img class="big-post__author-icon" src="{{ .AuthorImg }}" />
-              <span class="big-post__author-name">{{ .Author }}</span>
+              <img class="big-post__author-icon" src="{{ .AuthorImgSrc }}" />
+              <span class="big-post__author-name">{{ .AuthorName }}</span>
               <span class="big-post__author-date">{{ .PublishDate }}</span>
             </div>
           </div>
@@ -51,12 +51,15 @@
         <h2 class="section-title">Most Recent</h2>
         {{ range .MostRecentPosts }}
           <div class="little-post">
-            <img class="little-post__image" src="{{ .Image }}" />
+            {{ if .Categories }}
+              <span class="little-post__categories">{{ .Categories }}</span>
+            {{ end }}
+            <img class="little-post__image" src="{{ .ImageSrc }}" />
             <h3 class="little-post__title">{{ .Title }}</h3>
             <p class="little-post__subtitle">{{ .Subtitle }}</p>
             <div class="little-post__author">
-              <img class="little-post__author-icon" src="{{ .AuthorImg }}" />
-              <span class="little-post__author-name">{{ .Author }}</span>
+              <img class="little-post__author-icon" src="{{ .AuthorImgSrc }}" />
+              <span class="little-post__author-name">{{ .AuthorName }}</span>
               <span class="little-post__author-date">{{ .PublishDate }}</span>
             </div>
           </div>

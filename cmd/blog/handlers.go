@@ -23,18 +23,19 @@ type featuredPost struct {
 	Categories             string
 	Title                  string
 	Subtitle               string
-	AuthorImg              string
-	Author                 string
+	AuthorImgSrc           string
+	AuthorName             string
 	PublishDate            string
 }
 
 type mostRecentPost struct {
-	Image       string
-	Title       string
-	Subtitle    string
-	AuthorImg   string
-	Author      string
-	PublishDate string
+	ImageSrc     string
+	Categories   string
+	Title        string
+	Subtitle     string
+	AuthorImgSrc string
+	AuthorName   string
+	PublishDate  string
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
@@ -88,8 +89,8 @@ func featuredPosts() []featuredPost {
 			Categories:             "",
 			Title:                  "The Road Ahead",
 			Subtitle:               "The road ahead might be paved - it might not be.",
-			AuthorImg:              "static/img/icon_Mat_Vogels.png",
-			Author:                 "Mat Vogels",
+			AuthorImgSrc:           "static/img/icon_Mat_Vogels.png",
+			AuthorName:             "Mat Vogels",
 			PublishDate:            "September 25, 2015",
 		},
 		{
@@ -97,8 +98,8 @@ func featuredPosts() []featuredPost {
 			Categories:             "ADVENTURE",
 			Title:                  "From Top Down",
 			Subtitle:               "Once a year, go someplace you've never been before.",
-			AuthorImg:              "static/img/icon_William_Wong.png",
-			Author:                 "William Wong",
+			AuthorImgSrc:           "static/img/icon_William_Wong.png",
+			AuthorName:             "William Wong",
 			PublishDate:            "September 25, 2015",
 		},
 	}
@@ -107,52 +108,58 @@ func featuredPosts() []featuredPost {
 func mostRecentPosts() []mostRecentPost {
 	return []mostRecentPost{
 		{
-			Image:       "static/img/balloons.jpg",
-			Title:       "Still Standing Tall",
-			Subtitle:    "Life begins at the end of your comfort zone.",
-			AuthorImg:   "static/img/icon_William_Wong.png",
-			Author:      "William Wong",
-			PublishDate: "9/25/2015",
+			ImageSrc:     "static/img/balloons.jpg",
+			Categories:   "",
+			Title:        "Still Standing Tall",
+			Subtitle:     "Life begins at the end of your comfort zone.",
+			AuthorImgSrc: "static/img/icon_William_Wong.png",
+			AuthorName:   "William Wong",
+			PublishDate:  "9/25/2015",
 		},
 		{
-			Image:       "static/img/bridge.jpg",
-			Title:       "Sunny Side Up",
-			Subtitle:    "No place is ever as bad as they tell you it's going to be.",
-			AuthorImg:   "static/img/icon_Mat_Vogels.png",
-			Author:      "Mat Vogels",
-			PublishDate: "9/25/2015",
+			ImageSrc:     "static/img/bridge.jpg",
+			Categories:   "",
+			Title:        "Sunny Side Up",
+			Subtitle:     "No place is ever as bad as they tell you it's going to be.",
+			AuthorImgSrc: "static/img/icon_Mat_Vogels.png",
+			AuthorName:   "Mat Vogels",
+			PublishDate:  "9/25/2015",
 		},
 		{
-			Image:       "static/img/fog.jpg",
-			Title:       "Water Falls",
-			Subtitle:    "We travel not to escape life, but for life not to escape us.",
-			AuthorImg:   "static/img/icon_Mat_Vogels.png",
-			Author:      "Mat Vogels",
-			PublishDate: "9/25/2015",
+			ImageSrc:     "static/img/fog.jpg",
+			Categories:   "",
+			Title:        "Water Falls",
+			Subtitle:     "We travel not to escape life, but for life not to escape us.",
+			AuthorImgSrc: "static/img/icon_Mat_Vogels.png",
+			AuthorName:   "Mat Vogels",
+			PublishDate:  "9/25/2015",
 		},
 		{
-			Image:       "static/img/water.jpg",
-			Title:       "Through the Mist",
-			Subtitle:    "Travel makes you see what a tiny place you occupy in the world.",
-			AuthorImg:   "static/img/icon_William_Wong.png",
-			Author:      "William Wong",
-			PublishDate: "9/25/2015",
+			ImageSrc:     "static/img/water.jpg",
+			Categories:   "",
+			Title:        "Through the Mist",
+			Subtitle:     "Travel makes you see what a tiny place you occupy in the world.",
+			AuthorImgSrc: "static/img/icon_William_Wong.png",
+			AuthorName:   "William Wong",
+			PublishDate:  "9/25/2015",
 		},
 		{
-			Image:       "static/img/cable_car.jpg",
-			Title:       "Awaken Early",
-			Subtitle:    "Not all those who wander are lost.",
-			AuthorImg:   "static/img/icon_Mat_Vogels.png",
-			Author:      "Mat Vogels",
-			PublishDate: "9/25/2015",
+			ImageSrc:     "static/img/cable_car.jpg",
+			Categories:   "",
+			Title:        "Awaken Early",
+			Subtitle:     "Not all those who wander are lost.",
+			AuthorImgSrc: "static/img/icon_Mat_Vogels.png",
+			AuthorName:   "Mat Vogels",
+			PublishDate:  "9/25/2015",
 		},
 		{
-			Image:       "static/img/waterfall.jpg",
-			Title:       "Try it Always",
-			Subtitle:    "The world is a book, and those who do not travel read only one page.",
-			AuthorImg:   "static/img/icon_Mat_Vogels.png",
-			Author:      "Mat Vogels",
-			PublishDate: "9/25/2015",
+			ImageSrc:     "static/img/waterfall.jpg",
+			Categories:   "",
+			Title:        "Try it Always",
+			Subtitle:     "The world is a book, and those who do not travel read only one page.",
+			AuthorImgSrc: "static/img/icon_Mat_Vogels.png",
+			AuthorName:   "Mat Vogels",
+			PublishDate:  "9/25/2015",
 		},
 	}
 }
