@@ -59,6 +59,7 @@
 
 .main {
     background-color: #F7F7F7;
+    padding: 0 0 30px;
 }
 
 .menu-categories {
@@ -81,7 +82,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 30px 0;
+    margin: 30px 0 0;
 }
 
 .section-title {
@@ -173,7 +174,7 @@
     width: 296px;
     height: 291px;
     background-color: #fff;
-    margin: 12px;
+    margin: 0 12px 20px;
     display: flex;
     flex-direction: column;
 }
