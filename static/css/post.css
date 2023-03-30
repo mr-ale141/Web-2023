@@ -88,7 +88,7 @@
 .submit {
     display: flex;
     justify-content: center;
-    margin: 40px 0 120px;
+    margin: 20px 0 120px;
 }
 
 .submit__input {

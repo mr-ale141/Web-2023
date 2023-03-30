@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{{ .Logo }}</title>
+  <title>Article</title>
   <link rel="stylesheet" href="/static/css/post.css">
   <link href="https://fonts.googleapis.com/css2?family=Lora&family=Oxygen&display=swap" rel="stylesheet">
 </head>
 <body>
   <header class="header">
-    <span class="menu__logo">{{ .Logo }}</span>
+    <span class="menu__logo">Escape.</span>
     <div class="menu__block-link">
-      {{ range .Menu }}
-        <a class="menu__link" href=" ">{{ .MenuLink }}</a>
-      {{ end }}
+      <a class="menu__link" href=" ">HOME</a>
+      <a class="menu__link" href=" ">CATEGORIES</a>
+      <a class="menu__link" href=" ">ABOUT</a>
+      <a class="menu__link" href=" ">CONTACT</a>
     </div>
   </header>
   <article class="article">
@@ -21,22 +22,23 @@
     <img class="image" src="{{ .Image }}" />
     <div class="text">
       {{ range .Text }}
-        <p class="paragraph" href=" ">{{ .Paragraph }}</p>
+        <p class="paragraph" href=" ">{{ . }}</p>
       {{ end }}
     </div>
   </article>
   <footer class="footer">
-      <h2 class="footer__title">{{ .SubmitTitle }}</h2>
+      <h2 class="footer__title">Stay in Touch</h2>
       <div class="submit">
-        <input class="submit__input" placeholder="{{ .TextInputBox }}" type="text" />
-        <button class="submit__button">{{ .ButtonSubmit }}</button>
+        <input class="submit__input" placeholder="Enter your email address" type="text" />
+        <button class="submit__button">Submit</button>
       </div>
       <div class="menu footer__menu">
-        <span class="menu__logo">{{ .Logo }}</span>
+        <span class="menu__logo">Escape.</span>
         <div class="menu__block-link">
-          {{ range .Menu }}
-            <a class="menu__link" href=" ">{{ .MenuLink }}</a>
-          {{ end }}
+          <a class="menu__link" href=" ">HOME</a>
+          <a class="menu__link" href=" ">CATEGORIES</a>
+          <a class="menu__link" href=" ">ABOUT</a>
+          <a class="menu__link" href=" ">CONTACT</a>
         </div>
       </div>
     </footer>

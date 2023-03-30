@@ -2,39 +2,45 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>{{ .Logo }}</title>
+    <title>Blog</title>
     <link rel="stylesheet" type="text/css" href="/static/css/index.css">
     <link href="https://fonts.googleapis.com/css2?family=Lora&family=Oxygen&display=swap" rel="stylesheet">
   </head>
   <body>
     <header class="header">
       <div class="menu">
-        <span class="menu__logo">{{ .Logo }}</span>
+        <span class="menu__logo">Escape.</span>
         <div class="menu__block-link">
-          {{ range .Menu }}
-            <a class="menu__link" href=" ">{{ .MenuLink }}</a>
-          {{ end }}
+          <a class="menu__link" href=" ">HOME</a>
+          <a class="menu__link" href=" ">CATEGORIES</a>
+          <a class="menu__link" href=" ">ABOUT</a>
+          <a class="menu__link" href=" ">CONTACT</a>
         </div>
       </div>
-      <h1 class="header__title">{{ .Title }}</h1>
-      <p class="header__subtitle">{{ .Subtitle }}</p>
-      <button class="header__button">{{ .LatestButton }}</button>
+      <h1 class="header__title">Let's do it together.</h1>
+      <p class="header__subtitle">We travel the world in search of stories. Come along for the ride.</p>
+      <button class="header__button">View Latest Posts</button>
     </header>
     <main class="main">
       <nav class="menu-categories">
-        {{ range .MenuCategories }}
-          <a class="menu-categories__link" href=" ">{{ .CategoriesLink }}</a>
-        {{ end }}
+        <a class="menu-categories__link" href=" ">Nature</a>
+        <a class="menu-categories__link" href=" ">Photography</a>
+        <a class="menu-categories__link" href=" ">Relaxation</a>
+        <a class="menu-categories__link" href=" ">Vacation</a>
+        <a class="menu-categories__link" href=" ">Travel</a>
+        <a class="menu-categories__link" href=" ">Adventure</a>
       </nav>
       <section class="section">
-        <h2 class="section-title">{{ .TitleSectionOne }}</h2>
-        {{ range .SectionOnePosts }}
-          <div class="big-post {{ .FirstOrSecondPost }}">
-            <span class="big-post__categories">{{ .Categories }}</span>
+        <h2 class="section-title">Featured Posts</h2>
+        {{ range .FeaturedPosts }}
+          <div class="big-post {{ .NameClassForBackground }}">
+            {{ if .Categories }}
+              <span class="big-post__categories">{{ .Categories }}</span>
+            {{ end }}
             <h3 class="big-post__title">{{ .Title }}</h3>
             <p class="big-post__subtitle">{{ .Subtitle }}</p>
             <div class="big-post__author">
-              <img class="big-post__author-icon" src="{{ .AuthorImg }}" alt="icon William Wong" />
+              <img class="big-post__author-icon" src="{{ .AuthorImg }}" />
               <span class="big-post__author-name">{{ .Author }}</span>
               <span class="big-post__author-date">{{ .PublishDate }}</span>
             </div>
@@ -42,14 +48,14 @@
         {{ end }}
       </section>
       <section class="section">
-        <h2 class="section-title">{{ .TitleSectionTwo }}</h2>
-        {{ range .SectionTwoPosts }}
+        <h2 class="section-title">Most Recent</h2>
+        {{ range .MostRecentPosts }}
           <div class="little-post">
-            <img class="little-post__image" src="{{ .Image }}" alt="balloons" />
+            <img class="little-post__image" src="{{ .Image }}" />
             <h3 class="little-post__title">{{ .Title }}</h3>
             <p class="little-post__subtitle">{{ .Subtitle }}</p>
             <div class="little-post__author">
-              <img class="little-post__author-icon" src="{{ .AuthorImg }}" alt="icon William Wong" />
+              <img class="little-post__author-icon" src="{{ .AuthorImg }}" />
               <span class="little-post__author-name">{{ .Author }}</span>
               <span class="little-post__author-date">{{ .PublishDate }}</span>
             </div>
@@ -58,17 +64,18 @@
       </section>
     </main>
     <footer class="footer">
-      <h2 class="footer__title">{{ .SubmitTitle }}</h2>
+      <h2 class="footer__title">Stay in Touch</h2>
       <form class="submit">
-        <input class="submit__input" placeholder="{{ .TextInputBox }}" type="text" />
-        <button class="submit__button">{{ .ButtonSubmit }}</button>
+        <input class="submit__input" placeholder="Enter your email address" type="text" />
+        <button class="submit__button">Submit</button>
       </form>
       <div class="menu footer__menu">
-        <span class="menu__logo">{{ .Logo }}</span>
+        <span class="menu__logo">Escape.</span>
         <div class="menu__block-link">
-          {{ range .Menu }}
-            <a class="menu__link" href=" ">{{ .MenuLink }}</a>
-          {{ end }}
+          <a class="menu__link" href=" ">HOME</a>
+          <a class="menu__link" href=" ">CATEGORIES</a>
+          <a class="menu__link" href=" ">ABOUT</a>
+          <a class="menu__link" href=" ">CONTACT</a>
         </div>
       </div>
     </footer>
