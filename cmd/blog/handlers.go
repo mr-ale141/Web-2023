@@ -4,171 +4,179 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strings"
+
+	"github.com/jmoiron/sqlx"
 )
 
-type indexPage struct {
-	FeaturedPosts   []featuredPost
-	MostRecentPosts []mostRecentPost
+type indexPageData struct {
+	FeaturedPosts   []featuredPostData
+	MostRecentPosts []mostRecentPostData
 }
 
-type postPage struct {
-	Title    string
-	Subtitle string
-	Image    string
-	Text     []string
+type postPageData struct {
+	Title      string `db:"title"`
+	Subtitle   string `db:"subtitle"`
+	ImageSrc   string `db:"image_url"`
+	Article    string `db:"text"`
+	Paragraphs []string
 }
 
-type featuredPost struct {
+type featuredPostData struct {
 	NameClassForBackground string
-	Categories             string
-	Title                  string
-	Subtitle               string
-	AuthorImgSrc           string
-	AuthorName             string
-	PublishDate            string
+	Categories             string `db:"categories"`
+	Title                  string `db:"title"`
+	Subtitle               string `db:"subtitle"`
+	AuthorImgSrc           string `db:"author_url"`
+	AuthorName             string `db:"author"`
+	PublishDate            string `db:"publish_date"`
 }
 
-type mostRecentPost struct {
-	ImageSrc     string
-	Categories   string
-	Title        string
-	Subtitle     string
-	AuthorImgSrc string
-	AuthorName   string
-	PublishDate  string
+type mostRecentPostData struct {
+	ImageSrc     string `db:"image_url"`
+	Categories   string `db:"categories"`
+	Title        string `db:"title"`
+	Subtitle     string `db:"subtitle"`
+	AuthorImgSrc string `db:"author_url"`
+	AuthorName   string `db:"author"`
+	PublishDate  string `db:"publish_date"`
 }
 
-func index(w http.ResponseWriter, r *http.Request) {
-	ts, err := template.ParseFiles("pages/index.html")
+func index(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		featuredPosts, err := featuredPosts(db)
+		if err != nil {
+			http.Error(w, "Internal Server Error", 500)
+			log.Println(err.Error())
+			return
+		}
+
+		mostRecentPosts, err := mostRecentPosts(db)
+		if err != nil {
+			http.Error(w, "Internal Server Error", 500)
+			log.Println(err.Error())
+			return
+		}
+
+		ts, err := template.ParseFiles("pages/index.html")
+		if err != nil {
+			http.Error(w, "Internal Server Error", 500)
+			log.Println(err.Error())
+			return
+		}
+
+		data := indexPageData{
+			FeaturedPosts:   featuredPosts,
+			MostRecentPosts: mostRecentPosts,
+		}
+
+		err = ts.Execute(w, data)
+		if err != nil {
+			http.Error(w, "Internal Server Error", 500)
+			log.Println(err.Error())
+			return
+		}
+	}
+}
+
+func post(db *sqlx.DB, titleArticle string) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		article, err := article(db, titleArticle)
+		if err != nil {
+			http.Error(w, "Internal Server Error", 500)
+			log.Println(err.Error())
+			return
+		}
+
+		ts, err := template.ParseFiles("pages/post.html")
+		if err != nil {
+			http.Error(w, "Internal Server Error", 500)
+			log.Println(err.Error())
+			return
+		}
+
+		err = ts.Execute(w, article)
+		if err != nil {
+			http.Error(w, "Internal Server Error", 500)
+			log.Println(err.Error())
+			return
+		}
+	}
+}
+
+func featuredPosts(db *sqlx.DB) ([]featuredPostData, error) {
+	const query = `
+		SELECT
+			title,
+			subtitle,
+			categories,
+			author,
+			author_url,
+			publish_date
+		FROM
+			posts
+		WHERE featured = 1
+	`
+
+	var featuredPosts []featuredPostData
+
+	err := db.Select(&featuredPosts, query)
 	if err != nil {
-		http.Error(w, "Internal Server Error", 500)
-		log.Println(err.Error())
-		return
+		return nil, err
 	}
 
-	data := indexPage{
-		FeaturedPosts:   featuredPosts(),
-		MostRecentPosts: mostRecentPosts(),
+	for i, featuredPost := range featuredPosts {
+		featuredPosts[i].NameClassForBackground = strings.Replace(strings.ToLower(featuredPost.Title), " ", "_", -1)
 	}
 
-	err = ts.Execute(w, data)
+	return featuredPosts, nil
+}
+
+func mostRecentPosts(db *sqlx.DB) ([]mostRecentPostData, error) {
+	const query = `
+		SELECT
+			title,
+			subtitle,
+			categories,
+			author,
+			author_url,
+			publish_date,
+			image_url
+		FROM
+			posts
+		WHERE featured = 0
+	`
+
+	var mostRecentPost []mostRecentPostData
+
+	err := db.Select(&mostRecentPost, query)
 	if err != nil {
-		http.Error(w, "Internal Server Error", 500)
-		log.Println(err.Error())
-		return
+		return nil, err
 	}
+
+	return mostRecentPost, nil
 }
 
-func post(w http.ResponseWriter, r *http.Request) {
-	ts, err := template.ParseFiles("pages/post.html")
+func article(db *sqlx.DB, titleArticle string) (postPageData, error) {
+	const query = `
+		SELECT
+			title,
+			subtitle,
+			image_url,
+			text
+		FROM
+			articles
+		WHERE title = ?
+	`
+
+	var postPage postPageData
+
+	err := db.Get(&postPage, query, titleArticle)
 	if err != nil {
-		http.Error(w, "Internal Server Error", 500)
-		log.Println(err.Error())
-		return
+		return postPage, err
 	}
 
-	data := postPage{
-		Title:    "The Road Ahead",
-		Subtitle: "The road ahead might be paved - it might not be.",
-		Image:    "../static/img/big_northern_lights.png",
-		Text:     text(),
-	}
+	postPage.Paragraphs = strings.Split(postPage.Article, "\n")
 
-	err = ts.Execute(w, data)
-	if err != nil {
-		http.Error(w, "Internal Server Error", 500)
-		log.Println(err.Error())
-		return
-	}
-}
-
-func featuredPosts() []featuredPost {
-	return []featuredPost{
-		{
-			NameClassForBackground: "the-road-ahead",
-			Categories:             "",
-			Title:                  "The Road Ahead",
-			Subtitle:               "The road ahead might be paved - it might not be.",
-			AuthorImgSrc:           "static/img/icon_Mat_Vogels.png",
-			AuthorName:             "Mat Vogels",
-			PublishDate:            "September 25, 2015",
-		},
-		{
-			NameClassForBackground: "from-top-down",
-			Categories:             "ADVENTURE",
-			Title:                  "From Top Down",
-			Subtitle:               "Once a year, go someplace you've never been before.",
-			AuthorImgSrc:           "static/img/icon_William_Wong.png",
-			AuthorName:             "William Wong",
-			PublishDate:            "September 25, 2015",
-		},
-	}
-}
-
-func mostRecentPosts() []mostRecentPost {
-	return []mostRecentPost{
-		{
-			ImageSrc:     "static/img/balloons.jpg",
-			Categories:   "",
-			Title:        "Still Standing Tall",
-			Subtitle:     "Life begins at the end of your comfort zone.",
-			AuthorImgSrc: "static/img/icon_William_Wong.png",
-			AuthorName:   "William Wong",
-			PublishDate:  "9/25/2015",
-		},
-		{
-			ImageSrc:     "static/img/bridge.jpg",
-			Categories:   "",
-			Title:        "Sunny Side Up",
-			Subtitle:     "No place is ever as bad as they tell you it's going to be.",
-			AuthorImgSrc: "static/img/icon_Mat_Vogels.png",
-			AuthorName:   "Mat Vogels",
-			PublishDate:  "9/25/2015",
-		},
-		{
-			ImageSrc:     "static/img/fog.jpg",
-			Categories:   "",
-			Title:        "Water Falls",
-			Subtitle:     "We travel not to escape life, but for life not to escape us.",
-			AuthorImgSrc: "static/img/icon_Mat_Vogels.png",
-			AuthorName:   "Mat Vogels",
-			PublishDate:  "9/25/2015",
-		},
-		{
-			ImageSrc:     "static/img/water.jpg",
-			Categories:   "",
-			Title:        "Through the Mist",
-			Subtitle:     "Travel makes you see what a tiny place you occupy in the world.",
-			AuthorImgSrc: "static/img/icon_William_Wong.png",
-			AuthorName:   "William Wong",
-			PublishDate:  "9/25/2015",
-		},
-		{
-			ImageSrc:     "static/img/cable_car.jpg",
-			Categories:   "",
-			Title:        "Awaken Early",
-			Subtitle:     "Not all those who wander are lost.",
-			AuthorImgSrc: "static/img/icon_Mat_Vogels.png",
-			AuthorName:   "Mat Vogels",
-			PublishDate:  "9/25/2015",
-		},
-		{
-			ImageSrc:     "static/img/waterfall.jpg",
-			Categories:   "",
-			Title:        "Try it Always",
-			Subtitle:     "The world is a book, and those who do not travel read only one page.",
-			AuthorImgSrc: "static/img/icon_Mat_Vogels.png",
-			AuthorName:   "Mat Vogels",
-			PublishDate:  "9/25/2015",
-		},
-	}
-}
-
-func text() []string {
-	return []string{
-		"Dark spruce forest frowned on either side the frozen waterway. The trees had been stripped by a recent wind of their white covering of frost, and they seemed to lean towards each other, black and ominous, in the fading light. A vast silence reigned over the land. The land itself was a desolation, lifeless, without movement, so lone and cold that the spirit of it was not even that of sadness. There was a hint in it of laughter, but of a laughter more terrible than any sadness—a laughter that was mirthless as the smile of the sphinx, a laughter cold as the frost and partaking of the grimness of infallibility. It was the masterful and incommunicable wisdom of eternity laughing at the futility of life and the effort of life. It was the Wild, the savage, frozen-hearted Northland Wild.",
-		"But there was life, abroad in the land and defiant. Down the frozen waterway toiled a string of wolfish dogs. Their bristly fur was rimed with frost. Their breath froze in the air as it left their mouths, spouting forth in spumes of vapour that settled upon the hair of their bodies and formed into crystals of frost. Leather harness was on the dogs, and leather traces attached them to a sled which dragged along behind. The sled was without runners. It was made of stout birch-bark, and its full surface rested on the snow. The front end of the sled was turned up, like a scroll, in order to force down and under the bore of soft snow that surged like a wave before it. On the sled, securely lashed, was a long and narrow oblong box. There were other things on the sled—blankets, an axe, and a coffee-pot and frying-pan; but prominent, occupying most of the space, was the long and narrow oblong box.",
-		"In advance of the dogs, on wide snowshoes, toiled a man. At the rear of the sled toiled a second man. On the sled, in the box, lay a third man whose toil was over,—a man whom the Wild had conquered and beaten down until he would never move nor struggle again. It is not the way of the Wild to like movement. Life is an offence to it, for life is movement; and the Wild aims always to destroy movement. It freezes the water to prevent it running to the sea; it drives the sap out of the trees till they are frozen to their mighty hearts; and most ferociously and terribly of all does the Wild harry and crush into submission man—man who is the most restless of life, ever in revolt against the dictum that all movement must in the end come to the cessation of movement.",
-		"But at front and rear, unawed and indomitable, toiled the two men who were not yet dead. Their bodies were covered with fur and soft-tanned leather. Eyelashes and cheeks and lips were so coated with the crystals from their frozen breath that their faces were not discernible. This gave them the seeming of ghostly masques, undertakers in a spectral world at the funeral of some ghost. But under it all they were men, penetrating the land of desolation and mockery and silence, puny adventurers bent on colossal adventure, pitting themselves against the might of a world as remote and alien and pulseless as the abysses of space.",
-	}
+	return postPage, nil
 }

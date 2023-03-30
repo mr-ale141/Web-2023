@@ -105,11 +105,11 @@
     top: 95%;
 }
 
-.the-road-ahead {
+.the_road_ahead {
     background: url(/static/img/big_northern_lights.jpg) no-repeat;
 }
 
-.from-top-down {
+.from_top_down {
     background: url(/static/img/flying_lantern.jpg) no-repeat;
 }
 

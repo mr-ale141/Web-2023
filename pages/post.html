@@ -19,9 +19,9 @@
   <article class="article">
     <h1 class="title">{{ .Title }}</h1>
     <p class="subtitle">{{ .Subtitle }}</p>
-    <img class="image" src="{{ .Image }}" />
+    <img class="image" src="{{ .ImageSrc }}" />
     <div class="text">
-      {{ range .Text }}
+      {{ range .Paragraphs }}
         <p class="paragraph" href=" ">{{ . }}</p>
       {{ end }}
     </div>
