@@ -10,15 +10,15 @@ import (
 )
 
 type indexPageData struct {
-	FeaturedPosts   []featuredPostData
-	MostRecentPosts []mostRecentPostData
+	FeaturedPostsData   []featuredPostData
+	MostRecentPostsData []mostRecentPostData
 }
 
 type postPageData struct {
 	Title      string `db:"title"`
 	Subtitle   string `db:"subtitle"`
 	ImageSrc   string `db:"image_url"`
-	Article    string `db:"text"`
+	Text       string `db:"text"`
 	Paragraphs []string
 }
 
@@ -44,14 +44,14 @@ type mostRecentPostData struct {
 
 func index(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		featuredPosts, err := featuredPosts(db)
+		featuredPostsData, err := getFeaturedPostsData(db)
 		if err != nil {
 			http.Error(w, "Internal Server Error", 500)
 			log.Println(err.Error())
 			return
 		}
 
-		mostRecentPosts, err := mostRecentPosts(db)
+		mostRecentPostsData, err := getMostRecentPostsData(db)
 		if err != nil {
 			http.Error(w, "Internal Server Error", 500)
 			log.Println(err.Error())
@@ -66,8 +66,8 @@ func index(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 		}
 
 		data := indexPageData{
-			FeaturedPosts:   featuredPosts,
-			MostRecentPosts: mostRecentPosts,
+			FeaturedPostsData:   featuredPostsData,
+			MostRecentPostsData: mostRecentPostsData,
 		}
 
 		err = ts.Execute(w, data)
@@ -79,9 +79,9 @@ func index(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func post(db *sqlx.DB, titleArticle string) func(w http.ResponseWriter, r *http.Request) {
+func post(db *sqlx.DB, article_id int) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		article, err := article(db, titleArticle)
+		postPageData, err := getPostPageData(db, article_id)
 		if err != nil {
 			http.Error(w, "Internal Server Error", 500)
 			log.Println(err.Error())
@@ -95,7 +95,7 @@ func post(db *sqlx.DB, titleArticle string) func(w http.ResponseWriter, r *http.
 			return
 		}
 
-		err = ts.Execute(w, article)
+		err = ts.Execute(w, postPageData)
 		if err != nil {
 			http.Error(w, "Internal Server Error", 500)
 			log.Println(err.Error())
@@ -104,7 +104,7 @@ func post(db *sqlx.DB, titleArticle string) func(w http.ResponseWriter, r *http.
 	}
 }
 
-func featuredPosts(db *sqlx.DB) ([]featuredPostData, error) {
+func getFeaturedPostsData(db *sqlx.DB) ([]featuredPostData, error) {
 	const query = `
 		SELECT
 			title,
@@ -118,21 +118,21 @@ func featuredPosts(db *sqlx.DB) ([]featuredPostData, error) {
 		WHERE featured = 1
 	`
 
-	var featuredPosts []featuredPostData
+	var featuredPostsData []featuredPostData
 
-	err := db.Select(&featuredPosts, query)
+	err := db.Select(&featuredPostsData, query)
 	if err != nil {
 		return nil, err
 	}
 
-	for i, featuredPost := range featuredPosts {
-		featuredPosts[i].NameClassForBackground = strings.Replace(strings.ToLower(featuredPost.Title), " ", "_", -1)
+	for i, featuredPost := range featuredPostsData {
+		featuredPostsData[i].NameClassForBackground = strings.Replace(strings.ToLower(featuredPost.Title), " ", "_", -1)
 	}
 
-	return featuredPosts, nil
+	return featuredPostsData, nil
 }
 
-func mostRecentPosts(db *sqlx.DB) ([]mostRecentPostData, error) {
+func getMostRecentPostsData(db *sqlx.DB) ([]mostRecentPostData, error) {
 	const query = `
 		SELECT
 			title,
@@ -147,17 +147,17 @@ func mostRecentPosts(db *sqlx.DB) ([]mostRecentPostData, error) {
 		WHERE featured = 0
 	`
 
-	var mostRecentPost []mostRecentPostData
+	var mostRecentPostsData []mostRecentPostData
 
-	err := db.Select(&mostRecentPost, query)
+	err := db.Select(&mostRecentPostsData, query)
 	if err != nil {
 		return nil, err
 	}
 
-	return mostRecentPost, nil
+	return mostRecentPostsData, nil
 }
 
-func article(db *sqlx.DB, titleArticle string) (postPageData, error) {
+func getPostPageData(db *sqlx.DB, article_id int) (postPageData, error) {
 	const query = `
 		SELECT
 			title,
@@ -166,17 +166,17 @@ func article(db *sqlx.DB, titleArticle string) (postPageData, error) {
 			text
 		FROM
 			articles
-		WHERE title = ?
+		WHERE article_id = ?
 	`
 
-	var postPage postPageData
+	var pageData postPageData
 
-	err := db.Get(&postPage, query, titleArticle)
+	err := db.Get(&pageData, query, article_id)
 	if err != nil {
-		return postPage, err
+		return pageData, err
 	}
 
-	postPage.Paragraphs = strings.Split(postPage.Article, "\n")
+	pageData.Paragraphs = strings.Split(pageData.Text, "\n")
 
-	return postPage, nil
+	return pageData, nil
 }
