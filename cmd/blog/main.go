@@ -12,7 +12,7 @@ import (
 const (
 	port         = ":3000"
 	dbDriverName = "mysql"
-	article_id   = 1
+	post_id      = 1
 	userName     = "web"
 	userPass     = "214550"
 )
@@ -27,7 +27,7 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/home", index(dbx))
-	mux.HandleFunc("/post", post(dbx, article_id))
+	mux.HandleFunc("/post", post(dbx, post_id))
 
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 

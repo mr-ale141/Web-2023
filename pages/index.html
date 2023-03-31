@@ -51,9 +51,6 @@
         <h2 class="section-title">Most Recent</h2>
         {{ range .MostRecentPostsData }}
           <div class="little-post">
-            {{ if .Categories }}
-              <span class="little-post__categories">{{ .Categories }}</span>
-            {{ end }}
             <img class="little-post__image" src="{{ .ImageSrc }}" />
             <h3 class="little-post__title">{{ .Title }}</h3>
             <p class="little-post__subtitle">{{ .Subtitle }}</p>

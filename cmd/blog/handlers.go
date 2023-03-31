@@ -34,7 +34,6 @@ type featuredPostData struct {
 
 type mostRecentPostData struct {
 	ImageSrc     string `db:"image_url"`
-	Categories   string `db:"categories"`
 	Title        string `db:"title"`
 	Subtitle     string `db:"subtitle"`
 	AuthorImgSrc string `db:"author_url"`
@@ -79,9 +78,9 @@ func index(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func post(db *sqlx.DB, article_id int) func(w http.ResponseWriter, r *http.Request) {
+func post(db *sqlx.DB, post_id int) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		postPageData, err := getPostPageData(db, article_id)
+		postPageData, err := getPostPageData(db, post_id)
 		if err != nil {
 			http.Error(w, "Internal Server Error", 500)
 			log.Println(err.Error())
@@ -137,7 +136,6 @@ func getMostRecentPostsData(db *sqlx.DB) ([]mostRecentPostData, error) {
 		SELECT
 			title,
 			subtitle,
-			categories,
 			author,
 			author_url,
 			publish_date,
@@ -157,7 +155,7 @@ func getMostRecentPostsData(db *sqlx.DB) ([]mostRecentPostData, error) {
 	return mostRecentPostsData, nil
 }
 
-func getPostPageData(db *sqlx.DB, article_id int) (postPageData, error) {
+func getPostPageData(db *sqlx.DB, post_id int) (postPageData, error) {
 	const query = `
 		SELECT
 			title,
@@ -165,13 +163,13 @@ func getPostPageData(db *sqlx.DB, article_id int) (postPageData, error) {
 			image_url,
 			text
 		FROM
-			articles
-		WHERE article_id = ?
+			posts
+		WHERE post_id = ?
 	`
 
 	var pageData postPageData
 
-	err := db.Get(&pageData, query, article_id)
+	err := db.Get(&pageData, query, post_id)
 	if err != nil {
 		return pageData, err
 	}
