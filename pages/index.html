@@ -33,7 +33,7 @@
       <section class="section">
         <h2 class="section-title">Featured Posts</h2>
         {{ range .FeaturedPostsData }}
-          <div class="big-post {{ .NameClassForBackground }}">
+          <div class="big-post" style="background: url({{ .ImageSrc }}) no-repeat; background-size: cover">
             {{ if .Categories }}
               <span class="big-post__categories">{{ .Categories }}</span>
             {{ end }}

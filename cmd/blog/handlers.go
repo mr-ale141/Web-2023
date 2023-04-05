@@ -23,13 +23,13 @@ type postPageData struct {
 }
 
 type featuredPostData struct {
-	NameClassForBackground string
-	Categories             string `db:"categories"`
-	Title                  string `db:"title"`
-	Subtitle               string `db:"subtitle"`
-	AuthorImgSrc           string `db:"author_url"`
-	AuthorName             string `db:"author"`
-	PublishDate            string `db:"publish_date"`
+	ImageSrc     string `db:"image_url"`
+	Categories   string `db:"categories"`
+	Title        string `db:"title"`
+	Subtitle     string `db:"subtitle"`
+	AuthorImgSrc string `db:"author_url"`
+	AuthorName   string `db:"author"`
+	PublishDate  string `db:"publish_date"`
 }
 
 type mostRecentPostData struct {
@@ -111,7 +111,8 @@ func getFeaturedPostsData(db *sqlx.DB) ([]featuredPostData, error) {
 			categories,
 			author,
 			author_url,
-			publish_date
+			publish_date,
+			image_url
 		FROM
 			posts
 		WHERE featured = 1
@@ -122,10 +123,6 @@ func getFeaturedPostsData(db *sqlx.DB) ([]featuredPostData, error) {
 	err := db.Select(&featuredPostsData, query)
 	if err != nil {
 		return nil, err
-	}
-
-	for i, featuredPost := range featuredPostsData {
-		featuredPostsData[i].NameClassForBackground = strings.Replace(strings.ToLower(featuredPost.Title), " ", "_", -1)
 	}
 
 	return featuredPostsData, nil

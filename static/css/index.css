@@ -106,14 +106,6 @@
     top: 95%;
 }
 
-.the_road_ahead {
-    background: url(/static/img/big_northern_lights.jpg) no-repeat;
-}
-
-.from_top_down {
-    background: url(/static/img/flying_lantern.jpg) no-repeat;
-}
-
 .big-post {
     width: 460px;
     height: 280px;
@@ -128,12 +120,12 @@
 
 .big-post__title {
     font: 400 27px Lora;
-    margin: 0 0 6px 20px;
+    margin: 0 20px 6px 20px;
 }
 
 .big-post__subtitle {
     font: 400 14px Oxygen;
-    margin: 0 0 0 20px;
+    margin: 0 20px 0 20px;
 }
 
 .big-post__author {
