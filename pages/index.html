@@ -33,7 +33,7 @@
       <section class="section">
         <h2 class="section-title">Featured Posts</h2>
         {{ range .FeaturedPostsData }}
-          <div class="big-post" style="background: url({{ .ImageSrc }}) no-repeat; background-size: cover">
+          <a href='/post?post_id={{ .PostID }}' class="big-post" style="background: url({{ .ImageSrc }}) no-repeat; background-size: cover">
             {{ if .Categories }}
               <span class="big-post__categories">{{ .Categories }}</span>
             {{ end }}
@@ -44,13 +44,13 @@
               <span class="big-post__author-name">{{ .AuthorName }}</span>
               <span class="big-post__author-date">{{ .PublishDate }}</span>
             </div>
-          </div>
+          </a>
         {{ end }}
       </section>
       <section class="section">
         <h2 class="section-title">Most Recent</h2>
         {{ range .MostRecentPostsData }}
-          <div class="little-post">
+          <a href='/post?post_id={{ .PostID }}' class="little-post">
             <img class="little-post__image" src="{{ .ImageSrc }}" />
             <h3 class="little-post__title">{{ .Title }}</h3>
             <p class="little-post__subtitle">{{ .Subtitle }}</p>
@@ -59,7 +59,7 @@
               <span class="little-post__author-name">{{ .AuthorName }}</span>
               <span class="little-post__author-date">{{ .PublishDate }}</span>
             </div>
-          </div>
+          </a>
         {{ end }}
       </section>
     </main>

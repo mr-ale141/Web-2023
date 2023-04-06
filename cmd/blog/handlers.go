@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/jmoiron/sqlx"
@@ -18,26 +19,28 @@ type postPageData struct {
 	Title      string `db:"title"`
 	Subtitle   string `db:"subtitle"`
 	ImageSrc   string `db:"image_url"`
-	Text       string `db:"text"`
+	Text       string `db:"text_article"`
 	Paragraphs []string
 }
 
 type featuredPostData struct {
+	PostID       int    `db:"post_id"`
 	ImageSrc     string `db:"image_url"`
 	Categories   string `db:"categories"`
 	Title        string `db:"title"`
 	Subtitle     string `db:"subtitle"`
-	AuthorImgSrc string `db:"author_url"`
-	AuthorName   string `db:"author"`
+	AuthorImgSrc string `db:"author_icon"`
+	AuthorName   string `db:"author_name"`
 	PublishDate  string `db:"publish_date"`
 }
 
 type mostRecentPostData struct {
+	PostID       int    `db:"post_id"`
 	ImageSrc     string `db:"image_url"`
 	Title        string `db:"title"`
 	Subtitle     string `db:"subtitle"`
-	AuthorImgSrc string `db:"author_url"`
-	AuthorName   string `db:"author"`
+	AuthorImgSrc string `db:"author_icon"`
+	AuthorName   string `db:"author_name"`
 	PublishDate  string `db:"publish_date"`
 }
 
@@ -78,8 +81,15 @@ func index(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func post(db *sqlx.DB, post_id int) func(w http.ResponseWriter, r *http.Request) {
+func post(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		post_id, err := strconv.Atoi(r.URL.Query().Get("post_id"))
+		if err != nil || post_id < 1 {
+			http.Error(w, "Internal Server Error", 500)
+			log.Println(err.Error())
+			return
+		}
+
 		postPageData, err := getPostPageData(db, post_id)
 		if err != nil {
 			http.Error(w, "Internal Server Error", 500)
@@ -106,16 +116,18 @@ func post(db *sqlx.DB, post_id int) func(w http.ResponseWriter, r *http.Request)
 func getFeaturedPostsData(db *sqlx.DB) ([]featuredPostData, error) {
 	const query = `
 		SELECT
+			post_id,
 			title,
 			subtitle,
 			categories,
-			author,
-			author_url,
+			author_name,
+			author_icon,
 			publish_date,
 			image_url
 		FROM
-			posts
-		WHERE featured = 1
+			posts,
+			authors
+		WHERE author_id = author_post AND featured = 1
 	`
 
 	var featuredPostsData []featuredPostData
@@ -131,15 +143,17 @@ func getFeaturedPostsData(db *sqlx.DB) ([]featuredPostData, error) {
 func getMostRecentPostsData(db *sqlx.DB) ([]mostRecentPostData, error) {
 	const query = `
 		SELECT
+			post_id,
 			title,
 			subtitle,
-			author,
-			author_url,
+			author_name,
+			author_icon,
 			publish_date,
 			image_url
 		FROM
-			posts
-		WHERE featured = 0
+			posts,
+			authors
+		WHERE author_id = author_post AND featured = 0
 	`
 
 	var mostRecentPostsData []mostRecentPostData
@@ -158,7 +172,7 @@ func getPostPageData(db *sqlx.DB, post_id int) (postPageData, error) {
 			title,
 			subtitle,
 			image_url,
-			text
+			text_article
 		FROM
 			posts
 		WHERE post_id = ?

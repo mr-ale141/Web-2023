@@ -82,7 +82,8 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 30px 0 0;
+    max-width: 75%;
+    margin: 30px auto 0;
 }
 
 .section-title {
@@ -107,6 +108,7 @@
 }
 
 .big-post {
+    text-decoration: none;
     width: 460px;
     height: 280px;
     color: #fff;
@@ -163,6 +165,7 @@
 }
 
 .little-post {
+    text-decoration: none;
     width: 296px;
     height: 291px;
     background-color: #fff;
