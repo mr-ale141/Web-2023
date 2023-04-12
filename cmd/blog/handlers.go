@@ -11,8 +11,8 @@ import (
 )
 
 type indexPageData struct {
-	FeaturedPostsData   []featuredPostData
-	MostRecentPostsData []mostRecentPostData
+	FeaturedPostsData   []PostData
+	MostRecentPostsData []PostData
 }
 
 type postPageData struct {
@@ -23,20 +23,10 @@ type postPageData struct {
 	Paragraphs []string
 }
 
-type featuredPostData struct {
+type PostData struct {
 	PostID       int    `db:"post_id"`
 	ImageSrc     string `db:"image_url"`
 	Categories   string `db:"categories"`
-	Title        string `db:"title"`
-	Subtitle     string `db:"subtitle"`
-	AuthorImgSrc string `db:"author_icon"`
-	AuthorName   string `db:"author_name"`
-	PublishDate  string `db:"publish_date"`
-}
-
-type mostRecentPostData struct {
-	PostID       int    `db:"post_id"`
-	ImageSrc     string `db:"image_url"`
 	Title        string `db:"title"`
 	Subtitle     string `db:"subtitle"`
 	AuthorImgSrc string `db:"author_icon"`
@@ -113,7 +103,7 @@ func post(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getFeaturedPostsData(db *sqlx.DB) ([]featuredPostData, error) {
+func getFeaturedPostsData(db *sqlx.DB) ([]PostData, error) {
 	const query = `
 		SELECT
 			post_id,
@@ -130,7 +120,7 @@ func getFeaturedPostsData(db *sqlx.DB) ([]featuredPostData, error) {
 		WHERE author_id = author_post AND featured = 1
 	`
 
-	var featuredPostsData []featuredPostData
+	var featuredPostsData []PostData
 
 	err := db.Select(&featuredPostsData, query)
 	if err != nil {
@@ -140,7 +130,7 @@ func getFeaturedPostsData(db *sqlx.DB) ([]featuredPostData, error) {
 	return featuredPostsData, nil
 }
 
-func getMostRecentPostsData(db *sqlx.DB) ([]mostRecentPostData, error) {
+func getMostRecentPostsData(db *sqlx.DB) ([]PostData, error) {
 	const query = `
 		SELECT
 			post_id,
@@ -156,7 +146,7 @@ func getMostRecentPostsData(db *sqlx.DB) ([]mostRecentPostData, error) {
 		WHERE author_id = author_post AND featured = 0
 	`
 
-	var mostRecentPostsData []mostRecentPostData
+	var mostRecentPostsData []PostData
 
 	err := db.Select(&mostRecentPostsData, query)
 	if err != nil {
