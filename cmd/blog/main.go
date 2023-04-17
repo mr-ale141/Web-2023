@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
+	//"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -25,6 +26,7 @@ func main() {
 	dbx := sqlx.NewDb(db, dbDriverName)
 
 	mux := http.NewServeMux()
+	//mux := mux.NewRouter()
 	mux.HandleFunc("/home", index(dbx))
 	mux.HandleFunc("/post", post(dbx))
 
