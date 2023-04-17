@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `blog`.`posts` (
     `categories`   VARCHAR(255) NOT NULL,
     `publish_date` VARCHAR(255) NOT NULL,
     `image_url`    VARCHAR(255) NOT NULL,
-    `text_article` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+    `content`      TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
     `featured`     TINYINT(1) NULL DEFAULT 0,
     PRIMARY KEY (`post_id`),
     INDEX `fk_posts_authors_idx` (`author_post` ASC) VISIBLE,

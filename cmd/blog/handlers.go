@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -19,7 +20,7 @@ type postPageData struct {
 	Title      string `db:"title"`
 	Subtitle   string `db:"subtitle"`
 	ImageSrc   string `db:"image_url"`
-	Text       string `db:"text_article"`
+	Text       string `db:"content"`
 	Paragraphs []string
 }
 
@@ -73,7 +74,7 @@ func index(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 
 func post(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		post_id, err := strconv.Atoi(r.URL.Query().Get("post_id"))
+		post_id, err := strconv.Atoi(mux.Vars(r)["postId"])
 		if err != nil || post_id < 1 {
 			http.Error(w, "Internal Server Error", 500)
 			log.Println(err.Error())
@@ -162,7 +163,7 @@ func getPostPageData(db *sqlx.DB, post_id int) (postPageData, error) {
 			title,
 			subtitle,
 			image_url,
-			text_article
+			content
 		FROM
 			posts
 		WHERE post_id = ?
