@@ -74,14 +74,14 @@ func index(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 
 func post(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		post_id, err := strconv.Atoi(mux.Vars(r)["postId"])
-		if err != nil || post_id < 1 {
+		postId, err := strconv.Atoi(mux.Vars(r)["postId"])
+		if err != nil || postId < 1 {
 			http.Error(w, "Internal Server Error", 500)
 			log.Println(err.Error())
 			return
 		}
 
-		postPageData, err := getPostPageData(db, post_id)
+		postPageData, err := getPostPageData(db, postId)
 		if err != nil {
 			http.Error(w, "Internal Server Error", 500)
 			log.Println(err.Error())
@@ -157,7 +157,7 @@ func getMostRecentPostsData(db *sqlx.DB) ([]PostData, error) {
 	return mostRecentPostsData, nil
 }
 
-func getPostPageData(db *sqlx.DB, post_id int) (postPageData, error) {
+func getPostPageData(db *sqlx.DB, postId int) (postPageData, error) {
 	const query = `
 		SELECT
 			title,
@@ -171,7 +171,7 @@ func getPostPageData(db *sqlx.DB, post_id int) (postPageData, error) {
 
 	var pageData postPageData
 
-	err := db.Get(&pageData, query, post_id)
+	err := db.Get(&pageData, query, postId)
 	if err != nil {
 		return pageData, err
 	}
