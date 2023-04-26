@@ -27,8 +27,6 @@ html {
   height: 90px;
 }
 
-.logo__title {}
-
 .logo__subtitle {
   color: #FFFFFF;
   font: 400 17px Oxygen;
@@ -57,6 +55,7 @@ html {
 }
 
 .main-form__input-email {
+  outline: none;
   font: 400 16px Oxygen;
   padding: 5px;
   width: 400px;
@@ -69,7 +68,6 @@ html {
 }
 
 .main-form__item-input_completed {
-  outline: none;
   background-color: #F7F7F7;
   border-bottom: 1px solid #2E2E2E;
 }
@@ -81,17 +79,19 @@ html {
 .main-form__password {
   border-bottom: 1px solid #EAEAEA;
   position: relative;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 .main-form__input-pass {
+  outline: none;
   font: 400 16px Oxygen;
   padding: 5px;
   width: 370px;
   height: 40px;
   background-color: #FFFFFF;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
   border: 0;
+  background: transparent;
 }
 
 .main-form__toggle-icon {

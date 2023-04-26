@@ -8,10 +8,12 @@
 </head>
 <body class="body">
   <div class="logo">
-    <img class="logo__title" src="../static/img/admin/logo-inversed.svg" />
+    <a href="/home">
+      <img class="logo__title" src="/static/img/admin/logo-inversed.svg" />
+    </a>
     <p class="logo__subtitle">Log in to start creating</p>
   </div>
-  <form class="main-form" name="main" action="#" enctype="multipart/form-data">
+  <form class="main-form" name="main" action="/admin" method="post" enctype="multipart/form-data">
     
     <p class="main-form__title" id="formTitle">Log In</p>
 
@@ -24,13 +26,13 @@
       <label for="input_pass" class="main-form__item-title">Password</label>
       <div class="main-form__password">
         <input class="main-form__input-pass" id="input_pass" type="password" name="userPass" value="" tabindex="2" />
-        <img class="main-form__toggle-icon" src="../static/img/admin/eye.png">
+        <img class="main-form__toggle-icon" src="/static/img/admin/eye.png">
       </div>
     </div>
 
-    <button class="main-form__button-submit" type="submit" name="submit" tabindex="3">Log In</button>
+    <button class="main-form__button-submit" type="submit" tabindex="3">Log In</button>
 
   </form>
-  <script src="../static/js/admin-login.js"></script>
+  <script src="/static/js/admin-login.js"></script>
 </body>
 </html>

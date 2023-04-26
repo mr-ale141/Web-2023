@@ -5,13 +5,13 @@ const mainFormUserEmail = mainForm.userEmail;
 const mainFormUserPass = mainForm.userPass;
 const mainFormToggleIcon = document.getElementsByClassName('main-form__toggle-icon')[0];
 
-console.log(mainFormToggleIcon.src);
-
 mainFormToggleIcon.addEventListener("click", function (event) {
-  if (mainFormToggleIcon.src === "../static/img/admin/eye-off.png") {
-    mainFormToggleIcon.src = "../static/img/admin/eye.png"
+  if (mainFormToggleIcon.src.includes("static/img/admin/eye-off.png")) {
+    mainFormToggleIcon.src = "../static/img/admin/eye.png";
+    mainFormUserPass.setAttribute('type', 'password');
   } else {
     mainFormToggleIcon.src="../static/img/admin/eye-off.png";
+    mainFormUserPass.setAttribute('type', 'text');
   }
 });
 
@@ -26,18 +26,16 @@ mainFormUserEmail.addEventListener("blur", function (event) {
 });
 
 mainFormUserPass.addEventListener("focus", function (event) {
-  mainFormUserPass.classList.add("main-form__item-input_completed");
+  mainFormUserPass.parentElement.classList.add("main-form__item-input_completed");
 });
 
 mainFormUserPass.addEventListener("blur", function (event) {
   if (mainFormUserPass.value === "") {
-    mainFormUserPass.classList.remove("main-form__item-input_completed");
+    mainFormUserPass.parentElement.classList.remove("main-form__item-input_completed");
   }
 });
 
 mainForm.addEventListener("submit", function (event) {
-  console.log(document.getElementsByClassName("main-form__password_hide").nextElementSibling);
-
   if (mainFormUserEmail.value) {
     if (mainFormUserEmail.nextElementSibling === document.getElementsByClassName("main-form__empty-email")[0]) {
       mainFormUserEmail.nextElementSibling.remove();
