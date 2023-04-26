@@ -1,0 +1,141 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+.body {
+  background: url(../img/admin/ear.jpeg) center center no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  min-height: 100%;
+}
+
+.logo {
+  width: 380px;
+  height: 90px;
+}
+
+.logo__title {}
+
+.logo__subtitle {
+  color: #FFFFFF;
+  font: 400 17px Oxygen;
+}
+
+.main-form {
+  width: 480px;
+  height: 560px;
+  background-color: #FFFFFF;
+  border-radius: 3px;
+}
+
+.main-form__title {
+  display: inline-block;
+  font: 400 34px Lora;
+  margin: 50px 40px;
+}
+
+.main-form__item {
+  margin: 5px 40px 40px;
+}
+
+.main-form__item-title {
+  font: 400 17px Oxygen;
+  color: #7A7A7A;
+}
+
+.main-form__input-email {
+  font: 400 16px Oxygen;
+  padding: 5px;
+  width: 400px;
+  height: 40px;
+  background-color: #FFFFFF;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: 0;
+  border-bottom: 1px solid #EAEAEA;
+}
+
+.main-form__item-input_completed {
+  outline: none;
+  background-color: #F7F7F7;
+  border-bottom: 1px solid #2E2E2E;
+}
+
+.main-form__item-input_invalid {
+  border-bottom: 1px solid #E86961;
+}
+
+.main-form__password {
+  border-bottom: 1px solid #EAEAEA;
+  position: relative;
+}
+
+.main-form__input-pass {
+  font: 400 16px Oxygen;
+  padding: 5px;
+  width: 370px;
+  height: 40px;
+  background-color: #FFFFFF;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: 0;
+}
+
+.main-form__toggle-icon {
+  position: absolute;
+  top: 8px;
+  right: 5px;
+}
+
+.main-form__button-submit {
+  font: 400 16px Oxygen;
+  color: #FFFFFF;
+  background-color: #DD783F;
+  margin: 0 0 0 40px;
+  padding: 12px 24px;
+  border-radius: 3px;
+  border: 0;
+  display: inline-block;
+}
+
+.main-form__empty-error {
+  position: relative;
+  background-color: #FFEBEA;
+  border-radius: 5px;
+  border-left: 2px solid #E86961;
+  margin: 0 40px 40px;
+  padding: 11px 0 13px 46px;
+}
+
+.main-form__empty-error::before {
+  content: '';
+  background-image: url(../img/admin/alert-circle.svg);
+  background-size: cover;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 14px;
+}
+
+.main-form__empty-pass, .main-form__empty-email {
+  color: #E86961;
+  padding: 5px;
+}
+
+.main-form__email-error {
+  color: #E86961;
+  padding: 5px;
+}
