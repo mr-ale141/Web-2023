@@ -37,6 +37,25 @@ html {
   height: 560px;
   background-color: #FFFFFF;
   border-radius: 3px;
+  position: relative;
+}
+
+.main-form::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(51, 51, 51, 0.4) url("../img/admin/loading-please-wait.gif") center / 100px no-repeat;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s ease 0s;
+}
+
+.main-form._sending::after {
+  opacity: 1;
+  visibility: visible;
 }
 
 .main-form__title {
@@ -67,16 +86,16 @@ html {
   border-bottom: 1px solid #EAEAEA;
 }
 
-.main-form__item-input_completed {
-  background-color: #F7F7F7;
-  border-bottom: 1px solid #2E2E2E;
-}
-
 .main-form__password {
   border-bottom: 1px solid #EAEAEA;
   position: relative;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+}
+
+.main-form__item-input_completed {
+  background-color: #F7F7F7;
+  border-bottom: 1px solid #2E2E2E;
 }
 
 .main-form__item-input_invalid {

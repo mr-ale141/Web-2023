@@ -3,9 +3,11 @@ CREATE DATABASE blog;
 USE blog;
 
 CREATE TABLE IF NOT EXISTS `blog`.`authors` (
-    `author_id` INT NOT NULL AUTO_INCREMENT,
-    `author_name` VARCHAR(255) NOT NULL,
-    `author_icon` VARCHAR(255) NOT NULL,
+    `author_id`       INT NOT NULL AUTO_INCREMENT,
+    `author_name`     VARCHAR(255) NOT NULL,
+    `author_icon`     VARCHAR(255) NOT NULL,
+    `author_email`    VARCHAR(255) NOT NULL,
+    `author_password` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`author_id`))
 ENGINE = InnoDB
 CHARACTER SET = utf8mb4

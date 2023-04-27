@@ -1,18 +1,21 @@
 INSERT INTO `blog`.`authors` (
-    `author_id`,
     `author_name`,
-    `author_icon`
+    `author_icon`,
+    `author_email`,
+    `author_password`
     ) 
 VALUES 
 (
-    1, 
     'Mat Vogels',
-    '/static/img/icon_Mat_Vogels.png'
+    '/static/img/icon_Mat_Vogels.png',
+    'mat@gmail.com',
+    '123'
 ),
 (
-    2,
     'William Wong',
-    '/static/img/icon_William_Wong.png'
+    '/static/img/icon_William_Wong.png',
+    'wong@gmail.com',
+    '321'
 );
 
 INSERT INTO `blog`.`posts` (
