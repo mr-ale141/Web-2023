@@ -53,23 +53,24 @@ mainForm.addEventListener("submit", function (event) {
     );
     mainFormUserEmail.classList.add("main-form__item-input_invalid");
   }
-
+  console.log(mainFormUserPass.parentElement.nextElementSibling);
+  console.log(document.getElementsByClassName("main-form__empty-pass")[0]);
   if (mainFormUserPass.value) {
-    if (mainFormUserPass.nextElementSibling === document.getElementsByClassName("main-form__empty-pass")[0]) {
-      mainFormUserPass.nextElementSibling.remove();
+    if (mainFormUserPass.parentElement.nextElementSibling === document.getElementsByClassName("main-form__empty-pass")[0]) {
+      mainFormUserPass.parentElement.nextElementSibling.remove();
     }
-    mainFormUserPass.classList.remove("main-form__item-input_invalid");
+    mainFormUserPass.parentElement.classList.remove("main-form__item-input_invalid");
   } else {
-    if (mainFormUserPass.nextElementSibling) {
-      mainFormUserPass.nextElementSibling.remove();
+    if (mainFormUserPass.parentElement.nextElementSibling) {
+      mainFormUserPass.parentElement.nextElementSibling.remove();
     }
-    mainFormUserPass.insertAdjacentHTML(
+    mainFormUserPass.parentElement.insertAdjacentHTML(
       "afterend",
       `<div class="main-form__empty-pass">
           Password is required.
         </div>`
     );
-    mainFormUserPass.classList.add("main-form__item-input_invalid");
+    mainFormUserPass.parentElement.classList.add("main-form__item-input_invalid");
   }
   
   if (!mainFormUserEmail.value || !mainFormUserPass.value) {

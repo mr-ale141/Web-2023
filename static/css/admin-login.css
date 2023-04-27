@@ -72,15 +72,15 @@ html {
   border-bottom: 1px solid #2E2E2E;
 }
 
-.main-form__item-input_invalid {
-  border-bottom: 1px solid #E86961;
-}
-
 .main-form__password {
   border-bottom: 1px solid #EAEAEA;
   position: relative;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+}
+
+.main-form__item-input_invalid {
+  border-bottom: 1px solid #E86961;
 }
 
 .main-form__input-pass {
