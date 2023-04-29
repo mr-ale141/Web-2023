@@ -52,27 +52,36 @@ document.addEventListener('DOMContentLoaded', function () {
       })
 
       if (response.ok) {
-        mainForm.classList.remove('_sending');
         if (mainFormTitle.nextElementSibling === document.getElementsByClassName("main-form__empty-error")[0]) {
           mainFormTitle.nextElementSibling.remove();
         }
         console.log(response);
         console.log(response.url);
 
-        //перенаправление по response.url
-        window.location.href = response.url;
+        setTimeout(() => {
+          mainForm.classList.remove('_sending');
+          //перенаправление по response.url
+          window.location.href = response.url;
+        }, 1000);
+        
 
       } else if (response.status == 404) {
-        mainForm.classList.remove('_sending');
         console.log("not authorizate");
-        if (mainFormTitle.nextElementSibling === mainFormUserEmail.parentElement) {
-          mainFormTitle.insertAdjacentHTML(
-            "afterend",
-            `<div class="main-form__empty-error">
-              Email or password is incorrect.
-            </div>`
-          );
-        }
+        setTimeout(() => {
+          if (mainFormTitle.nextElementSibling === mainFormUserEmail.parentElement) {
+            mainFormTitle.insertAdjacentHTML(
+              "afterend",
+              `<div class="main-form__empty-error">
+                Email or password is incorrect.
+              </div>`
+            );
+          }
+          
+          mainFormUserEmail.classList.add("main-form__item-input_invalid");
+          mainFormUserPass.parentElement.classList.add("main-form__item-input_invalid");
+
+          mainForm.classList.remove('_sending');
+        }, 1000);
       }
     } else {
       if (mainFormTitle.nextElementSibling === document.getElementsByClassName("main-form__empty-error")[0]) {

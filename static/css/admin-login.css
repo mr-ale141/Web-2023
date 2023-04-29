@@ -106,7 +106,7 @@ html {
   outline: none;
   font: 400 16px Oxygen;
   padding: 5px;
-  width: 370px;
+  width: 400px;
   height: 40px;
   background-color: #FFFFFF;
   border: 0;
@@ -117,6 +117,7 @@ html {
   position: absolute;
   top: 8px;
   right: 5px;
+  cursor: pointer;
 }
 
 .main-form__button-submit {
