@@ -10,10 +10,8 @@
   <header class="header">
     <div class="header__wrapper">
       <img class="header__logo" src="/static/img/admin/logo-inversed.svg" />
-      <div class="header__menu">
-        <img class="header__author" src="/static/img/icon_Mat_Vogels.png" />
-        <img class="header__exit" src="/static/img/admin/log-out.svg" />
-      </div>
+      <div class="header__author"></div>
+      <img class="header__exit" src="/static/img/admin/log-out.svg" />
     </div>
   </header>
   <main class="main">
@@ -22,7 +20,7 @@
         <h1 class="menu__title">New Post</h1>
         <h2 class="menu__subtitle">Fill out the form bellow and publish your article</h2>
       </div>
-      <button class="menu__batton" type="submit">Publish</button>
+      <button class="menu__button" type="submit">Publish</button>
     </div>
     <div class="data">
       <h2 class="data__title">Main Information</h2>
@@ -44,9 +42,10 @@
           <div class="icon">
             <div class="icon__priview"></div>
             <input class="icon__input" id="icon" name="Icon" type="file" accept=".jpg, .png, .gif" value="" tabindex="4">
-            <div class="icon__menu">
-              <div class="icon__upload">Upload New</div>
-              <div class="icon__remove">Remove</div>
+            <div class="icon__span">Upload</div>
+            <div class="form__menu form__menu_hide">
+              <div class="form__upload">Upload New</div>
+              <div class="form__remove">Remove</div>
             </div>
           </div>
         </div>
@@ -59,19 +58,23 @@
           <div class="image">
             <div class="image__priview">Upload</div>
             <input class="image__input" id="img" name="Image" type="file" accept=".jpg, .png, .gif" value="" tabindex="6">
-            <div class="image__upload">Upload New</div>
-            <div class="image__remove"><img src="/static/img/admin/remove.svg"><span>Remove</span></div>
-            <div class="image__limit">Size up to 10mb. Format: png, jpeg, gif.</div>
+            <div class="form__menu form__menu_hide">
+              <div class="form__upload">Upload New</div>
+              <div class="form__remove">Remove</div>
+            </div>
+            <div class="form__limit">Size up to 10mb. Format: png, jpeg, gif.</div>
           </div>
         </div>
         <div class="form__short-image">
           <label class="form__lable" for="short-img" >Hero Image</label>
           <div class="short-image">
-            <div class="short-image__priview"></div>
+            <div class="short-image__priview">Upload</div>
             <input class="short-image__input" id="short-img" name="ShortImage" type="file" accept=".jpg, .png, .gif" value="" tabindex="7">
-            <div class="short-image__upload">Upload New</div>
-            <div class="short-image__remove"><img src="/static/img/admin/remove.svg"><span>Remove</span></div>
-            <div class="short-image__limit">Size up to 5mb. Format: png, jpeg, gif.</div>
+            <div class="form__menu form__menu_hide">
+              <div class="form__upload">Upload New</div>
+              <div class="form__remove">Remove</div>
+            </div>
+            <div class="form__limit">Size up to 5mb. Format: png, jpeg, gif.</div>
           </div>
         </div>
       </div>
@@ -81,9 +84,9 @@
           <div class="article__display">
             <div class="article__windows">
               <div class="article__menu"></div>
-              <div class="article__title">Hello, World!</div>
-              <div class="article__subtitle">Let`s get it started!</div>
-              <img class="article__image" src="/static/img/big_northern_lights.png">
+              <div class="article__title">Enter title</div>
+              <div class="article__subtitle">Enter short description</div>
+              <div class="article__image"></div>
             </div>
             <div class="article-shadow-right"></div>
             <div class="article-shadow-bottom"></div>
@@ -93,13 +96,13 @@
           <div class="post__lable">Post card preview</div>
           <div class="post__windows">
             <div class="post__card">
-              <img class="post__image" src="/static/img/big_northern_lights.jpg">
-              <div class="post__title">Hello, World!</div>
-              <div class="post__subtitle">Let`s get it started!</div>
+              <div class="post__image"></div>
+              <div class="post__title">Enter title</div>
+              <div class="post__subtitle">Enter short description</div>
               <div class="author">
-                <img class="author__icon" src="/static/img/icon_Mat_Vogels.png">
-                <div class="author__name">Mat Vogels</div>
-                <div class="author__date">4/19/2023</div>
+                <div class="author__icon"></div>
+                <div class="author__name">Enter author name</div>
+                <div class="author__date">Enter date</div>
               </div>
             </div>
             <div class="post-shadow-right"></div>
@@ -111,7 +114,7 @@
     <div class="content">
       <h2 class="content__title">Content</h2>
       <label class="content__label" for="content">Post content (plain text)</label>
-      <textarea class="content__textarea" name="Content" id="content" cols="30" rows="10"></textarea>
+      <textarea class="content__textarea" name="Content" id="content" cols="30" rows="10" placeholder="Type anything you want ..."></textarea>
     </div>
   </main>
   <script src="/static/js/admin.js"></script>
