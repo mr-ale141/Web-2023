@@ -31,6 +31,7 @@ func main() {
 	mux.HandleFunc("/admin", adminLogIn(dbx)).Methods(http.MethodGet)
 	mux.HandleFunc("/admin", adminAuthorization(dbx)).Methods(http.MethodPost)
 	mux.HandleFunc("/admin/{adminId}", admin(dbx)).Methods(http.MethodGet)
+	mux.HandleFunc("/admin/{adminId}", adminCreate(dbx)).Methods(http.MethodPost)
 
 	mux.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 

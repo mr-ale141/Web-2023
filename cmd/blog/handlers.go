@@ -51,6 +51,43 @@ type authorizationDataType struct {
 	UserPass  string `json:"userPass"`
 }
 
+type createPostDataType struct {
+	Title       string `json:"Title"`
+	Subtitle    string `json:"Subtitle"`
+	AuthorName  string `json:"Name"`
+	AuthorIcon  string `json:"Icon"`
+	PublishDate string `json:"Date"`
+	Image       string `json:"Image"`
+	ShortImage  string `json:"ShortImage"`
+	Content     string `json:"Content"`
+}
+
+func adminCreate(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		adminId, err := strconv.Atoi(mux.Vars(r)["adminId"])
+		if err != nil || adminId < 1 {
+			http.Error(w, "Internal Server Error", 500)
+			log.Println(err.Error())
+			return
+		}
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Internal Server Error", 500)
+			log.Println(err.Error())
+			return
+		}
+		var createPostData createPostDataType
+		err = json.Unmarshal(body, &createPostData)
+		if err != nil {
+			http.Error(w, "Internal Server Error", 500)
+			log.Println(err.Error())
+			return
+		}
+
+		log.Print(createPostData)
+	}
+}
+
 func adminLogIn(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ts, err := template.ParseFiles("pages/admin-login.html")
@@ -59,7 +96,6 @@ func adminLogIn(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 			log.Println(err.Error())
 			return
 		}
-
 		err = ts.Execute(w, ts)
 		if err != nil {
 			http.Error(w, "Internal Server Error", 500)
@@ -84,15 +120,7 @@ func adminAuthorization(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request
 			log.Println(err.Error())
 			return
 		}
-
-		log.Println("Request comleted")
-		log.Print(authorizationData.UserEmail)
-		log.Print(authorizationData.UserPass)
-
 		adminData, err := checkAdmin(db, authorizationData.UserEmail, authorizationData.UserPass)
-		log.Print(adminData)
-		log.Print(err)
-
 		if err != nil {
 			if strings.Contains(err.Error(), "no rows in result set") {
 				http.Error(w, "Internal Server Error", 404)
@@ -104,11 +132,7 @@ func adminAuthorization(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request
 				return
 			}
 		}
-
-		log.Println("ok")
-
 		http.Redirect(w, r, fmt.Sprintf("/admin/%d", adminData.AdminID), http.StatusSeeOther)
-
 	}
 }
 

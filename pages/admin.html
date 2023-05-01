@@ -10,7 +10,7 @@
   <header class="header">
     <div class="header__wrapper">
       <img class="header__logo" src="/static/img/admin/logo-inversed.svg" />
-      <div class="header__author"></div>
+      <div class="header__author"><img src="{{ .AuthorIcon }}" /></div>
       <img class="header__exit" src="/static/img/admin/log-out.svg" />
     </div>
   </header>
@@ -22,59 +22,66 @@
       </div>
       <button class="menu__button" type="submit">Publish</button>
     </div>
+    <div class="empty-error empty-error_hide">
+      Whoops! Some fields need your attention :o
+    </div>
+    <div class="form-complete form-complete_hide">
+      Publish Complete!
+    </div>
     <div class="data">
       <h2 class="data__title">Main Information</h2>
       <div class="form">
         <div class="form__item">
           <label class="form__lable" for="title" >Title</label>
-          <input class="form__input" id="title" name="Title" type="text" value="" autofocus tabindex="1">
+          <input class="form__text" id="title" name="Title" type="text" value="" autofocus tabindex="1">
         </div>
         <div class="form__item">
           <label class="form__lable" for="subtitle" >Short description</label>
-          <input class="form__input" id="subtitle" name="Subtitle" type="text" value="" tabindex="2">
+          <input class="form__text" id="subtitle" name="Subtitle" type="text" value="" tabindex="2">
         </div>
         <div class="form__item">
           <label class="form__lable" for="name" >Author name</label>
-          <input class="form__input" id="name" name="Name" type="text" value="" tabindex="3">
+          <input class="form__text" id="name" name="Name" type="text" value="" tabindex="3">
         </div>
-        <div class="form__icon">
+        <div class="form__file">
           <label class="form__lable" for="icon" >Author Photo</label>
           <div class="icon">
-            <div class="icon__priview"></div>
+            <div class="icon__preview"></div>
             <input class="icon__input" id="icon" name="Icon" type="file" accept=".jpg, .png, .gif" value="" tabindex="4">
             <div class="icon__span">Upload</div>
             <div class="form__menu form__menu_hide">
               <div class="form__upload">Upload New</div>
               <div class="form__remove">Remove</div>
             </div>
+            <div class="form__limit">Size up to 5kb. Format: png, jpg, gif.</div>
           </div>
         </div>
         <div class="form__item">
           <label class="form__lable" for="date" >Publish Date</label>
-          <input class="form__input" id="date" name="Date" type="date" value="" tabindex="5">
+          <input class="form__text" id="date" name="Date" type="date" value="" tabindex="5">
         </div>
-        <div class="form__image">
-          <label class="form__lable" for="img" >Hero Image</label>
+        <div class="form__file">
+          <label class="form__lable" for="image" >Hero Image</label>
           <div class="image">
-            <div class="image__priview">Upload</div>
-            <input class="image__input" id="img" name="Image" type="file" accept=".jpg, .png, .gif" value="" tabindex="6">
+            <div class="image__preview">Upload</div>
+            <input class="image__input" id="image" name="Image" type="file" accept=".jpg, .png, .gif" value="" tabindex="6">
             <div class="form__menu form__menu_hide">
               <div class="form__upload">Upload New</div>
               <div class="form__remove">Remove</div>
             </div>
-            <div class="form__limit">Size up to 10mb. Format: png, jpeg, gif.</div>
+            <div class="form__limit">Size up to 10mb. Format: png, jpg, gif.</div>
           </div>
         </div>
-        <div class="form__short-image">
-          <label class="form__lable" for="short-img" >Hero Image</label>
+        <div class="form__file">
+          <label class="form__lable" for="short-image" >Hero Image</label>
           <div class="short-image">
-            <div class="short-image__priview">Upload</div>
-            <input class="short-image__input" id="short-img" name="ShortImage" type="file" accept=".jpg, .png, .gif" value="" tabindex="7">
+            <div class="short-image__preview">Upload</div>
+            <input class="short-image__input" id="short-image" name="ShortImage" type="file" accept=".jpg, .png, .gif" value="" tabindex="7">
             <div class="form__menu form__menu_hide">
               <div class="form__upload">Upload New</div>
               <div class="form__remove">Remove</div>
             </div>
-            <div class="form__limit">Size up to 5mb. Format: png, jpeg, gif.</div>
+            <div class="form__limit">Size up to 5mb. Format: png, jpg, gif.</div>
           </div>
         </div>
       </div>
