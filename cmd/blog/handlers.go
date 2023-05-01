@@ -381,27 +381,47 @@ func savePost(db *sqlx.DB, data createPostDataType, adminId int) error {
 				?, ?, ?, ?, ?, ?, ?
 			)
 		`
-	const queryAuthors = `
+	const queryAuthorsName = `
 		UPDATE
 			` + "`authors`" + `
 			SET
-				author_name = ?,
+				author_name = ?
+		WHERE
+				author_id = ?
+		`
+
+	const queryAuthorsIcon = `
+		UPDATE
+			` + "`authors`" + `
+			SET
 				author_icon = ?
 		WHERE
 				author_id = ?
 		`
 
-	result, err := db.Exec(queryAuthors,
-		data.AuthorName,
-		data.AuthorIcon,
-		adminId,
-	)
-	if err != nil {
-		log.Println(result)
-		return err
+	if len(data.AuthorName) > 0 {
+		result, err := db.Exec(queryAuthorsName,
+			data.AuthorName,
+			adminId,
+		)
+		if err != nil {
+			log.Print(result)
+			return err
+		}
 	}
 
-	result, err = db.Exec(queryPosts,
+	if len(data.AuthorIcon) > 0 {
+		result, err := db.Exec(queryAuthorsIcon,
+			data.AuthorIcon,
+			adminId,
+		)
+		if err != nil {
+			log.Print(result)
+			return err
+		}
+	}
+
+	result, err := db.Exec(queryPosts,
 		adminId,
 		data.Title,
 		data.Subtitle,

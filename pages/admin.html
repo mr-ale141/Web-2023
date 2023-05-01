@@ -41,12 +41,12 @@
         </div>
         <div class="form__item">
           <label class="form__lable" for="name" >Author name</label>
-          <input class="form__text" id="name" name="Name" type="text" value="" tabindex="3">
+          <input class="form__text" id="name" name="Name" type="text" value="" placeholder="{{ .AuthorName }}" tabindex="3">
         </div>
         <div class="form__file">
           <label class="form__lable" for="icon" >Author Photo</label>
           <div class="icon">
-            <div class="icon__preview"></div>
+            <div class="icon__preview"><img src="{{ .AuthorIcon }}" style="width: 100%; height: 100%;"></div>
             <input class="icon__input" id="icon" name="Icon" type="file" accept=".jpg, .png, .gif" value="" tabindex="4">
             <div class="icon__span">Upload</div>
             <div class="form__menu form__menu_hide">
@@ -107,8 +107,8 @@
               <div class="post__title">Enter title</div>
               <div class="post__subtitle">Enter short description</div>
               <div class="author">
-                <div class="author__icon"></div>
-                <div class="author__name">Enter author name</div>
+                <div class="author__icon"><img src="{{ .AuthorIcon }}" style="width: 100%; height: 100%;"></div>
+                <div class="author__name">{{ .AuthorName }}</div>
                 <div class="author__date">Enter date</div>
               </div>
             </div>

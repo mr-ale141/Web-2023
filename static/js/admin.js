@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function inputTextValidate(inputs) {
     let errors = 0;
     for (let index = 0; index < inputs.length; index++) {
+      if (inputs[index].name === "Name") continue;
       if (inputs[index].value === "") {
         errors++;
         inputs[index].classList.add("form__text_empty");
@@ -130,9 +131,11 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         }
       } else {
-        errors++;
-        if (inputs[index].lastElementChild.classList.value) {
-          inputs[index].appendChild(div);
+        if (inputs[index].querySelector('input').parentElement.classList.value !== 'icon') {
+          errors++;
+          if (inputs[index].lastElementChild.classList.value) {
+            inputs[index].appendChild(div);
+          }
         }
       }
     }
