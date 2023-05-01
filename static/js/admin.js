@@ -9,10 +9,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const inputsFile = document.getElementsByClassName('form__file');
   const inputTextarea = document.getElementById('content');
 
+  let iconBase64, imageBase64, shortImageBase64;
+
   addHandlerCompletedForInputText(inputsText);
   addHandlerTextPreview(inputsText);
   addHandlerImagePreview(inputsFile);
   addHendlerContent(inputTextarea);
+  addHandlerRemove(inputsFile);
 
   buttonPublish.addEventListener('click', formSend);
 
@@ -31,21 +34,24 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelector('main').classList.remove('_sending');
       }, 1000);
     } else {
+      console.log('object');
       let date = new Date(document.getElementById('date').value);
       let dateString = date.toLocaleDateString('en-US');
+      let jsonData = {
+        Title: document.getElementById('title').value,
+        Subtitle: document.getElementById('subtitle').value,
+        Name: document.getElementById('name').value,
+        Icon: iconBase64,
+        Date: dateString,
+        Image: imageBase64,
+        ShortImage: shortImageBase64,
+        Content: document.getElementById('content').value
+      };
+      console.log(jsonData);
       const response = await fetch(window.location.pathname, {
         method: 'POST',
-        body: JSON.stringify({
-          Title: document.getElementById('title').value,
-          Subtitle: document.getElementById('subtitle').value,
-          Name: document.getElementById('name').value,
-          Icon: document.getElementById('icon').value,
-          Date: dateString,
-          Image: document.getElementById('image').value,
-          ShortImage: document.getElementById('short-image').value,
-          Content: document.getElementById('content').value
-        })
-      })
+        body: JSON.stringify(jsonData)
+      });
       if (response.ok) {
         setTimeout(() => {
           document.getElementsByClassName('empty-error')[0].classList.add('empty-error_hide');
@@ -114,10 +120,12 @@ document.addEventListener('DOMContentLoaded', function () {
           case "short-image": limit = 5 * 1024 * 1024; break;
         }
         if (inputs[index].querySelector('input').files[0].size > limit) {
+          inputs[index].getElementsByClassName('form__limit')[0].classList.remove('form__limit_hide');
           inputs[index].getElementsByClassName('form__limit')[0].setAttribute('style', 'color: #E86961;');
           errors++;
         } else {
           if (inputs[index].getElementsByClassName('form__limit')[0]) {
+            inputs[index].getElementsByClassName('form__limit')[0].classList.add('form__limit_hide');
             inputs[index].getElementsByClassName('form__limit')[0].setAttribute('style', 'color: #999999;');
           }
         }
@@ -196,40 +204,74 @@ document.addEventListener('DOMContentLoaded', function () {
         reader.onload = function (event) {
           let img = document.createElement('img');
           img.setAttribute('style', 'width: 100%; height: 100%;');
-          img.setAttribute('src', event.target.result);
+          let imgBase64 = event.target.result;
+          img.setAttribute('src', imgBase64);
 
           inputs[index].querySelector('input').previousElementSibling.innerHTML = '';
           inputs[index].querySelector('input').previousElementSibling.appendChild(img);
 
           img = document.createElement('img');
           img.setAttribute('style', 'width: 100%; height: 100%;');
-          img.setAttribute('src', event.target.result);
+          img.setAttribute('src', imgBase64);
 
           switch (inputs[index].querySelector('input').parentElement.classList.value) {
             case "icon":
-              document.getElementsByClassName('icon__span')[0].remove();
+              iconBase64 = imgBase64, 
+              document.getElementsByClassName('icon__span')[0].classList.add('icon__span_hide');
               document.getElementsByClassName('author__icon')[0].innerHTML = '';
               document.getElementsByClassName('author__icon')[0].appendChild(img);
               break;
             case "image":
+              imageBase64 = imgBase64,
               document.getElementsByClassName('article__image')[0].innerHTML = '';
               document.getElementsByClassName('article__image')[0].appendChild(img);
               break;
             case "short-image":
+              shortImageBase64 = imgBase64;
               document.getElementsByClassName('post__image')[0].innerHTML = '';
               document.getElementsByClassName('post__image')[0].appendChild(img);
               break;
           }
           inputs[index].getElementsByClassName('form__menu')[0].classList.remove('form__menu_hide');
-          inputs[index].getElementsByClassName('form__limit')[0].remove();
+          inputs[index].getElementsByClassName('form__limit')[0].classList.add('form__limit_hide');
           if (!inputs[index].lastElementChild.classList.value) {
             inputs[index].lastElementChild.setAttribute('style', 'margin: 5px 0; color: #999999;')
           }
         }
         reader.onerror = function (event) {
+          console.log("Error in event: " + event);
           alert("File reading error!");
         }
         reader.readAsDataURL(inputs[index].querySelector('input').files[0]);
+      });
+    }
+  }
+
+  function addHandlerRemove(inputs) {
+    for (let index = 0; index < inputs.length; index++) {
+      inputs[index].getElementsByClassName('form__remove')[0].addEventListener('click', function (event) {
+        inputs[index].querySelector('input').value = "";
+        inputs[index].querySelector('input').previousElementSibling.innerHTML = '';
+        switch (inputs[index].querySelector('input').parentElement.classList.value) {
+          case "icon":
+            iconBase64 = "";
+            document.getElementsByClassName('icon__span')[0].classList.remove('icon__span_hide');
+            document.getElementsByClassName('author__icon')[0].innerHTML = '';
+            break;
+          case "image":
+            imageBase64 = "";
+            inputs[index].querySelector('input').previousElementSibling.textContent = 'Upload';
+            document.getElementsByClassName('article__image')[0].innerHTML = '';
+            break;
+          case "short-image":
+            shortImageBase64 = "";
+            inputs[index].querySelector('input').previousElementSibling.textContent = 'Upload';
+            document.getElementsByClassName('post__image')[0].innerHTML = '';
+            break;
+        }
+        inputs[index].getElementsByClassName('form__menu')[0].classList.add('form__menu_hide');
+        inputs[index].getElementsByClassName('form__limit')[0].classList.remove('form__limit_hide');
+        inputs[index].getElementsByClassName('form__limit')[0].setAttribute('style', 'color: #999999;');
       });
     }
   }

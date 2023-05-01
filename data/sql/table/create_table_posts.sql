@@ -5,7 +5,7 @@ USE blog;
 CREATE TABLE IF NOT EXISTS `blog`.`authors` (
     `author_id`       INT NOT NULL AUTO_INCREMENT,
     `author_name`     VARCHAR(255) NOT NULL,
-    `author_icon`     VARCHAR(255) NOT NULL,
+    `author_icon`     TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
     `author_email`    VARCHAR(255) NOT NULL,
     `author_password` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`author_id`))
@@ -15,15 +15,16 @@ COLLATE utf8mb4_unicode_ci
 ;
 
 CREATE TABLE IF NOT EXISTS `blog`.`posts` (
-    `post_id`      INT NOT NULL AUTO_INCREMENT,
-    `author_post`  INT NOT NULL,
-    `title`        VARCHAR(255) NOT NULL,
-    `subtitle`     VARCHAR(255) NOT NULL,
-    `categories`   VARCHAR(255) NOT NULL,
-    `publish_date` VARCHAR(255) NOT NULL,
-    `image_url`    VARCHAR(255) NOT NULL,
-    `content`      TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
-    `featured`     TINYINT(1) NULL DEFAULT 0,
+    `post_id`         INT NOT NULL AUTO_INCREMENT,
+    `author_post`     INT NOT NULL,
+    `title`           VARCHAR(255) NOT NULL,
+    `subtitle`        VARCHAR(255) NOT NULL,
+    `categories`      VARCHAR(255) NOT NULL DEFAULT "",
+    `publish_date`    VARCHAR(255) NOT NULL,
+    `image_url`       LONGTEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+    `short_image_url` LONGTEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+    `content`         TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+    `featured`        TINYINT(1) NULL DEFAULT 0,
     PRIMARY KEY (`post_id`),
     INDEX `fk_posts_authors_idx` (`author_post` ASC) VISIBLE,
     CONSTRAINT `fk_posts_authors`

@@ -37,7 +37,7 @@
 }
 
 .header__exit {
-  margin: 0 10px;
+  margin: 10px;
 }
 
 .main {
@@ -171,8 +171,9 @@
 
 .icon__input {
   position: absolute;
+  top: 0;
   left: 64px;
-  height: 100%;
+  height: 48px;
   width: 122px;
   opacity: 0;
   font-size: 0;
@@ -212,6 +213,7 @@
   height: 24px;
   position: relative;
   margin-left: 16px;
+  cursor: pointer;
 }
 
 .form__remove::before {

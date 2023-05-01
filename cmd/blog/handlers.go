@@ -20,30 +20,30 @@ type indexPageData struct {
 }
 
 type postPageData struct {
-	Title      string `db:"title"`
-	Subtitle   string `db:"subtitle"`
-	ImageSrc   string `db:"image_url"`
-	Text       string `db:"content"`
+	Title      string       `db:"title"`
+	Subtitle   string       `db:"subtitle"`
+	ImageSrc   template.URL `db:"image_url"`
+	Text       string       `db:"content"`
 	Paragraphs []string
 }
 
 type PostData struct {
-	PostID       int    `db:"post_id"`
-	ImageSrc     string `db:"image_url"`
-	Categories   string `db:"categories"`
-	Title        string `db:"title"`
-	Subtitle     string `db:"subtitle"`
-	AuthorImgSrc string `db:"author_icon"`
-	AuthorName   string `db:"author_name"`
-	PublishDate  string `db:"publish_date"`
+	PostID       int          `db:"post_id"`
+	ImageSrc     template.URL `db:"image_url"`
+	Categories   string       `db:"categories"`
+	Title        string       `db:"title"`
+	Subtitle     string       `db:"subtitle"`
+	AuthorImgSrc template.URL `db:"author_icon"`
+	AuthorName   string       `db:"author_name"`
+	PublishDate  string       `db:"publish_date"`
 }
 
 type adminDataType struct {
-	AdminID    int    `db:"author_id"`
-	AuthorName string `db:"author_name"`
-	AuthorIcon string `db:"author_icon"`
-	UserEmail  string `db:"author_email"`
-	UserPass   string `db:"author_password"`
+	AdminID    int          `db:"author_id"`
+	AuthorName string       `db:"author_name"`
+	AuthorIcon template.URL `db:"author_icon"`
+	UserEmail  string       `db:"author_email"`
+	UserPass   string       `db:"author_password"`
 }
 
 type authorizationDataType struct {
@@ -83,8 +83,12 @@ func adminCreate(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 			log.Println(err.Error())
 			return
 		}
-
-		log.Print(createPostData)
+		err = savePost(db, createPostData, adminId)
+		if err != nil {
+			http.Error(w, "Internal Server Error", 500)
+			log.Println(err.Error())
+			return
+		}
 	}
 }
 
@@ -357,4 +361,58 @@ func checkAdmin(db *sqlx.DB, adminEmail string, adminPass string) (adminDataType
 	}
 
 	return adminData, nil
+}
+
+func savePost(db *sqlx.DB, data createPostDataType, adminId int) error {
+	const queryPosts = `
+		INSERT INTO
+			` + "`posts`" + `
+			(
+				author_post,
+				title,
+				subtitle,
+				publish_date,
+				image_url,
+				short_image_url,
+				content
+			)
+		VALUES
+			(
+				?, ?, ?, ?, ?, ?, ?
+			)
+		`
+	const queryAuthors = `
+		UPDATE
+			` + "`authors`" + `
+			SET
+				author_name = ?,
+				author_icon = ?
+		WHERE
+				author_id = ?
+		`
+
+	result, err := db.Exec(queryAuthors,
+		data.AuthorName,
+		data.AuthorIcon,
+		adminId,
+	)
+	if err != nil {
+		log.Println(result)
+		return err
+	}
+
+	result, err = db.Exec(queryPosts,
+		adminId,
+		data.Title,
+		data.Subtitle,
+		data.PublishDate,
+		data.Image,
+		data.ShortImage,
+		data.Content,
+	)
+	if err != nil {
+		log.Println(result)
+		return err
+	}
+	return nil
 }
