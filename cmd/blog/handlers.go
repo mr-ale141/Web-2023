@@ -94,7 +94,7 @@ func adminCreate(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 
 func adminLogIn(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ts, err := template.ParseFiles("pages/admin-login.html")
+		ts, err := template.ParseFiles("pages/login.html")
 		if err != nil {
 			http.Error(w, "Internal Server Error", 500)
 			log.Println(err.Error())

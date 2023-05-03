@@ -32,7 +32,7 @@ html {
   font: 400 17px Oxygen;
 }
 
-.main-form {
+.form {
   width: 480px;
   height: 560px;
   background-color: #FFFFFF;
@@ -40,7 +40,7 @@ html {
   position: relative;
 }
 
-.main-form::after {
+.form::after {
   content: "";
   position: absolute;
   top: 0;
@@ -53,27 +53,28 @@ html {
   transition: all 0.5s ease 0s;
 }
 
-.main-form._sending::after {
+.form._sending::after {
   opacity: 1;
   visibility: visible;
 }
 
-.main-form__title {
+.form__title {
   display: inline-block;
   font: 400 34px Lora;
   margin: 50px 40px;
 }
 
-.main-form__item {
+.form__item {
   margin: 5px 40px 40px;
+  position: relative;
 }
 
-.main-form__item-title {
+.form__lable {
   font: 400 17px Oxygen;
   color: #7A7A7A;
 }
 
-.main-form__input-email {
+.form__input {
   outline: none;
   font: 400 16px Oxygen;
   padding: 5px;
@@ -86,41 +87,23 @@ html {
   border-bottom: 1px solid #EAEAEA;
 }
 
-.main-form__password {
-  border-bottom: 1px solid #EAEAEA;
-  position: relative;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-}
-
-.main-form__item-input_completed {
+.form__input_completed {
   background-color: #F7F7F7;
   border-bottom: 1px solid #2E2E2E;
 }
 
-.main-form__item-input_invalid {
+.form__input_invalid {
   border-bottom: 1px solid #E86961;
 }
 
-.main-form__input-pass {
-  outline: none;
-  font: 400 16px Oxygen;
-  padding: 5px;
-  width: 400px;
-  height: 40px;
-  background-color: #FFFFFF;
-  border: 0;
-  background: transparent;
-}
-
-.main-form__toggle-icon {
+.form__toggle {
   position: absolute;
-  top: 8px;
+  top: 30px;
   right: 5px;
   cursor: pointer;
 }
 
-.main-form__button-submit {
+.form__button {
   font: 400 16px Oxygen;
   color: #FFFFFF;
   background-color: #DD783F;
@@ -132,7 +115,7 @@ html {
   cursor: pointer;
 }
 
-.main-form__empty-error {
+.form_invalid {
   position: relative;
   background-color: #FFEBEA;
   border-radius: 5px;
@@ -141,7 +124,7 @@ html {
   padding: 11px 0 13px 46px;
 }
 
-.main-form__empty-error::before {
+.form_invalid::before {
   content: '';
   background-image: url(../img/admin/alert-circle.svg);
   background-size: cover;
@@ -151,12 +134,7 @@ html {
   left: 14px;
 }
 
-.main-form__empty-pass, .main-form__empty-email {
-  color: #E86961;
-  padding: 5px;
-}
-
-.main-form__email-error {
+.form__error {
   color: #E86961;
   padding: 5px;
 }

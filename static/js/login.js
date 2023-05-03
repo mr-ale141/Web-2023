@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
   const mainForm = document.forms.main;
-  const mainFormToggleIcon = document.getElementsByClassName('main-form__toggle-icon')[0];
+  const mainFormToggleIcon = document.getElementsByClassName('form__toggle')[0];
   const mainFormTitle = document.querySelector('#formTitle');
   const mainFormUserEmail = mainForm.userEmail;
   const mainFormUserPass = mainForm.userPass;
@@ -11,22 +11,46 @@ document.addEventListener('DOMContentLoaded', function () {
   mainFormToggleIcon.addEventListener("click", togglePass);
   
   mainFormUserEmail.addEventListener("focus", function (event) {
-    mainFormUserEmail.classList.add("main-form__item-input_completed");
+    mainFormUserEmail.classList.add("form__input_completed");
   });
   
   mainFormUserEmail.addEventListener("blur", function (event) {
     if (mainFormUserEmail.value === "") {
-      mainFormUserEmail.classList.remove("main-form__item-input_completed");
+      mainFormUserEmail.classList.remove("form__input_completed");
     }
   });
   
   mainFormUserPass.addEventListener("focus", function (event) {
-    mainFormUserPass.parentElement.classList.add("main-form__item-input_completed");
+    mainFormUserPass.classList.add("form__input_completed");
   });
   
   mainFormUserPass.addEventListener("blur", function (event) {
     if (mainFormUserPass.value === "") {
-      mainFormUserPass.parentElement.classList.remove("main-form__item-input_completed");
+      mainFormUserPass.classList.remove("form__input_completed");
+    }
+  });
+
+  mainFormUserEmail.addEventListener('change', function (event) {
+    if (mainFormUserEmail.nextElementSibling) {
+      if (mainFormUserEmail.value !== "") {
+        mainFormUserEmail.nextElementSibling.setAttribute('style', 'margin: 5px 0; color: #999999;');
+        mainFormUserEmail.classList.remove("form__input_invalid");
+      } else {
+        mainFormUserEmail.nextElementSibling.setAttribute('style', 'margin: 5px 0; color: #E86961;');
+        mainFormUserEmail.classList.add("form__input_invalid");
+      }
+    }
+  });
+
+  mainFormUserPass.addEventListener('change', function (event) {
+    if (mainFormUserPass.nextElementSibling) {
+      if (mainFormUserPass.value !== "") {
+        mainFormUserPass.nextElementSibling.setAttribute('style', 'margin: 5px 0; color: #999999;');
+        mainFormUserPass.classList.remove("form__input_invalid");
+      } else {
+        mainFormUserPass.nextElementSibling.setAttribute('style', 'margin: 5px 0; color: #E86961;');
+        mainFormUserPass.classList.add("form__input_invalid");
+      }
     }
   });
   
@@ -38,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let error = formValidate(mainForm);
     
     if (error === 0) {
-      if (mainFormTitle.nextElementSibling === document.getElementsByClassName("main-form__empty-error")[0]) {
+      if (mainFormTitle.nextElementSibling === document.getElementsByClassName("form_invalid")[0]) {
         mainFormTitle.nextElementSibling.remove();
       }
       mainForm.classList.add('_sending');
@@ -52,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
       })
 
       if (response.ok) {
-        if (mainFormTitle.nextElementSibling === document.getElementsByClassName("main-form__empty-error")[0]) {
+        if (mainFormTitle.nextElementSibling === document.getElementsByClassName("form_invalid")[0]) {
           mainFormTitle.nextElementSibling.remove();
         }
         console.log(response);
@@ -71,26 +95,26 @@ document.addEventListener('DOMContentLoaded', function () {
           if (mainFormTitle.nextElementSibling === mainFormUserEmail.parentElement) {
             mainFormTitle.insertAdjacentHTML(
               "afterend",
-              `<div class="main-form__empty-error">
+              `<div class="form_invalid">
                 Email or password is incorrect.
               </div>`
             );
           }
           
-          mainFormUserEmail.classList.add("main-form__item-input_invalid");
-          mainFormUserPass.parentElement.classList.add("main-form__item-input_invalid");
+          mainFormUserEmail.classList.add("form__input_invalid");
+          mainFormUserPass.classList.add("form__input_invalid");
 
           mainForm.classList.remove('_sending');
         }, 1000);
       }
     } else {
-      if (mainFormTitle.nextElementSibling === document.getElementsByClassName("main-form__empty-error")[0]) {
+      if (mainFormTitle.nextElementSibling === document.getElementsByClassName("form_invalid")[0]) {
         mainFormTitle.nextElementSibling.remove();
       }
       if (mainFormTitle.nextElementSibling === mainFormUserEmail.parentElement) {
         mainFormTitle.insertAdjacentHTML(
           "afterend",
-          `<div class="main-form__empty-error">
+          `<div class="form_invalid">
             A-Ah! Check all fields,
           </div>`
         );
@@ -104,24 +128,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const mainFormUserPass = mainForm.userPass;
     
     if (mainFormUserEmail.value) {
-      if (mainFormUserEmail.nextElementSibling === document.getElementsByClassName("main-form__empty-email")[0]) {
+      if (mainFormUserEmail.nextElementSibling === document.getElementsByClassName("form__error")[0]) {
         mainFormUserEmail.nextElementSibling.remove();
       }
-      mainFormUserEmail.classList.remove("main-form__item-input_invalid");
+      mainFormUserEmail.classList.remove("form__input_invalid");
 
       if (emailTest(mainFormUserEmail)) {
         if (!mainFormUserEmail.nextElementSibling) {
           mainFormUserEmail.insertAdjacentHTML(
             "afterend",
-            `<div class="main-form__email-error">
+            `<div class="form__error">
               Incorrect email format. Correct format is ****@**.***
             </div>`
           );
         }
-        mainFormUserEmail.classList.add("main-form__item-input_invalid");
+        mainFormUserEmail.classList.add("form__input_invalid");
         error++;
       } else {
-        if (mainFormUserEmail.nextElementSibling === document.getElementsByClassName("main-form__email-error")[0]) {
+        if (mainFormUserEmail.nextElementSibling === document.getElementsByClassName("form__error")[0]) {
           mainFormUserEmail.nextElementSibling.remove();
         }
       }
@@ -131,31 +155,31 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       mainFormUserEmail.insertAdjacentHTML(
         "afterend",
-        `<div class="main-form__empty-email">
+        `<div class="form__error">
             Email is required.
           </div>`
       );
-      mainFormUserEmail.classList.add("main-form__item-input_invalid");
+      mainFormUserEmail.classList.add("form__input_invalid");
       error++;
     }
 
     if (passTest(mainFormUserPass)) {
-      if (mainFormUserPass.parentElement.nextElementSibling) {
-        mainFormUserPass.parentElement.nextElementSibling.remove();
+      if (mainFormUserPass.nextElementSibling.classList.contains('form__error')) {
+        mainFormUserPass.nextElementSibling.remove();
       }
-      mainFormUserPass.parentElement.insertAdjacentHTML(
+      mainFormUserPass.insertAdjacentHTML(
         "afterend",
-        `<div class="main-form__empty-pass">
+        `<div class="form__error">
         Password is required.
         </div>`
       );
-      mainFormUserPass.parentElement.classList.add("main-form__item-input_invalid");
+      mainFormUserPass.classList.add("form__input_invalid");
       error++;
     } else {
-      if (mainFormUserPass.parentElement.nextElementSibling === document.getElementsByClassName("main-form__empty-pass")[0]) {
-        mainFormUserPass.parentElement.nextElementSibling.remove();
+      if (mainFormUserPass.nextElementSibling.classList.contains('form__error')) {
+        mainFormUserPass.nextElementSibling.remove();
       }
-      mainFormUserPass.parentElement.classList.remove("main-form__item-input_invalid");
+      mainFormUserPass.classList.remove("form__input_invalid");
     }
     return error;
 

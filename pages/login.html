@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin</title>
+  <link rel="stylesheet" type="text/css" href="/static/css/login.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora&family=Oxygen&display=swap" rel="stylesheet" />
+</head>
+<body class="body">
+  <div class="logo">
+    <a href="/home">
+      <img class="logo__title" src="/static/img/admin/logo-inversed.svg" />
+    </a>
+    <p class="logo__subtitle">Log in to start creating</p>
+  </div>
+  <form class="form" id="form" name="main">
+    
+    <p class="form__title" id="formTitle">Log In</p>
+
+    <div class="form__item">
+      <label for="input_email" class="form__lable">Email</label>
+      <input class="form__input" id="input_email" type="text" name="userEmail" value="" autofocus tabindex="1" />
+    </div>
+
+    <div class="form__item">
+      <label for="input_pass" class="form__lable">Password</label>
+      <input class="form__input" id="input_pass" type="password" name="userPass" value="" tabindex="2" />
+      <img class="form__toggle" src="/static/img/admin/eye.png">
+    </div>
+
+    <button class="form__button" tabindex="3">Log In</button>
+
+  </form>
+  <script src="/static/js/login.js"></script>
+</body>
+</html>
