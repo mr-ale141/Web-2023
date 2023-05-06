@@ -138,3 +138,8 @@ html {
   color: #E86961;
   padding: 5px;
 }
+
+.form__error_fixed {
+  color: #999999;
+  padding: 5px;
+}

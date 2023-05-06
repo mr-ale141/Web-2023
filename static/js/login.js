@@ -1,118 +1,65 @@
 "use strict"
 
-document.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('load', function () {
 
-  const mainForm = document.forms.main;
-  const mainFormToggleIcon = document.getElementsByClassName('form__toggle')[0];
-  const mainFormTitle = document.querySelector('#formTitle');
-  const mainFormUserEmail = mainForm.userEmail;
-  const mainFormUserPass = mainForm.userPass;
+  const form = document.forms.main;
+  const toggle = document.querySelector('#toggle');
+  const title = document.querySelector('#formTitle');
+  const userEmail = form.userEmail;
+  const userPass = form.userPass;
   
-  mainFormToggleIcon.addEventListener("click", togglePass);
-  
-  mainFormUserEmail.addEventListener("focus", function (event) {
-    mainFormUserEmail.classList.add("form__input_completed");
-  });
-  
-  mainFormUserEmail.addEventListener("blur", function (event) {
-    if (mainFormUserEmail.value === "") {
-      mainFormUserEmail.classList.remove("form__input_completed");
-    }
-  });
-  
-  mainFormUserPass.addEventListener("focus", function (event) {
-    mainFormUserPass.classList.add("form__input_completed");
-  });
-  
-  mainFormUserPass.addEventListener("blur", function (event) {
-    if (mainFormUserPass.value === "") {
-      mainFormUserPass.classList.remove("form__input_completed");
-    }
-  });
-
-  mainFormUserEmail.addEventListener('change', function (event) {
-    if (mainFormUserEmail.nextElementSibling) {
-      if (mainFormUserEmail.value !== "") {
-        mainFormUserEmail.nextElementSibling.setAttribute('style', 'margin: 5px 0; color: #999999;');
-        mainFormUserEmail.classList.remove("form__input_invalid");
-      } else {
-        mainFormUserEmail.nextElementSibling.setAttribute('style', 'margin: 5px 0; color: #E86961;');
-        mainFormUserEmail.classList.add("form__input_invalid");
-      }
-    }
-  });
-
-  mainFormUserPass.addEventListener('change', function (event) {
-    if (mainFormUserPass.nextElementSibling) {
-      if (mainFormUserPass.value !== "") {
-        mainFormUserPass.nextElementSibling.setAttribute('style', 'margin: 5px 0; color: #999999;');
-        mainFormUserPass.classList.remove("form__input_invalid");
-      } else {
-        mainFormUserPass.nextElementSibling.setAttribute('style', 'margin: 5px 0; color: #E86961;');
-        mainFormUserPass.classList.add("form__input_invalid");
-      }
-    }
-  });
-  
-  mainForm.addEventListener("submit", sendForm);
+  toggle.addEventListener("click", togglePass);
+  addHandlerCompleted(userEmail);
+  addHandlerCompleted(userPass);
+  addHandlerKeyup(userEmail);
+  addHandlerKeyup(userPass);
+  form.addEventListener("submit", sendForm);
 
   async function sendForm(event) {
     event.preventDefault();
 
-    let error = formValidate(mainForm);
+    let error = formValidate(form);
     
     if (error === 0) {
-      if (mainFormTitle.nextElementSibling === document.getElementsByClassName("form_invalid")[0]) {
-        mainFormTitle.nextElementSibling.remove();
+      if (checkNextElement(title, "form_invalid")) {
+        title.nextElementSibling.remove();
       }
-      mainForm.classList.add('_sending');
+      form.classList.add('_sending');
 
-      const response = await fetch('admin', {
+      const response = await fetch('api/login', {
         method: 'POST',
         body: JSON.stringify({
-          userEmail: mainFormUserEmail.value,
-          userPass: mainFormUserPass.value
+          userEmail: userEmail.value,
+          userPass: userPass.value
         })
       })
 
       if (response.ok) {
-        if (mainFormTitle.nextElementSibling === document.getElementsByClassName("form_invalid")[0]) {
-          mainFormTitle.nextElementSibling.remove();
+        if (checkNextElement(title, "form_invalid")) {
+          title.nextElementSibling.remove();
         }
-        console.log(response);
-        console.log(response.url);
-
-        setTimeout(() => {
-          mainForm.classList.remove('_sending');
-          //перенаправление по response.url
-          window.location.href = response.url;
-        }, 1000);
-        
-
-      } else if (response.status == 404) {
+        form.classList.remove('_sending');
+        window.location.href = response.url;
+      } else if (response.status === 401) {
         console.log("not authorizate");
-        setTimeout(() => {
-          if (mainFormTitle.nextElementSibling === mainFormUserEmail.parentElement) {
-            mainFormTitle.insertAdjacentHTML(
-              "afterend",
-              `<div class="form_invalid">
-                Email or password is incorrect.
-              </div>`
-            );
-          }
-          
-          mainFormUserEmail.classList.add("form__input_invalid");
-          mainFormUserPass.classList.add("form__input_invalid");
-
-          mainForm.classList.remove('_sending');
-        }, 1000);
+        if (!checkNextElement(title, "form_invalid")) {
+          title.insertAdjacentHTML(
+            "afterend",
+            `<div class="form_invalid">
+              Email or password is incorrect.
+            </div>`
+          );
+          userEmail.classList.add("form__input_invalid");
+          userPass.classList.add("form__input_invalid");
+          form.classList.remove('_sending');
+        }
       }
     } else {
-      if (mainFormTitle.nextElementSibling === document.getElementsByClassName("form_invalid")[0]) {
-        mainFormTitle.nextElementSibling.remove();
+      if (checkNextElement(title, "form_invalid")) {
+        title.nextElementSibling.remove();
       }
-      if (mainFormTitle.nextElementSibling === mainFormUserEmail.parentElement) {
-        mainFormTitle.insertAdjacentHTML(
+      if (!checkNextElement(title, "form_invalid")) {
+        title.insertAdjacentHTML(
           "afterend",
           `<div class="form_invalid">
             A-Ah! Check all fields,
@@ -122,83 +69,119 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function formValidate(mainForm) {
+  function formValidate(form) {
     let error = 0;
-    const mainFormUserEmail = mainForm.userEmail;
-    const mainFormUserPass = mainForm.userPass;
     
-    if (mainFormUserEmail.value) {
-      if (mainFormUserEmail.nextElementSibling === document.getElementsByClassName("form__error")[0]) {
-        mainFormUserEmail.nextElementSibling.remove();
+    if (userEmail.value) {
+      if (checkNextElement(userEmail, "form__error")) {
+        userEmail.nextElementSibling.remove();
       }
-      mainFormUserEmail.classList.remove("form__input_invalid");
+      userEmail.classList.remove("form__input_invalid");
 
-      if (emailTest(mainFormUserEmail)) {
-        if (!mainFormUserEmail.nextElementSibling) {
-          mainFormUserEmail.insertAdjacentHTML(
+      if (! emailTest(userEmail)) {
+        if (! checkNextElement(userEmail, "form__error")) {
+          userEmail.insertAdjacentHTML(
             "afterend",
             `<div class="form__error">
               Incorrect email format. Correct format is ****@**.***
             </div>`
           );
         }
-        mainFormUserEmail.classList.add("form__input_invalid");
+        userEmail.classList.add("form__input_invalid");
         error++;
       } else {
-        if (mainFormUserEmail.nextElementSibling === document.getElementsByClassName("form__error")[0]) {
-          mainFormUserEmail.nextElementSibling.remove();
+        if (checkNextElement(userEmail, "form__error")) {
+          userEmail.nextElementSibling.remove();
         }
       }
     } else {
-      if (mainFormUserEmail.nextElementSibling) {
-        mainFormUserEmail.nextElementSibling.remove();
+      if (checkNextElement(userEmail, "form__error")) {
+        userEmail.nextElementSibling.remove();
       }
-      mainFormUserEmail.insertAdjacentHTML(
+      userEmail.insertAdjacentHTML(
         "afterend",
         `<div class="form__error">
             Email is required.
           </div>`
       );
-      mainFormUserEmail.classList.add("form__input_invalid");
+      userEmail.classList.add("form__input_invalid");
       error++;
     }
 
-    if (passTest(mainFormUserPass)) {
-      if (mainFormUserPass.nextElementSibling.classList.contains('form__error')) {
-        mainFormUserPass.nextElementSibling.remove();
+    if (! passTest(userPass)) {
+      if (checkNextElement(userPass, "form__error")) {
+        userPass.nextElementSibling.remove();
       }
-      mainFormUserPass.insertAdjacentHTML(
+      userPass.insertAdjacentHTML(
         "afterend",
         `<div class="form__error">
         Password is required.
         </div>`
       );
-      mainFormUserPass.classList.add("form__input_invalid");
+      userPass.classList.add("form__input_invalid");
       error++;
     } else {
-      if (mainFormUserPass.nextElementSibling.classList.contains('form__error')) {
-        mainFormUserPass.nextElementSibling.remove();
+      if (checkNextElement(userPass, "form__error")) {
+        userPass.nextElementSibling.remove();
       }
-      mainFormUserPass.classList.remove("form__input_invalid");
+      userPass.classList.remove("form__input_invalid");
     }
     return error;
+  }
 
-    function emailTest(input) {
-      return !/\S+@\S+\.\S+/.test(input.value);
-    }
-    
-    function passTest(input) {
-      return !/[A-Za-z0-9\s]{1,}/.test(input.value);
+  function checkNextElement(input, nameClassNextElement) {
+    return input.nextElementSibling && input.nextElementSibling.classList.contains(nameClassNextElement)
+  }
+
+  function emailTest(input) {
+    return /\S+@\S+\.\S+/.test(input.value);
+  }
+
+  function passTest(input) {
+    return /[A-Za-z0-9\s]{1,}/.test(input.value);
+  }
+
+  function addHandlerCompleted(input) {
+    input.addEventListener("focus", inputFocus);
+    input.addEventListener("blur", inputBlur);
+  }
+
+  function togglePass (e) {
+    if (toggle.src.includes("static/img/admin/eye-off.png")) {
+      toggle.src = "../static/img/admin/eye.png";
+      userPass.setAttribute('type', 'password');
+    } else {
+      toggle.src = "../static/img/admin/eye-off.png";
+      userPass.setAttribute('type', 'text');
     }
   }
 
-  function togglePass (event) {
-    if (mainFormToggleIcon.src.includes("static/img/admin/eye-off.png")) {
-      mainFormToggleIcon.src = "../static/img/admin/eye.png";
-      mainFormUserPass.setAttribute('type', 'password');
+  function inputFocus(e) {
+    e.target.classList.add("form__input_completed");
+  }
+
+  function inputBlur(e) {
+    if (e.target.value === "") {
+      e.target.classList.remove("form__input_completed");
+    }
+  }
+
+  function addHandlerKeyup(input) {
+    input.addEventListener("keyup", inputKeyup);
+  }
+
+  function inputKeyup(e) {
+    if (e.target.value !== "") {
+      e.target.classList.remove("form__input_invalid");
     } else {
-      mainFormToggleIcon.src = "../static/img/admin/eye-off.png";
-      mainFormUserPass.setAttribute('type', 'text');
+      e.target.classList.add("form__input_invalid");
+    }
+    if (checkNextElement(e.target, 'form__error')) {
+      if (e.target.value !== "") {
+        e.target.nextElementSibling.classList.add("form__error_fixed");
+      } else {
+        e.target.nextElementSibling.classList.remove("form__error_fixed");
+      }
     }
   }
   

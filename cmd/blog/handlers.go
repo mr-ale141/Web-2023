@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -9,9 +10,14 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
+)
+
+const (
+	authCookieName = "auth"
 )
 
 type indexPageData struct {
@@ -64,12 +70,13 @@ type createPostDataType struct {
 
 func adminCreate(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		adminId, err := strconv.Atoi(mux.Vars(r)["adminId"])
-		if err != nil || adminId < 1 {
-			http.Error(w, "Internal Server Error", 500)
-			log.Println(err.Error())
+		adminData, err := authByCookie(db, w, r)
+		if err != nil {
 			return
 		}
+
+		adminId := adminData.AdminID
+
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
 			http.Error(w, "Internal Server Error", 500)
@@ -100,12 +107,25 @@ func adminLogIn(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 			log.Println(err.Error())
 			return
 		}
+
 		err = ts.Execute(w, ts)
 		if err != nil {
 			http.Error(w, "Internal Server Error", 500)
 			log.Println(err.Error())
 			return
 		}
+	}
+}
+
+func adminLogOut(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		http.SetCookie(w, &http.Cookie{
+			Name:    authCookieName,
+			Path:    "/",
+			Expires: time.Now().AddDate(0, 0, -1),
+		})
+
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
 }
 
@@ -117,6 +137,7 @@ func adminAuthorization(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request
 			log.Println(err.Error())
 			return
 		}
+
 		var authorizationData authorizationDataType
 		err = json.Unmarshal(body, &authorizationData)
 		if err != nil {
@@ -124,35 +145,33 @@ func adminAuthorization(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request
 			log.Println(err.Error())
 			return
 		}
+
 		adminData, err := checkAdmin(db, authorizationData.UserEmail, authorizationData.UserPass)
 		if err != nil {
-			if strings.Contains(err.Error(), "no rows in result set") {
-				http.Error(w, "Internal Server Error", 404)
-				log.Println(err.Error())
-				return
-			} else {
-				http.Error(w, "Internal Server Error", 500)
-				log.Println(err.Error())
+			if err == sql.ErrNoRows {
+				http.Error(w, "Incorrect password or email", http.StatusUnauthorized)
 				return
 			}
-		}
-		http.Redirect(w, r, fmt.Sprintf("/admin/%d", adminData.AdminID), http.StatusSeeOther)
-	}
-}
-
-func admin(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		adminId, err := strconv.Atoi(mux.Vars(r)["adminId"])
-		if err != nil || adminId < 1 {
 			http.Error(w, "Internal Server Error", 500)
 			log.Println(err.Error())
 			return
 		}
 
-		adminData, err := getAdminData(db, adminId)
+		http.SetCookie(w, &http.Cookie{
+			Name:    authCookieName,
+			Value:   fmt.Sprint(adminData.AdminID),
+			Path:    "/",
+			Expires: time.Now().AddDate(0, 0, 1),
+		})
+
+		http.Redirect(w, r, "/admin", http.StatusSeeOther)
+	}
+}
+
+func admin(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		adminData, err := authByCookie(db, w, r)
 		if err != nil {
-			http.Error(w, "Internal Server Error", 500)
-			log.Println(err.Error())
 			return
 		}
 
@@ -169,6 +188,7 @@ func admin(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 			log.Println(err.Error())
 			return
 		}
+
 	}
 }
 
@@ -220,6 +240,10 @@ func post(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 
 		postPageData, err := getPostPageData(db, postId)
 		if err != nil {
+			if err == sql.ErrNoRows {
+				http.Error(w, "Post not found", 404)
+				return
+			}
 			http.Error(w, "Internal Server Error", 500)
 			log.Println(err.Error())
 			return
@@ -435,4 +459,40 @@ func savePost(db *sqlx.DB, data createPostDataType, adminId int) error {
 		return err
 	}
 	return nil
+}
+
+func authByCookie(db *sqlx.DB, w http.ResponseWriter, r *http.Request) (adminDataType, error) {
+	var adminData adminDataType
+	cookie, err := r.Cookie(authCookieName)
+	if err != nil {
+		if err == http.ErrNoCookie {
+			http.Error(w, "No auth cookie passed", http.StatusUnauthorized)
+			log.Println(err.Error())
+			return adminData, err
+		}
+		http.Error(w, "Internal Server Error", 500)
+		log.Println(err.Error())
+		return adminData, err
+	}
+
+	adminIdStr := cookie.Value
+	adminId, err := strconv.Atoi(adminIdStr)
+	if err != nil {
+		http.Error(w, "Invalid admin id", http.StatusForbidden)
+		log.Println(err.Error())
+		return adminData, err
+	}
+
+	adminData, err = getAdminData(db, adminId)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "User not found", http.StatusForbidden)
+			return adminData, err
+		}
+		http.Error(w, "Internal Server Error", 500)
+		log.Println(err.Error())
+		return adminData, err
+	}
+
+	return adminData, nil
 }

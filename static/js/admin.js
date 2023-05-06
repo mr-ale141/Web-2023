@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const buttonPublish = document.getElementsByClassName('menu__button')[0];
   const noticeError = document.getElementsByClassName('empty-error')[0];
   const noticeComlete = document.getElementsByClassName('form-complete')[0];
+  const buttonLogOut = document.querySelector('#logout');
   
   const inputsText = document.getElementsByClassName('form__text');
   const inputsFile = document.getElementsByClassName('form__file');
@@ -16,6 +17,15 @@ document.addEventListener('DOMContentLoaded', function () {
   addHandlerImagePreview(inputsFile);
   addHendlerContent(inputTextarea);
   addHandlerRemove(inputsFile);
+
+  buttonLogOut.addEventListener('click', logOut);
+
+  async function logOut() {
+    const response = await fetch('/logout')
+    if (response.ok) {
+      window.location.href = response.url;
+    }
+  }
 
   buttonPublish.addEventListener('click', formSend);
 
@@ -80,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
           let lable = inputs[index].previousElementSibling.textContent
           inputs[index].insertAdjacentHTML(
             "afterend",
-            `<div style="margin-top: 5px; color: #E86961">
+            `<div style="margin-top: 5px; color: #E86961; font: 400 12px Oxygen;">
               `+ lable +` is required.
             </div>`
           );
@@ -100,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
     for (let index = 0; index < inputs.length; index++) {
       let lable = inputs[index].querySelector('label').textContent;
       const div = document.createElement('div');
-      div.setAttribute('style', 'margin: 5px 0; color: #E86961');
+      div.setAttribute('style', 'margin: 5px 0; color: #E86961; font: 400 12px Oxygen;');
       div.textContent = lable + ` is required.`;
       if (inputs[index].querySelector('input').value !== "") {
         if (!inputs[index].lastElementChild.classList.value) {
@@ -146,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let errors = 0;
     let lable = input.parentElement.querySelector('label').textContent;
     const div = document.createElement('div');
-    div.setAttribute('style', 'margin: 5px 0; color: #E86961;');
+    div.setAttribute('style', 'margin: 5px 0; color: #E86961; ; font: 400 12px Oxygen;');
     div.textContent = lable + ` is required.`;
     if (input.value !== "") {
       if (!input.parentElement.lastElementChild.classList.value) {

@@ -20,11 +20,11 @@
 }
 
 .menu__logo {
-    text-decoration: none;
     font: 400 26px Lora;
     color: #fff;
     text-align: start;
     margin: 0 0 0 15%;
+    cursor: pointer;
 }
 
 .menu__block-link {
