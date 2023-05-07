@@ -1,83 +1,132 @@
 "use strict"
 
-document.addEventListener('DOMContentLoaded', function () {
-  const buttonPublish = document.getElementsByClassName('menu__button')[0];
-  const noticeError = document.getElementsByClassName('empty-error')[0];
-  const noticeComlete = document.getElementsByClassName('form-complete')[0];
-  const buttonLogOut = document.querySelector('#logout');
+window.addEventListener('load', function () {
+  const main = document.querySelector('main');
+  const logo = document.querySelector('#logo');
+  const exit = document.querySelector('#logout');
+  const buttonPublish = document.querySelector('#submit');
+  const noticeError = document.querySelector('#errorNotice');
+  const noticeComlete = document.querySelector('#completeNotice');
   
-  const inputsText = document.getElementsByClassName('form__text');
-  const inputsFile = document.getElementsByClassName('form__file');
-  const inputTextarea = document.getElementById('content');
+  const textForms = document.getElementsByClassName('form__item');
+  const fileForms = document.getElementsByClassName('form__file');
+  
+  const inputTitle = document.querySelector('#title');
+  const titleReqNotice = document.querySelector('#title_req');
+  
+  const inputSubtitle = document.querySelector('#subtitle');
+  const subtitleReqNotice = document.querySelector('#subtitle_req');
+  
+  const inputName = document.querySelector('#name');
+  
+  const inputIcon = document.querySelector('#icon');
+  const iconLimitNotice = document.querySelector('#icon_limit');
+  
+  const inputDate = document.querySelector('#date');
+  const dateReqNotice = document.querySelector('#date_req');
+  
+  const inputImage = document.querySelector('#image');
+  const imageLimitNotice = document.querySelector('#image_limit');
+  const imageReqNotice = document.querySelector('#image_req');
+  
+  const inputShortImage = document.querySelector('#short-image');
+  const shortImageLimitNotice = document.querySelector('#short-image_limit');
+  const shortImageReqNotice = document.querySelector('#short-image_req');
+  
+  const inputContent = document.querySelector('#content');
+  const contentReqNotice = document.querySelector('#content_req');
+  
+  const titlePreviews = document.getElementsByClassName('preview-title');
+  const subtitlePreviews = document.getElementsByClassName('preview-subtitle');
+  const imagePreview = document.getElementsByClassName('article__image');
+  const shortImagePreview = document.getElementsByClassName('post__image');
+  const iconPreview = document.getElementsByClassName('author__icon');
 
   let iconBase64, imageBase64, shortImageBase64;
 
-  addHandlerCompletedForInputText(inputsText);
-  addHandlerTextPreview(inputsText);
-  addHandlerImagePreview(inputsFile);
-  addHendlerContent(inputTextarea);
-  addHandlerRemove(inputsFile);
+  logo.addEventListener('click', goHome);
+  exit.addEventListener('click', logOut);
+  addHendlerComplete(textForms);
+  addHandlerTextPreview();
 
-  buttonLogOut.addEventListener('click', logOut);
 
-  async function logOut() {
+  function addHandlerTextPreview() {
+
+  }
+
+
+
+  buttonPublish.addEventListener('click', formSend);
+
+  async function formSend(e) {
+    main.classList.add('_sending');
+    let errorsText = inputTextValidate(textForms);
+    let errorsFile = inputFileValidate(fileForms);
+    let errorsAll = errorsText + errorsFile;
+    if (errorsAll) {
+      noticeError.classList.remove('empty-error_hide');
+      noticeComlete.classList.add('form-complete_hide');
+      main.classList.remove('_sending');
+    } else {
+      let date = new Date(inputDate.value);
+      let dateString = date.toLocaleDateString('en-US');
+      let jsonData = {
+        Title: inputTitle.value,
+        Subtitle: inputSubtitle.value,
+        Name: inputName.value,
+        Icon: iconBase64,
+        Date: dateString,
+        Image: imageBase64,
+        ShortImage: shortImageBase64,
+        Content: inputContent.value
+      };
+      console.log(jsonData);
+      const response = await fetch('/admin', {
+        method: 'POST',
+        body: JSON.stringify(jsonData)
+      });
+      if (response.ok) {
+        noticeError.classList.add('empty-error_hide');
+        noticeComlete.classList.remove('form-complete_hide');
+        main.classList.remove('_sending');
+      } else {
+        noticeError.classList.remove('empty-error_hide');
+        noticeComlete.classList.add('form-complete_hide');
+        main.classList.remove('_sending');
+      }
+    }
+  }
+
+  function addHendlerComplete(inputs) {
+    for (let index = 0; index < inputs.length; index++) {
+      inputs[index].querySelector('input').addEventListener("focus", function (event) {
+        inputs[index].querySelector('input').classList.add("form__text_completed");
+      });
+
+      inputs[index].querySelector('input').addEventListener("blur", function (event) {
+        if (inputs[index].querySelector('input').value === "") {
+          inputs[index].querySelector('input').classList.remove("form__text_completed");
+        }
+      });
+    }
+  }
+
+  function goHome(e) {
+    window.location.href = '/home';
+  }
+  
+  async function logOut(e) {
     const response = await fetch('/logout')
     if (response.ok) {
       window.location.href = response.url;
     }
   }
-
-  buttonPublish.addEventListener('click', formSend);
-
-  async function formSend(event) {
-    document.querySelector('main').classList.add('_sending');
-
-    let errorsText = inputTextValidate(inputsText);
-    let errorsFile = inputFileValidate(inputsFile);
-    let errorTextarea = inputTextareaValidate(inputTextarea);
-
-    let errorsAll = errorsText + errorsFile + errorTextarea;
-    if (errorsAll) {
-      setTimeout(() => {
-        document.getElementsByClassName('empty-error')[0].classList.remove('empty-error_hide');
-        document.getElementsByClassName('form-complete')[0].classList.add('form-complete_hide');
-        document.querySelector('main').classList.remove('_sending');
-      }, 1000);
-    } else {
-      console.log('object');
-      let date = new Date(document.getElementById('date').value);
-      let dateString = date.toLocaleDateString('en-US');
-      let jsonData = {
-        Title: document.getElementById('title').value,
-        Subtitle: document.getElementById('subtitle').value,
-        Name: document.getElementById('name').value,
-        Icon: iconBase64,
-        Date: dateString,
-        Image: imageBase64,
-        ShortImage: shortImageBase64,
-        Content: document.getElementById('content').value
-      };
-      console.log(jsonData);
-      const response = await fetch(window.location.pathname, {
-        method: 'POST',
-        body: JSON.stringify(jsonData)
-      });
-      if (response.ok) {
-        setTimeout(() => {
-          document.getElementsByClassName('empty-error')[0].classList.add('empty-error_hide');
-          document.getElementsByClassName('form-complete')[0].classList.remove('form-complete_hide');
-          document.querySelector('main').classList.remove('_sending');
-        }, 1000);
-      } else {
-        setTimeout(() => {
-          document.getElementsByClassName('empty-error')[0].classList.remove('empty-error_hide');
-          document.getElementsByClassName('form-complete')[0].classList.add('form-complete_hide');
-          document.querySelector('main').classList.remove('_sending');
-        }, 1000);
-
-      }
-    }
-  }
+  
+  /*
+  addHandlerTextPreview(inputsText);
+  addHandlerImagePreview(inputsFile);
+  addHendlerContent(inputTextarea);
+  addHandlerRemove(inputsFile);
 
   function inputTextValidate(inputs) {
     let errors = 0;
@@ -301,17 +350,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  function addHandlerCompletedForInputText(inputs) {
-    for (let index = 0; index < inputs.length; index++) {
-      inputs[index].addEventListener("focus", function (event) {
-        inputs[index].classList.add("form__text_completed");
-      });
   
-      inputs[index].addEventListener("blur", function (event) {
-        if (inputs[index].value === "") {
-          inputs[index].classList.remove("form__text_completed");
-        }
-      });
-    }
-  }
+  */
 });

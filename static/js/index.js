@@ -1,6 +1,6 @@
 "use strict"
 
-document.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('load', function () {
   const buttonAdmin = document.getElementsByClassName('menu__logo');
   
   addHandlerLogIn(buttonAdmin);

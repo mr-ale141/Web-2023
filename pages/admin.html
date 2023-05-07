@@ -9,7 +9,7 @@
 <body class="body">
   <header class="header">
     <div class="header__wrapper">
-      <img class="header__logo" src="/static/img/admin/logo-inversed.svg" />
+      <img class="header__logo" id="logo" src="/static/img/admin/logo-inversed.svg" />
       <div class="header__author"><img src="{{ .AuthorIcon }}" /></div>
       <img class="header__exit" id="logout" src="/static/img/admin/log-out.svg" />
     </div>
@@ -20,12 +20,12 @@
         <h1 class="menu__title">New Post</h1>
         <h2 class="menu__subtitle">Fill out the form bellow and publish your article</h2>
       </div>
-      <button class="menu__button" type="submit">Publish</button>
+      <button class="menu__button" id="submit" type="submit">Publish</button>
     </div>
-    <div class="empty-error empty-error_hide">
+    <div class="empty-error empty-error_hide" id="errorNotice">
       Whoops! Some fields need your attention :o
     </div>
-    <div class="form-complete form-complete_hide">
+    <div class="form-complete form-complete_hide" id="completeNotice">
       Publish Complete!
     </div>
     <div class="data">
@@ -34,10 +34,16 @@
         <div class="form__item">
           <label class="form__lable" for="title" >Title</label>
           <input class="form__text" id="title" name="Title" type="text" value="" autofocus tabindex="1">
+          <div class="form__required form__required_hide" id="title_req">
+            Title is required
+          </div>
         </div>
         <div class="form__item">
           <label class="form__lable" for="subtitle" >Short description</label>
           <input class="form__text" id="subtitle" name="Subtitle" type="text" value="" tabindex="2">
+          <div class="form__required form__required_hide" id="subtitle_req">
+            Short description is required
+          </div>
         </div>
         <div class="form__item">
           <label class="form__lable" for="name" >Author name</label>
@@ -46,42 +52,57 @@
         <div class="form__file">
           <label class="form__lable" for="icon" >Author Photo</label>
           <div class="icon">
-            <div class="icon__preview"><img src="{{ .AuthorIcon }}" style="width: 100%; height: 100%;"></div>
+            <img src="{{ .AuthorIcon }}" class="icon__preview">
             <input class="icon__input" id="icon" name="Icon" type="file" accept=".jpg, .png, .gif" value="" tabindex="4">
             <div class="icon__span">Upload</div>
             <div class="form__menu form__menu_hide">
               <div class="form__upload">Upload New</div>
               <div class="form__remove">Remove</div>
             </div>
-            <div class="form__limit">Size up to 5kb. Format: png, jpg, gif.</div>
+            <div class="form__limit" id="icon_limit">S
+              ize up to 1Mb. Format: png, jpg, gif.
+            </div>
           </div>
         </div>
         <div class="form__item">
           <label class="form__lable" for="date" >Publish Date</label>
           <input class="form__text" id="date" name="Date" type="date" value="" tabindex="5">
+          <div class="form__required form__required_hide" id="date_req">
+            Publish Date is required
+          </div>
         </div>
         <div class="form__file">
           <label class="form__lable" for="image" >Hero Image</label>
           <div class="image">
-            <div class="image__preview">Upload</div>
+            <img class="image__preview img" src="">
             <input class="image__input" id="image" name="Image" type="file" accept=".jpg, .png, .gif" value="" tabindex="6">
             <div class="form__menu form__menu_hide">
               <div class="form__upload">Upload New</div>
               <div class="form__remove">Remove</div>
             </div>
-            <div class="form__limit">Size up to 10mb. Format: png, jpg, gif.</div>
+            <div class="form__limit" id="image_limit">
+              Size up to 10mb. Format: png, jpg, gif.
+            </div>
+            <div class="form__required form__required_hide" id="image_req">
+              Hero image is required
+            </div>
           </div>
         </div>
         <div class="form__file">
-          <label class="form__lable" for="short-image" >Hero Image</label>
+          <label class="form__lable" for="short-image" >Short Image</label>
           <div class="short-image">
-            <div class="short-image__preview">Upload</div>
+            <img class="short-image__preview img" src="">
             <input class="short-image__input" id="short-image" name="ShortImage" type="file" accept=".jpg, .png, .gif" value="" tabindex="7">
             <div class="form__menu form__menu_hide">
               <div class="form__upload">Upload New</div>
               <div class="form__remove">Remove</div>
             </div>
-            <div class="form__limit">Size up to 5mb. Format: png, jpg, gif.</div>
+            <div class="form__limit" id="short-image_limit">
+              Size up to 5mb. Format: png, jpg, gif.
+            </div>
+            <div class="form__required form__required_hide" id="short-image_req">
+              Short image is required
+            </div>
           </div>
         </div>
       </div>
@@ -91,8 +112,8 @@
           <div class="article__display">
             <div class="article__windows">
               <div class="article__menu"></div>
-              <div class="article__title">Enter title</div>
-              <div class="article__subtitle">Enter short description</div>
+              <div class="article__title preview-title">Enter title</div>
+              <div class="article__subtitle preview-subtitle">Enter short description</div>
               <div class="article__image"></div>
             </div>
             <div class="article-shadow-right"></div>
@@ -104,10 +125,10 @@
           <div class="post__windows">
             <div class="post__card">
               <div class="post__image"></div>
-              <div class="post__title">Enter title</div>
-              <div class="post__subtitle">Enter short description</div>
+              <div class="post__title preview-title">Enter title</div>
+              <div class="post__subtitle preview-subtitle">Enter short description</div>
               <div class="author">
-                <div class="author__icon"><img src="{{ .AuthorIcon }}" style="width: 100%; height: 100%;"></div>
+                <img class="author__icon" src="{{ .AuthorIcon }}" style="width: 100%; height: 100%;">
                 <div class="author__name">{{ .AuthorName }}</div>
                 <div class="author__date">Enter date</div>
               </div>
@@ -120,8 +141,13 @@
     </div>
     <div class="content">
       <h2 class="content__title">Content</h2>
-      <label class="content__label" for="content">Post content (plain text)</label>
-      <textarea class="content__textarea" name="Content" id="content" cols="30" rows="10" placeholder="Type anything you want ..."></textarea>
+      <div class="form__item">
+        <label class="form__lable" for="content">Post content (plain text)</label>
+        <textarea class="form__textarea" name="Content" id="content" placeholder="Type anything you want ..."></textarea>
+        <div class="form__required form__required_hide" id="content_req">
+          Content is required
+        </div>
+      </div>
     </div>
   </main>
   <script src="/static/js/admin.js"></script>

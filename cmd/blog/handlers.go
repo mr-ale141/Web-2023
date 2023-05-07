@@ -96,6 +96,8 @@ func adminCreate(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 			log.Println(err.Error())
 			return
 		}
+
+		w.WriteHeader(200)
 	}
 }
 
