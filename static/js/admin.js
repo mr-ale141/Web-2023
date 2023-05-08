@@ -108,7 +108,7 @@ window.addEventListener('load', function () {
       };
 
       console.log(jsonData);
-      /*
+      
       const response = await fetch('/admin', {
         method: 'POST',
         body: JSON.stringify(jsonData)
@@ -123,10 +123,6 @@ window.addEventListener('load', function () {
         noticeComlete.classList.add('form-complete_hide');
         main.classList.remove('_sending');
       }
-      */
-      main.classList.remove('_sending');
-      noticeError.classList.add('empty-error_hide');
-      noticeComlete.classList.remove('form-complete_hide');
     }
   }
 
