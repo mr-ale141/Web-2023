@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Admin</title>
+  <link rel="shortcut icon" href="{{ .AuthorIcon }}" type="image/x-icon">
   <link rel="stylesheet" type="text/css" href="/static/css/admin.css" />
   <link href="https://fonts.googleapis.com/css2?family=Lora&family=Oxygen&display=swap" rel="stylesheet" />
 </head>
@@ -47,20 +48,22 @@
         </div>
         <div class="form__item">
           <label class="form__lable" for="name" >Author name</label>
-          <input class="form__text" id="name" name="Name" type="text" value="" placeholder="{{ .AuthorName }}" tabindex="3">
+          <input class="form__text" id="name" name="Name" type="text" value="{{ .AuthorName }}" tabindex="3">
         </div>
         <div class="form__file">
           <label class="form__lable" for="icon" >Author Photo</label>
           <div class="icon">
-            <img src="{{ .AuthorIcon }}" class="icon__preview">
+            <div class="form__preview icon__preview">
+              <img class="img-prev img-prev-icon" src="{{ .AuthorIcon }}">
+            </div>
             <input class="icon__input" id="icon" name="Icon" type="file" accept=".jpg, .png, .gif" value="" tabindex="4">
-            <div class="icon__span">Upload</div>
+            <span class="icon__span">Upload</span>
             <div class="form__menu form__menu_hide">
               <div class="form__upload">Upload New</div>
               <div class="form__remove">Remove</div>
             </div>
-            <div class="form__limit" id="icon_limit">S
-              ize up to 1Mb. Format: png, jpg, gif.
+            <div class="form__limit" id="icon_limit">
+              Size up to 1Mb. Format: png, jpg, gif.
             </div>
           </div>
         </div>
@@ -74,7 +77,10 @@
         <div class="form__file">
           <label class="form__lable" for="image" >Hero Image</label>
           <div class="image">
-            <img class="image__preview img" src="">
+            <div class="form__preview image__preview img">
+              <img class="img-prev img-prev_hide" src="">
+              <span class="form__span">Upload</span>
+            </div>
             <input class="image__input" id="image" name="Image" type="file" accept=".jpg, .png, .gif" value="" tabindex="6">
             <div class="form__menu form__menu_hide">
               <div class="form__upload">Upload New</div>
@@ -91,7 +97,10 @@
         <div class="form__file">
           <label class="form__lable" for="short-image" >Short Image</label>
           <div class="short-image">
-            <img class="short-image__preview img" src="">
+            <div class="form__preview short-image__preview img">
+              <img class="img-prev img-prev_hide" src="">
+              <span class="form__span">Upload</span>
+            </div>
             <input class="short-image__input" id="short-image" name="ShortImage" type="file" accept=".jpg, .png, .gif" value="" tabindex="7">
             <div class="form__menu form__menu_hide">
               <div class="form__upload">Upload New</div>
@@ -112,9 +121,11 @@
           <div class="article__display">
             <div class="article__windows">
               <div class="article__menu"></div>
-              <div class="article__title preview-title">Enter title</div>
-              <div class="article__subtitle preview-subtitle">Enter short description</div>
-              <div class="article__image"></div>
+              <div class="article__title preview-title">Enter Title</div>
+              <div class="article__subtitle preview-subtitle">Enter Short description</div>
+              <div class="article__image">
+                <img class="img-prev img-prev_hide" src="">
+              </div>
             </div>
             <div class="article-shadow-right"></div>
             <div class="article-shadow-bottom"></div>
@@ -124,13 +135,17 @@
           <div class="post__lable">Post card preview</div>
           <div class="post__windows">
             <div class="post__card">
-              <div class="post__image"></div>
-              <div class="post__title preview-title">Enter title</div>
-              <div class="post__subtitle preview-subtitle">Enter short description</div>
+              <div class="post__image">
+                <img class="img-prev img-prev_hide" src="">
+              </div>
+              <div class="post__title preview-title">Enter Title</div>
+              <div class="post__subtitle preview-subtitle">Enter Short description</div>
               <div class="author">
-                <img class="author__icon" src="{{ .AuthorIcon }}" style="width: 100%; height: 100%;">
+                <div class="author__icon">
+                  <img class="img-prev img-prev-icon" src="{{ .AuthorIcon }}">
+                </div>
                 <div class="author__name">{{ .AuthorName }}</div>
-                <div class="author__date">Enter date</div>
+                <div class="author__date">Enter Date</div>
               </div>
             </div>
             <div class="post-shadow-right"></div>

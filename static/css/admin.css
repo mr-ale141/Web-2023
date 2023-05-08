@@ -195,6 +195,7 @@
   padding-left: 32px;
   height: 24px;
   position: relative;
+  cursor: pointer;
 }
 
 .form__upload::before {
@@ -261,14 +262,31 @@
   border: 1px dashed #D3D3D3;
   border-radius: 6px;
   margin-bottom: 12px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.img::after {
-  content: 'Upload';
+.form__span {
   font: 400 16px Oxygen;
-  text-align: center;
-  line-height: 150px;
-  background: url(/static/img/admin/camera.png) no-repeat 34% 50%;
+  color: #2E2E2E;
+  display: block;
+  padding-left: 32px;
+  position: relative;
+}
+
+.form__span::after {
+  content: "";
+  position: absolute;
+  background-image: url(/static/img/admin/camera.png);
+  height: 22px;
+  width: 24px;
+  left: 0;
+}
+
+.form__span_hide {
+  display: none;
 }
 
 .short-image__input {
@@ -282,6 +300,10 @@
   cursor: pointer;
 }
 
+.form__preview_empty {
+  background-color: #FFEBEA;
+}
+
 .form__limit {
   font: 400 12px Oxygen;
   color: #999999;
@@ -289,18 +311,19 @@
   margin: 5px 0;
 }
 
+.form__limit_error {
+  color: #E86961;
+}
+
 .form__limit_hide {
   display: none;
 }
+
 
 .form__required {
   margin: 5px 0;
   color: #E86961;
   font: 400 12px Oxygen;
-}
-
-.form__required_fixed {
-  color: #999999;
 }
 
 .form__required_hide {
@@ -517,6 +540,7 @@
 }
 
 .form__text_empty {
+  background-color: #FFEBEA;
   border-bottom: 1px solid #E86961;
 }
 
@@ -566,3 +590,15 @@
   display: none;
 }
 
+.img-prev {
+  width: 100%;
+  height: 100%;
+}
+
+.img-prev-icon {
+  border-radius: 50%;
+}
+
+.img-prev_hide {
+  display: none;
+}
