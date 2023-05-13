@@ -174,6 +174,7 @@ func admin(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		adminData, err := authByCookie(db, w, r)
 		if err != nil {
+
 			return
 		}
 
@@ -468,7 +469,7 @@ func authByCookie(db *sqlx.DB, w http.ResponseWriter, r *http.Request) (adminDat
 	cookie, err := r.Cookie(authCookieName)
 	if err != nil {
 		if err == http.ErrNoCookie {
-			http.Error(w, "No auth cookie passed", http.StatusUnauthorized)
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			log.Println(err.Error())
 			return adminData, err
 		}

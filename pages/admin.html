@@ -48,16 +48,16 @@
         </div>
         <div class="form__item">
           <label class="form__lable" for="name" >Author name</label>
-          <input class="form__text" id="name" name="Name" type="text" value="{{ .AuthorName }}" tabindex="3">
+          <input class="form__text" id="name" name="Name" type="text" placeholder="{{ .AuthorName }}" value="" tabindex="3">
         </div>
         <div class="form__file">
           <label class="form__lable" for="icon" >Author Photo</label>
           <div class="icon">
-            <div class="form__preview icon__preview">
+            <div class="form__preview icon-display icon__preview">
               <img class="img-prev img-prev-icon" src="{{ .AuthorIcon }}">
             </div>
             <input class="icon__input" id="icon" name="Icon" type="file" accept=".jpg, .png, .gif" value="" tabindex="4">
-            <span class="icon__span">Upload</span>
+            <span class="form__span">Upload</span>
             <div class="form__menu form__menu_hide">
               <div class="form__upload">Upload New</div>
               <div class="form__remove">Remove</div>
@@ -77,7 +77,7 @@
         <div class="form__file">
           <label class="form__lable" for="image" >Hero Image</label>
           <div class="image">
-            <div class="form__preview image__preview img">
+            <div class="form__preview image-display image__preview img">
               <img class="img-prev img-prev_hide" src="">
               <span class="form__span">Upload</span>
             </div>
@@ -97,7 +97,7 @@
         <div class="form__file">
           <label class="form__lable" for="short-image" >Short Image</label>
           <div class="short-image">
-            <div class="form__preview short-image__preview img">
+            <div class="form__preview short-image-display short-image__preview img">
               <img class="img-prev img-prev_hide" src="">
               <span class="form__span">Upload</span>
             </div>
@@ -123,7 +123,7 @@
               <div class="article__menu"></div>
               <div class="article__title preview-title">Enter Title</div>
               <div class="article__subtitle preview-subtitle">Enter Short description</div>
-              <div class="article__image">
+              <div class="image-display article__image">
                 <img class="img-prev img-prev_hide" src="">
               </div>
             </div>
@@ -135,13 +135,13 @@
           <div class="post__lable">Post card preview</div>
           <div class="post__windows">
             <div class="post__card">
-              <div class="post__image">
+              <div class="short-image-display post__image">
                 <img class="img-prev img-prev_hide" src="">
               </div>
               <div class="post__title preview-title">Enter Title</div>
               <div class="post__subtitle preview-subtitle">Enter Short description</div>
               <div class="author">
-                <div class="author__icon">
+                <div class="icon-display author__icon">
                   <img class="img-prev img-prev-icon" src="{{ .AuthorIcon }}">
                 </div>
                 <div class="author__name">{{ .AuthorName }}</div>

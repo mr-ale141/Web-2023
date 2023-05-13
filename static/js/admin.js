@@ -1,110 +1,106 @@
 "use strict"
 
 window.addEventListener('load', function () {
-  const main = document.querySelector('main');
-  const logo = document.querySelector('#logo');
-  const exit = document.querySelector('#logout');
-  const buttonPublish = document.querySelector('#submit');
-  const noticeError = document.querySelector('#errorNotice');
-  const noticeComlete = document.querySelector('#completeNotice');
-  
   const inputTitle = document.querySelector('#title');
   const inputSubtitle = document.querySelector('#subtitle');
   const inputName = document.querySelector('#name');
-  const inputDate = document.querySelector('#date');
-  const inputContent = document.querySelector('#content');
-  
   const inputIcon = document.querySelector('#icon');
+  const inputDate = document.querySelector('#date');
   const inputImage = document.querySelector('#image');
   const inputShortImage = document.querySelector('#short-image');
+  const inputContent = document.querySelector('#content');
   
-  const titlePreviews = document.getElementsByClassName('preview-title');
-  const subtitlePreviews = document.getElementsByClassName('preview-subtitle');
-  const imagePreviews = document.getElementsByClassName('article__image');
-  const shortImagePreviews = document.getElementsByClassName('post__image');
-  const iconPreviews = document.getElementsByClassName('author__icon');
-  const namePreviews = document.getElementsByClassName('author__name');
-  const datePreviews = document.getElementsByClassName('author__date');
-  const contentPreviews = document.getElementsByClassName('preview-content');
+  const formData = new Map();
 
-  let iconBase64, imageBase64, shortImageBase64;
-  let limitIcon = 1 * 1024 * 1024; 
-  let limitImage = 10 * 1024 * 1024;
-  let limitShortImage = 5 * 1024 * 1024;
+  let required = true;
+  let notRequired = false;
+  const formRequired = new Map([
+    [getKeyInputText(inputTitle),      required],
+    [getKeyInputText(inputSubtitle),   required],
+    [getKeyInputText(inputName),       notRequired],
+    [getKeyInputFile(inputIcon),       notRequired],
+    [getKeyInputText(inputDate),       required],
+    [getKeyInputFile(inputImage),      required],
+    [getKeyInputFile(inputShortImage), required],
+    [getKeyInputText(inputContent),    required],
+  ]);
 
+  const logo = document.querySelector('#logo');
   logo.addEventListener('click', goHome);
+
+  const exit = document.querySelector('#logout');
   exit.addEventListener('click', logOut);
 
-  addHandlerText(inputTitle, titlePreviews, 'required');
-  addHandlerText(inputSubtitle, subtitlePreviews, 'required');
-  addHandlerText(inputName, namePreviews, '');
-  addHandlerText(inputDate, datePreviews, 'required');
-  addHandlerText(inputContent, contentPreviews, 'required');
+// Title
+  const titlePreviews = document.getElementsByClassName('preview-title');
+  required = formRequired.get(getKeyInputText(inputTitle));
+  addHandlerText(inputTitle, titlePreviews, required);
+
+// Subtitle
+  const subtitlePreviews = document.getElementsByClassName('preview-subtitle');
+  required = formRequired.get(getKeyInputText(inputSubtitle));
+  addHandlerText(inputSubtitle, subtitlePreviews, required);
+  
+// Author Name
+  const namePreviews = document.getElementsByClassName('author__name');
+  required = formRequired.get(getKeyInputText(inputName));
+  addHandlerText(inputName, namePreviews, required);
+  
+// Author Photo
+  let limitIcon = 1 * 1024 * 1024;
+  const iconPreviews = document.getElementsByClassName('icon-display');
+  required = formRequired.get(getKeyInputFile(inputIcon));
+  addHandlerFile(inputIcon, iconPreviews, required, limitIcon);
+
+// Publish Date
+  const datePreviews = document.getElementsByClassName('author__date');
+  required = formRequired.get(getKeyInputText(inputDate));
+  addHandlerText(inputDate, datePreviews, required);
+
+// Hero Image
+  let limitImage = 10 * 1024 * 1024;
+  const imagePreviews = document.getElementsByClassName('image-display');
+  required = formRequired.get(getKeyInputFile(inputImage));
+  addHandlerFile(inputImage, imagePreviews, required, limitImage);
+  
+// Short Image
+  let limitShortImage = 5 * 1024 * 1024;
+  const shortImagePreviews = document.getElementsByClassName('short-image-display');
+  required = formRequired.get(getKeyInputFile(inputShortImage));
+  addHandlerFile(inputShortImage, shortImagePreviews, required, limitShortImage);
+  
+// Content
+  const contentPreviews = document.getElementsByClassName('preview-content');
+  required = formRequired.get(getKeyInputText(inputContent));
+  addHandlerText(inputContent, contentPreviews, required);
 
   let eventFocus = new Event('focus');
   inputTitle.dispatchEvent(eventFocus);
 
-  addHandlerFile(inputIcon, iconPreviews, '', limitIcon);
-  addHandlerFile(inputImage, imagePreviews, 'required', limitImage);
-  addHandlerFile(inputShortImage, shortImagePreviews, 'required', limitShortImage);
-
+  const buttonPublish = document.querySelector('#submit');
   buttonPublish.addEventListener('click', formSend);
 
   async function formSend(e) {
+    const main = document.querySelector('main');
     main.classList.add('_sending');
 
-    let eventKeyUp = new Event('keyup');
-    let eventChange = new Event('change');
-
-    const textInputs = document.getElementsByClassName('form__item');
-
-    for (let index = 0; index < textInputs.length; index++) {
-      if (textInputs[index].querySelector('input')) {
-        textInputs[index].querySelector('input').dispatchEvent(eventKeyUp);
-      } else if (textInputs[index].querySelector('textarea')) {
-        textInputs[index].querySelector('textarea').dispatchEvent(eventKeyUp);
-      }
-    }
-
-    const fileInputs = document.getElementsByClassName('form__file');
-    for (let index = 0; index < fileInputs.length; index++) {
-      fileInputs[index].querySelector('input').dispatchEvent(eventChange);
-    }
+    let errors = formValidate();
     
-    const requiredInputs = document.getElementsByClassName('form__required');
-    let errors = 0;
-
-    for (let index = 0; index < requiredInputs.length; index++) {
-      if (! requiredInputs[index].classList.contains('form__required_hide')) {
-        errors++;
-      }
-    }
-
     if (errors) {
-      noticeError.classList.remove('empty-error_hide');
-      noticeComlete.classList.add('form-complete_hide');
+      showFormError();
       main.classList.remove('_sending');
     } else {
-      let date = new Date(inputDate.value);
+      let date = new Date(formData.get(getKeyInputText(inputDate)));
       let dateString = date.toLocaleDateString('en-US');
-      let iconPreview = inputIcon.parentElement.querySelector('.form__preview');
-      let imagePreview = inputImage.parentElement.querySelector('.form__preview');
-      let shortImagePreview = inputShortImage.parentElement.querySelector('.form__preview');
-      if (! inputIcon.parentElement.querySelector('.form__limit').classList.contains('form__limit_error')) {
-        iconBase64 = iconPreview.querySelector('img').getAttribute('src');
-      }
-      imageBase64 = imagePreview.querySelector('img').getAttribute('src');
-      shortImageBase64 = shortImagePreview.querySelector('img').getAttribute('src');
-
       let jsonData = {
-        Title: inputTitle.value,
-        Subtitle: inputSubtitle.value,
-        Name: inputName.value,
-        Icon: iconBase64,
-        Date: dateString,
-        Image: imageBase64,
-        ShortImage: shortImageBase64,
-        Content: inputContent.value
+        Title:      formData.get(getKeyInputText(inputTitle)),
+        Subtitle:   formData.get(getKeyInputText(inputSubtitle)),
+        Name:       formData.get(getKeyInputText(inputName)),
+        Icon:       formData.get(getKeyInputFile(inputIcon)),
+        Date:       dateString,
+        Image:      formData.get(getKeyInputFile(inputImage)),
+        ShortImage: formData.get(getKeyInputFile(inputShortImage)),
+        Content:    formData.get(getKeyInputText(inputContent))
       };
 
       console.log(jsonData);
@@ -115,15 +111,40 @@ window.addEventListener('load', function () {
       });
 
       if (response.ok) {
-        noticeError.classList.add('empty-error_hide');
-        noticeComlete.classList.remove('form-complete_hide');
+        showFormComplete();
         main.classList.remove('_sending');
       } else {
-        noticeError.classList.remove('empty-error_hide');
-        noticeComlete.classList.add('form-complete_hide');
+        showFormError();
         main.classList.remove('_sending');
       }
     }
+  }
+
+  function showFormComplete() {
+    const noticeError = document.querySelector('#errorNotice');
+    const noticeComlete = document.querySelector('#completeNotice');
+    noticeError.classList.add('empty-error_hide');
+    noticeComlete.classList.remove('form-complete_hide');
+  }
+  
+  function showFormError() {
+    const noticeError = document.querySelector('#errorNotice');
+    const noticeComlete = document.querySelector('#completeNotice');
+    noticeError.classList.remove('empty-error_hide');
+    noticeComlete.classList.add('form-complete_hide');
+  }
+
+  function formValidate() {
+    let errors = 0;
+    formRequired.forEach(inputValidate);
+    function inputValidate(required, key) {
+      if (required) {
+        if (! formData.get(key)) {
+          errors++;
+        }
+      }
+    }
+    return errors;
   }
 
   function goHome(e) {
@@ -149,43 +170,32 @@ window.addEventListener('load', function () {
     });
     
     input.addEventListener('keyup', () => {
+      let key = getKeyInputText(input);
       const reqNotice = input.parentElement.querySelector('.form__required');
       if (input.value === "") {
-        if (required === 'required') {
-          reqNotice.classList.remove("form__required_hide");
-          input.classList.add("form__text_empty");
+        formData.delete(key);
+        if (required) {
+          showInputTextEmpty(input);
         }
-        for (let index = 0; index < previews.length; index++) {
-          let defaultStr = "Enter " + input.parentElement.querySelector('label').textContent;
-          previews[index].textContent = defaultStr;
-        }
+        let defaultStr = "Enter " + input.parentElement.querySelector('label').textContent;
+        showTextPreviews(previews, defaultStr);
       } else {
-        if (required === 'required') {
-          reqNotice.classList.add("form__required_hide");
-          input.classList.remove("form__text_empty");
+        formData.set(key, input.value);
+        if (required) {
+          showInputTextComplete(input);
         }
-        for (let index = 0; index < previews.length; index++) {
-          previews[index].textContent = "";
-          previews[index].textContent = input.value;
-        }
+        showTextPreviews(previews, input.value);
       }
     });
   }
-  
+
   function addHandlerFile(input, previews, required, limit) {
-    const limitNotice = input.parentElement.querySelector('.form__limit');
-    const reqNotice = input.parentElement.querySelector('.form__required');
-    const formPreview = input.parentElement.querySelector('.form__preview');
-    const formMenu = input.parentElement.querySelector('.form__menu');
     const formUpload = input.parentElement.querySelector('.form__upload');
-    const formRemove = input.parentElement.querySelector('.form__remove');
-    const formSpan = input.parentElement.querySelector('span');
-
     formUpload.addEventListener('click', () => {
-      let eventClick = new Event('click');
-      input.dispatchEvent(eventClick);
+      input.click();
     });
-
+    
+    const formRemove = input.parentElement.querySelector('.form__remove');
     formRemove.addEventListener('click', () => {
       input.value = "";
       let eventChange = new Event('change');
@@ -193,56 +203,141 @@ window.addEventListener('load', function () {
     });
     
     input.addEventListener('change', () => {
+      let key = getKeyInputFile(input);
       if (input.value === "") {
-        if (required === 'required') {
-          reqNotice.classList.remove("form__required_hide");
-          formPreview.classList.add("form__preview_empty");
+        formData.delete(key);
+        if (required) {
+          showInputFileEmpty(input);
         }
-        formMenu.classList.add("form__menu_hide");
-        formPreview.querySelector('img').setAttribute('src', "");
-        formPreview.querySelector('img').classList.add('img-prev_hide');
-        formSpan.classList.remove('form__span_hide');
-        limitNotice.classList.remove("form__limit_error");
-        limitNotice.classList.remove("form__limit_hide");
-        for (let index = 0; index < previews.length; index++) {
-          previews[index].querySelector('img').setAttribute('src', "");
-          previews[index].querySelector('img').classList.add('img-prev_hide');
-        }
-      } else {
-        let reader = new FileReader();
-        reader.onload = (e) => {
-          let imgBase64 = e.target.result;
-          formSpan.classList.add('form__span_hide');
-          formPreview.querySelector('img').setAttribute('src', imgBase64);
-          formPreview.querySelector('img').classList.remove('img-prev_hide');
-          formMenu.classList.remove("form__menu_hide");
-          for (let index = 0; index < previews.length; index++) {
-            previews[index].querySelector('img').setAttribute('src', imgBase64);
-            previews[index].querySelector('img').classList.remove('img-prev_hide');
-          }
-        }
-        reader.onerror = (e) => {
-          console.log("Error in event: " + e);
-          alert("File reading error!");
-        }
-        reader.readAsDataURL(input.files[0]);
+        hideMenu(input);
+        showUpload(input);
+        showLimit(input);
+        hideLimitError(input);
 
+        let imgBase64 = "";
+        showFilePreviews(previews, imgBase64);
+      } else {
         if (input.files[0].size > limit) {
-          if (required === 'required') {
-            reqNotice.classList.remove("form__required_hide");
-            formPreview.classList.add("form__preview_empty");
+          if (required) {
+            showInputFileEmpty(input);
           }
-          limitNotice.classList.add("form__limit_error");
-          limitNotice.classList.remove("form__limit_hide");
+          showLimit(input);
+          showLimitError(input);
+          hideUpload(input);
+          showMenu(input);
         } else {
-          if (required === 'required') {
-            reqNotice.classList.add("form__required_hide");
-            formPreview.classList.remove("form__preview_empty");
+          let reader = new FileReader();
+          reader.onload = (e) => {
+            let imgBase64 = e.target.result;
+            formData.set(key, imgBase64);
+            hideUpload(input);
+            showMenu(input);
+            showFilePreviews(previews, imgBase64);
           }
-          limitNotice.classList.remove("form__limit_error");
-          limitNotice.classList.add("form__limit_hide");
+          reader.onerror = (e) => {
+            console.log("Error in event: " + e);
+            alert("File reading error!");
+          }
+          reader.readAsDataURL(input.files[0]);
+          if (required) {
+            showInputFileComlete(input);
+          }
+          hideLimit(input);
+          hideLimitError(input);
         }
       }
     });
+  }
+
+  function showUpload(input) {
+    const formSpan = input.parentElement.querySelector('.form__span');
+    formSpan.classList.remove("form__span_hide");
+  }
+  
+  function hideUpload(input) {
+    const formSpan = input.parentElement.querySelector('.form__span');
+    formSpan.classList.add("form__span_hide");
+  }
+
+  function showLimit(input) {
+    const limitNotice = input.parentElement.querySelector('.form__limit');
+    limitNotice.classList.remove("form__limit_hide");
+  }
+  
+  function hideLimit(input) {
+    const limitNotice = input.parentElement.querySelector('.form__limit');
+    limitNotice.classList.add("form__limit_hide");
+  }
+
+  function showLimitError(input) {
+    const limitNotice = input.parentElement.querySelector('.form__limit');
+    limitNotice.classList.add("form__limit_error");
+  }
+  
+  function hideLimitError(input) {
+    const limitNotice = input.parentElement.querySelector('.form__limit');
+    limitNotice.classList.remove("form__limit_error");
+  }
+
+  function showMenu(input) {
+    const formMenu = input.parentElement.querySelector('.form__menu');
+    formMenu.classList.remove("form__menu_hide");
+  }
+  
+  function hideMenu(input) {
+    const formMenu = input.parentElement.querySelector('.form__menu');
+    formMenu.classList.add("form__menu_hide");
+  }
+
+  function showInputFileEmpty(input) {
+    const reqNotice = input.parentElement.querySelector('.form__required');
+    const formPreview = input.parentElement.querySelector('.form__preview');
+    reqNotice.classList.remove("form__required_hide");
+    formPreview.classList.add("form__preview_empty");
+  }
+
+  function showInputFileComlete(input) {
+    const reqNotice = input.parentElement.querySelector('.form__required');
+    const formPreview = input.parentElement.querySelector('.form__preview');
+    reqNotice.classList.add("form__required_hide");
+    formPreview.classList.remove("form__preview_empty");
+  }
+
+
+  function showInputTextEmpty(input) {
+    const reqNotice = input.parentElement.querySelector('.form__required');
+    reqNotice.classList.remove("form__required_hide");
+    input.classList.add("form__text_empty");
+  }
+
+  function showInputTextComplete(input) {
+    const reqNotice = input.parentElement.querySelector('.form__required');
+    reqNotice.classList.add("form__required_hide");
+    input.classList.remove("form__text_empty");
+  }
+
+  function showFilePreviews(previews, imgBase64) {
+    for (let index = 0; index < previews.length; index++) {
+      previews[index].querySelector('img').setAttribute('src', imgBase64);
+      if (imgBase64 !== "") {
+        previews[index].querySelector('img').classList.remove('img-prev_hide');
+      } else {
+        previews[index].querySelector('img').classList.add('img-prev_hide');
+      }
+    }
+  }
+
+  function showTextPreviews(previews, content) {
+    for (let index = 0; index < previews.length; index++) {
+      previews[index].textContent = content;
+    }
+  }
+
+  function getKeyInputText(input) {
+    return input.parentElement.querySelector('label').textContent;
+  }
+
+  function getKeyInputFile(input) {
+    return input.parentElement.parentElement.querySelector('label').textContent;
   }
 });

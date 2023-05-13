@@ -28,6 +28,7 @@
 .header__logo {
   height: 26px;
   margin: 0 10px;
+  cursor: pointer;
 }
 
 .header__author {
