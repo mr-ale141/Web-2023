@@ -14,22 +14,34 @@
     <p class="logo__subtitle">Log in to start creating</p>
   </div>
   <form class="form" id="form" name="main">
-    
     <p class="form__title" id="formTitle">Log In</p>
-
-    <div class="form__item">
-      <label for="input_email" class="form__lable">Email</label>
-      <input class="form__input" id="input_email" type="text" name="userEmail" value="" autofocus tabindex="1" />
+    <div class="notice form__incorrect">
+      <img class="notice__image" src="/static/img/admin/alert-circle.svg">
+      <p class="notice__text">Email or password is incorrect.</p>
     </div>
-
+    <div class="notice form__invalid">
+      <img class="notice__image" src="/static/img/admin/alert-circle.svg">
+      <p class="notice__text">A-Ah! Check all fields.</p>
+    </div>
     <div class="form__item">
-      <label for="input_pass" class="form__lable">Password</label>
+      <label class="form__lable" for="input_email">Email</label>
+      <input class="form__input" id="input_email" type="text" name="userEmail" value="" autofocus tabindex="1" />
+      <div class="form__required form__required_hide" id="email_req">
+        Email is required
+      </div>
+      <div class="form__error form__error_hide">
+        Incorrect email format. Correct format is ****@**.***
+      </div>
+    </div>
+    <div class="form__item">
+      <label class="form__lable" for="input_pass">Password</label>
       <input class="form__input" id="input_pass" type="password" name="userPass" value="" tabindex="2" />
       <img class="form__toggle" id="toggle" src="/static/img/admin/eye.png">
+      <div class="form__required form__required_hide" id="pass_req">
+        Password is required
+      </div>
     </div>
-
     <button class="form__button" tabindex="3">Log In</button>
-
   </form>
   <script src="/static/js/login.js"></script>
 </body>

@@ -4,7 +4,6 @@ window.addEventListener('load', function () {
 
   const form = document.forms.main;
   const toggle = document.querySelector('#toggle');
-  const title = document.querySelector('#formTitle');
   const userEmail = form.userEmail;
   const userPass = form.userPass;
   
@@ -18,15 +17,15 @@ window.addEventListener('load', function () {
   async function sendForm(event) {
     event.preventDefault();
 
-    let error = formValidate(form);
-    
+    let error = formValidate();
+    const formInvalid = document.querySelector(".form__invalid");
+    const formIncorrect = document.querySelector(".form__incorrect");
+    formInvalid.classList.remove("notice_show");
+    formIncorrect.classList.remove("notice_show");
     if (error === 0) {
-      if (checkNextElement(title, "form_invalid")) {
-        title.nextElementSibling.remove();
-      }
       form.classList.add('_sending');
 
-      const response = await fetch('api/login', {
+      const response = await fetch('/api/login', {
         method: 'POST',
         body: JSON.stringify({
           userEmail: userEmail.value,
@@ -35,102 +34,61 @@ window.addEventListener('load', function () {
       })
 
       if (response.ok) {
-        if (checkNextElement(title, "form_invalid")) {
-          title.nextElementSibling.remove();
-        }
+        formInvalid.classList.remove("notice_show");
+        formIncorrect.classList.remove("notice_show");
         form.classList.remove('_sending');
         window.location.href = response.url;
       } else if (response.status === 401) {
         console.log("not authorizate");
-        if (!checkNextElement(title, "form_invalid")) {
-          title.insertAdjacentHTML(
-            "afterend",
-            `<div class="form_invalid">
-              Email or password is incorrect.
-            </div>`
-          );
-          userEmail.classList.add("form__input_invalid");
-          userPass.classList.add("form__input_invalid");
-          form.classList.remove('_sending');
-        }
+        formIncorrect.classList.add("notice_show");
+        userEmail.classList.add("form__input_invalid");
+        userPass.classList.add("form__input_invalid");
+        form.classList.remove('_sending');
       }
     } else {
-      if (checkNextElement(title, "form_invalid")) {
-        title.nextElementSibling.remove();
-      }
-      if (!checkNextElement(title, "form_invalid")) {
-        title.insertAdjacentHTML(
-          "afterend",
-          `<div class="form_invalid">
-            A-Ah! Check all fields,
-          </div>`
-        );
-      }
+      formInvalid.classList.add("notice_show");
     }
   }
 
-  function formValidate(form) {
+  function formValidate() {
     let error = 0;
-    
+    const emailRequired = document.querySelector("#email_req");
+    const passRequired = document.querySelector("#pass_req");
+    const emailIncorrect = document.querySelector(".form__error");
+    emailRequired.classList.remove("form__required_fixed");
+    passRequired.classList.remove("form__required_fixed");
+    emailIncorrect.classList.remove("form__error_fixed");
+    emailRequired.classList.add("form__required_hide");
+    passRequired.classList.add("form__required_hide");
+    emailIncorrect.classList.add("form__error_hide");
+
     if (userEmail.value) {
-      if (checkNextElement(userEmail, "form__error")) {
-        userEmail.nextElementSibling.remove();
-      }
+      emailIncorrect.classList.add("form__error_hide");
       userEmail.classList.remove("form__input_invalid");
 
       if (! emailTest(userEmail)) {
-        if (! checkNextElement(userEmail, "form__error")) {
-          userEmail.insertAdjacentHTML(
-            "afterend",
-            `<div class="form__error">
-              Incorrect email format. Correct format is ****@**.***
-            </div>`
-          );
-        }
+        emailIncorrect.classList.remove("form__error_hide");
         userEmail.classList.add("form__input_invalid");
         error++;
       } else {
-        if (checkNextElement(userEmail, "form__error")) {
-          userEmail.nextElementSibling.remove();
-        }
+        emailIncorrect.classList.add("form__error_hide");
       }
     } else {
-      if (checkNextElement(userEmail, "form__error")) {
-        userEmail.nextElementSibling.remove();
-      }
-      userEmail.insertAdjacentHTML(
-        "afterend",
-        `<div class="form__error">
-            Email is required.
-          </div>`
-      );
+      emailIncorrect.classList.add("form__error_hide");
+      emailRequired.classList.remove("form__required_hide");
       userEmail.classList.add("form__input_invalid");
       error++;
     }
 
     if (! passTest(userPass)) {
-      if (checkNextElement(userPass, "form__error")) {
-        userPass.nextElementSibling.remove();
-      }
-      userPass.insertAdjacentHTML(
-        "afterend",
-        `<div class="form__error">
-        Password is required.
-        </div>`
-      );
+      passRequired.classList.remove("form__required_hide");
       userPass.classList.add("form__input_invalid");
       error++;
     } else {
-      if (checkNextElement(userPass, "form__error")) {
-        userPass.nextElementSibling.remove();
-      }
+      passRequired.classList.add("form__required_hide");
       userPass.classList.remove("form__input_invalid");
     }
     return error;
-  }
-
-  function checkNextElement(input, nameClassNextElement) {
-    return input.nextElementSibling && input.nextElementSibling.classList.contains(nameClassNextElement)
   }
 
   function emailTest(input) {
@@ -171,18 +129,25 @@ window.addEventListener('load', function () {
   }
 
   function inputKeyup(e) {
+    const formInvalid = document.querySelector(".form__invalid");
+    const formIncorrect = document.querySelector(".form__incorrect");
+    formInvalid.classList.remove("notice_show");
+    formIncorrect.classList.remove("notice_show");
+    const formRequired = e.target.parentElement.querySelector(".form__required");
+    const formError = e.target.parentElement.querySelector(".form__error");
     if (e.target.value !== "") {
       e.target.classList.remove("form__input_invalid");
+      formRequired.classList.add("form__required_fixed");
+      if (formError) {
+        formError.classList.add("form__error_fixed");
+      }
     } else {
       e.target.classList.add("form__input_invalid");
-    }
-    if (checkNextElement(e.target, 'form__error')) {
-      if (e.target.value !== "") {
-        e.target.nextElementSibling.classList.add("form__error_fixed");
-      } else {
-        e.target.nextElementSibling.classList.remove("form__error_fixed");
+      formRequired.classList.remove("form__required_hide");
+      formRequired.classList.remove("form__required_fixed");
+      if (formError) {
+        formError.classList.add("form__error_hide");
       }
     }
   }
-  
 });
