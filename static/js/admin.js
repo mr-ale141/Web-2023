@@ -10,7 +10,16 @@ window.addEventListener('load', function () {
   const inputShortImage = document.querySelector('#short-image');
   const inputContent = document.querySelector('#content');
   
-  const formData = new Map();
+  const formData = new Map([
+    [getKeyInputText(inputTitle),      ""],
+    [getKeyInputText(inputSubtitle),   ""],
+    [getKeyInputText(inputName),       ""],
+    [getKeyInputFile(inputIcon),       ""],
+    [getKeyInputText(inputDate),       ""],
+    [getKeyInputFile(inputImage),      ""],
+    [getKeyInputFile(inputShortImage), ""],
+    [getKeyInputText(inputContent),    ""],
+  ]);
 
   let required = true;
   let notRequired = false;
@@ -92,20 +101,26 @@ window.addEventListener('load', function () {
     } else {
       let date = new Date(formData.get(getKeyInputText(inputDate)));
       let dateString = date.toLocaleDateString('en-US');
+
+      //formData.set("ImageName", inputImage.file[0].name);
+      //formData.set("ShortImageName", inputShortImage.file[0].name);
       let jsonData = {
-        Title:      formData.get(getKeyInputText(inputTitle)),
-        Subtitle:   formData.get(getKeyInputText(inputSubtitle)),
-        Name:       formData.get(getKeyInputText(inputName)),
-        Icon:       formData.get(getKeyInputFile(inputIcon)),
-        Date:       dateString,
-        Image:      formData.get(getKeyInputFile(inputImage)),
-        ShortImage: formData.get(getKeyInputFile(inputShortImage)),
-        Content:    formData.get(getKeyInputText(inputContent))
+        Title:          formData.get(getKeyInputText(inputTitle)),
+        Subtitle:       formData.get(getKeyInputText(inputSubtitle)),
+        Name:           formData.get(getKeyInputText(inputName)),
+        Icon:           formData.get(getKeyInputFile(inputIcon)),
+        IconName:       (inputIcon.value === "") ? "" : inputIcon.files[0].name,
+        Date:           dateString,
+        Image:          formData.get(getKeyInputFile(inputImage)),
+        ImageName:      inputImage.files[0].name,
+        ShortImage:     formData.get(getKeyInputFile(inputShortImage)),
+        ShortImageName: inputShortImage.files[0].name,
+        Content:        formData.get(getKeyInputText(inputContent))
       };
 
       console.log(jsonData);
       
-      const response = await fetch('/admin', {
+      const response = await fetch('/api/post', {
         method: 'POST',
         body: JSON.stringify(jsonData)
       });

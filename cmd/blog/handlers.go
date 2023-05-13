@@ -2,12 +2,14 @@ package main
 
 import (
 	"database/sql"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"html/template"
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -18,6 +20,7 @@ import (
 
 const (
 	authCookieName = "auth"
+	pathImg        = "static/img/"
 )
 
 type indexPageData struct {
@@ -58,17 +61,20 @@ type authorizationDataType struct {
 }
 
 type createPostDataType struct {
-	Title       string `json:"Title"`
-	Subtitle    string `json:"Subtitle"`
-	AuthorName  string `json:"Name"`
-	AuthorIcon  string `json:"Icon"`
-	PublishDate string `json:"Date"`
-	Image       string `json:"Image"`
-	ShortImage  string `json:"ShortImage"`
-	Content     string `json:"Content"`
+	Title          string `json:"Title"`
+	Subtitle       string `json:"Subtitle"`
+	AuthorName     string `json:"Name"`
+	AuthorIcon     string `json:"Icon"`
+	IconName       string `json:"IconName"`
+	PublishDate    string `json:"Date"`
+	Image          string `json:"Image"`
+	ImageName      string `json:"ImageName"`
+	ShortImage     string `json:"ShortImage"`
+	ShortImageName string `json:"ShortImageName"`
+	Content        string `json:"Content"`
 }
 
-func adminCreate(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
+func postCreate(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		adminData, err := authByCookie(db, w, r)
 		if err != nil {
@@ -90,6 +96,40 @@ func adminCreate(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 			log.Println(err.Error())
 			return
 		}
+
+		fileIconName := pathImg
+		fileImageName := pathImg
+		fileShortImageName := pathImg
+
+		if createPostData.AuthorIcon != "" {
+			fileIconName += createPostData.IconName
+			err = writeBase64InFile(createPostData.AuthorIcon, fileIconName)
+			if err != nil {
+				http.Error(w, "Internal Server Error", 500)
+				log.Println(err.Error())
+				return
+			}
+			createPostData.IconName = "/" + fileIconName
+		}
+
+		fileImageName += createPostData.ImageName
+		err = writeBase64InFile(createPostData.Image, fileImageName)
+		if err != nil {
+			http.Error(w, "Internal Server Error", 500)
+			log.Println(err.Error())
+			return
+		}
+		createPostData.ImageName = "/" + fileImageName
+
+		fileShortImageName += createPostData.ShortImageName
+		err = writeBase64InFile(createPostData.ShortImage, fileShortImageName)
+		if err != nil {
+			http.Error(w, "Internal Server Error", 500)
+			log.Println(err.Error())
+			return
+		}
+		createPostData.ShortImageName = "/" + fileShortImageName
+
 		err = savePost(db, createPostData, adminId)
 		if err != nil {
 			http.Error(w, "Internal Server Error", 500)
@@ -99,6 +139,23 @@ func adminCreate(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
 
 		w.WriteHeader(200)
 	}
+}
+
+func writeBase64InFile(imgBase64 string, fileName string) error {
+	data := imgBase64[strings.IndexByte(imgBase64, ',')+1:]
+	img, err := base64.StdEncoding.DecodeString(data)
+	if err != nil {
+		return err
+	}
+	fileImg, err := os.Create(fileName)
+	if err != nil {
+		return err
+	}
+	_, err = fileImg.Write(img)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func adminLogIn(db *sqlx.DB) func(w http.ResponseWriter, r *http.Request) {
@@ -408,7 +465,7 @@ func savePost(db *sqlx.DB, data createPostDataType, adminId int) error {
 				?, ?, ?, ?, ?, ?, ?
 			)
 		`
-	const queryAuthorsName = `
+	const queryAuthorName = `
 		UPDATE
 			` + "`authors`" + `
 			SET
@@ -417,7 +474,7 @@ func savePost(db *sqlx.DB, data createPostDataType, adminId int) error {
 				author_id = ?
 		`
 
-	const queryAuthorsIcon = `
+	const queryAuthorIcon = `
 		UPDATE
 			` + "`authors`" + `
 			SET
@@ -427,7 +484,7 @@ func savePost(db *sqlx.DB, data createPostDataType, adminId int) error {
 		`
 
 	if len(data.AuthorName) > 0 {
-		result, err := db.Exec(queryAuthorsName,
+		result, err := db.Exec(queryAuthorName,
 			data.AuthorName,
 			adminId,
 		)
@@ -437,9 +494,9 @@ func savePost(db *sqlx.DB, data createPostDataType, adminId int) error {
 		}
 	}
 
-	if len(data.AuthorIcon) > 0 {
-		result, err := db.Exec(queryAuthorsIcon,
-			data.AuthorIcon,
+	if len(data.IconName) > 0 {
+		result, err := db.Exec(queryAuthorIcon,
+			data.IconName,
 			adminId,
 		)
 		if err != nil {
@@ -453,8 +510,8 @@ func savePost(db *sqlx.DB, data createPostDataType, adminId int) error {
 		data.Title,
 		data.Subtitle,
 		data.PublishDate,
-		data.Image,
-		data.ShortImage,
+		data.ImageName,
+		data.ShortImageName,
 		data.Content,
 	)
 	if err != nil {

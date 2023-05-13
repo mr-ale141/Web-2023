@@ -30,8 +30,8 @@ func main() {
 	mux.HandleFunc("/post/{postId}", post(dbx))
 	mux.HandleFunc("/login", adminLogIn(dbx))
 	mux.HandleFunc("/api/login", adminAuthorization(dbx)).Methods(http.MethodPost)
-	mux.HandleFunc("/admin", admin(dbx)).Methods(http.MethodGet)
-	mux.HandleFunc("/admin", adminCreate(dbx)).Methods(http.MethodPost)
+	mux.HandleFunc("/admin", admin(dbx))
+	mux.HandleFunc("/api/post", postCreate(dbx)).Methods(http.MethodPost)
 	mux.HandleFunc("/logout", adminLogOut(dbx))
 
 	mux.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
