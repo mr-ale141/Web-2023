@@ -34,21 +34,21 @@
       <div class="form">
         <div class="form__item">
           <label class="form__lable" for="title" >Title</label>
-          <input class="form__text" id="title" name="Title" type="text" value="" autofocus tabindex="1">
+          <input class="form__text" id="Title" type="text" value="" autofocus tabindex="1">
           <div class="form__required form__required_hide" id="title_req">
             Title is required
           </div>
         </div>
         <div class="form__item">
           <label class="form__lable" for="subtitle" >Short description</label>
-          <input class="form__text" id="subtitle" name="Subtitle" type="text" value="" tabindex="2">
+          <input class="form__text" id="Subtitle" type="text" value="" tabindex="2">
           <div class="form__required form__required_hide" id="subtitle_req">
             Short description is required
           </div>
         </div>
         <div class="form__item">
           <label class="form__lable" for="name" >Author name</label>
-          <input class="form__text" id="name" name="Name" type="text" placeholder="{{ .AuthorName }}" value="" tabindex="3">
+          <input class="form__text" id="AuthorName" type="text" placeholder="{{ .AuthorName }}" value="" tabindex="3">
         </div>
         <div class="form__file">
           <label class="form__lable" for="icon" >Author Photo</label>
@@ -56,7 +56,7 @@
             <div class="form__preview icon-display icon__preview">
               <img class="img-prev img-prev-icon" src="{{ .AuthorIcon }}">
             </div>
-            <input class="icon__input" id="icon" name="Icon" type="file" accept=".jpg, .png, .gif" value="" tabindex="4">
+            <input class="icon__input" id="AuthorIcon" type="file" accept=".jpg, .png, .gif" value="" tabindex="4">
             <span class="form__span">Upload</span>
             <div class="form__menu form__menu_hide">
               <div class="form__upload">Upload New</div>
@@ -69,7 +69,7 @@
         </div>
         <div class="form__item">
           <label class="form__lable" for="date" >Publish Date</label>
-          <input class="form__text" id="date" name="Date" type="date" value="" tabindex="5">
+          <input class="form__text" id="PublishDate" type="date" value="" tabindex="5">
           <div class="form__required form__required_hide" id="date_req">
             Publish Date is required
           </div>
@@ -81,7 +81,7 @@
               <img class="img-prev img-prev_hide" src="">
               <span class="form__span">Upload</span>
             </div>
-            <input class="image__input" id="image" name="Image" type="file" accept=".jpg, .png, .gif" value="" tabindex="6">
+            <input class="image__input" id="HeroImage" type="file" accept=".jpg, .png, .gif" value="" tabindex="6">
             <div class="form__menu form__menu_hide">
               <div class="form__upload">Upload New</div>
               <div class="form__remove">Remove</div>
@@ -101,7 +101,7 @@
               <img class="img-prev img-prev_hide" src="">
               <span class="form__span">Upload</span>
             </div>
-            <input class="short-image__input" id="short-image" name="ShortImage" type="file" accept=".jpg, .png, .gif" value="" tabindex="7">
+            <input class="short-image__input" id="ShortImage" type="file" accept=".jpg, .png, .gif" value="" tabindex="7">
             <div class="form__menu form__menu_hide">
               <div class="form__upload">Upload New</div>
               <div class="form__remove">Remove</div>
@@ -158,7 +158,7 @@
       <h2 class="content__title">Content</h2>
       <div class="form__item">
         <label class="form__lable" for="content">Post content (plain text)</label>
-        <textarea class="form__textarea" name="Content" id="content" placeholder="Type anything you want ..."></textarea>
+        <textarea class="form__textarea" id="Content" placeholder="Type anything you want ..."></textarea>
         <div class="form__required form__required_hide" id="content_req">
           Content is required
         </div>
