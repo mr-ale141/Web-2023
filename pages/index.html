@@ -5,11 +5,15 @@
     <title>Blog</title>
     <link rel="stylesheet" type="text/css" href="/static/css/index.css">
     <link href="https://fonts.googleapis.com/css2?family=Lora&family=Oxygen&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
     <header class="header">
       <div class="menu">
         <span class="menu__logo">Escape.</span>
+        <div class="menu__burger">
+          <span></span>
+        </div>
         <div class="menu__block-link">
           <a class="menu__link" href=" ">HOME</a>
           <a class="menu__link" href=" ">CATEGORIES</a>
@@ -33,7 +37,7 @@
       <section class="section">
         <h2 class="section-title">Featured Posts</h2>
         {{ range .FeaturedPostsData }}
-          <a href='/post/{{ .PostID }}' class="big-post" style="background: url({{ .ImageSrc }}) no-repeat; background-size: cover">
+          <a href='/post/{{ .PostID }}' class="big-post" style="background: no-repeat center url({{ .ImageSrc }});">
             {{ if .Categories }}
               <span class="big-post__categories">{{ .Categories }}</span>
             {{ end }}
@@ -71,6 +75,9 @@
       </form>
       <div class="menu footer__menu">
         <span class="menu__logo">Escape.</span>
+        <div class="menu__burger">
+          <span></span>
+        </div>
         <div class="menu__block-link">
           <a class="menu__link" href=" ">HOME</a>
           <a class="menu__link" href=" ">CATEGORIES</a>
