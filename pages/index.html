@@ -35,7 +35,7 @@
         <a class="menu-categories__link" href=" ">Adventure</a>
       </nav>
       <section class="section">
-        <h2 class="section-title">Featured Posts</h2>
+        <h2 class="section__title">Featured Posts</h2>
         {{ range .FeaturedPostsData }}
           <a href='/post/{{ .PostID }}' class="big-post" style="background: no-repeat center url({{ .ImageSrc }});">
             {{ if .Categories }}
@@ -52,7 +52,7 @@
         {{ end }}
       </section>
       <section class="section">
-        <h2 class="section-title">Most Recent</h2>
+        <h2 class="section__title">Most Recent</h2>
         {{ range .MostRecentPostsData }}
           <a href='/post/{{ .PostID }}' class="little-post">
             <img class="little-post__image" src="{{ .ImageSrc }}" />

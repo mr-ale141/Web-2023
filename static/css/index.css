@@ -90,7 +90,7 @@
     margin: 30px auto 0;
 }
 
-.section-title {
+.section__title {
     font: 400 20px Oxygen;
     text-align: center;
     letter-spacing: 2px;
@@ -285,7 +285,7 @@
         right: 0;
         width: 90px;
         height: 190px;
-        background-color: rgba(255, 255, 255, 0.28);
+        background-color: #768088;
         border-radius: 5px;
         z-index: -1;
     }
