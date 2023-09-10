@@ -9,4 +9,4 @@ $ cat .gitignore
 *.ini
 *.bak
 .vscode
-
+bin
